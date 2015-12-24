@@ -68,9 +68,9 @@
 		<p>
 			<?php
 				$id1 = $_POST['player1'][0];
-				$id2 = $_POST['player1'][0];
-				$id3 = $_POST['player1'][0];
-				$id4 = $_POST['player1'][0];
+				$id2 = $_POST['player2'][0];
+				$id3 = $_POST['player3'][0];
+				$id4 = $_POST['player4'][0];
 
 				echo "ID1: " . $id1 . "<br>";
 				echo "ID2: " . $id2 . "<br>";
