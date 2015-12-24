@@ -78,7 +78,8 @@
 
           $rows = $result->num_rows;
 
-          echo "Select player 1:<br>";
+          // Player 1
+          echo "Select player one of winning team:<br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player1\" size=\"1\">";
           for ($j = 0; $j < $rows; ++$j) {
@@ -87,7 +88,43 @@
             echo "<option value=\"" . $row['id'] . "\">" . 
               $row['firstname'] . " " . $row['lastname'] . "</option>";
           }
-          echo "</select>";
+          echo "</select><br><br>";
+
+          // Player 2
+          echo "Select player two of winning team:<br>";
+          echo "<form method=\"post\" action=\"insert_game.php\">";
+          echo "<select name=\"player2\" size=\"1\">";
+          for ($j = 0; $j < $rows; ++$j) {
+            $result->data_seek($j);
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            echo "<option value=\"" . $row['id'] . "\">" . 
+              $row['firstname'] . " " . $row['lastname'] . "</option>";
+          }
+          echo "</select><br><br>";
+
+          // Player 3
+          echo "Select player one of losing team:<br>";
+          echo "<form method=\"post\" action=\"insert_game.php\">";
+          echo "<select name=\"player3\" size=\"1\">";
+          for ($j = 0; $j < $rows; ++$j) {
+            $result->data_seek($j);
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            echo "<option value=\"" . $row['id'] . "\">" . 
+              $row['firstname'] . " " . $row['lastname'] . "</option>";
+          }
+          echo "</select><br><br>";
+
+          // Player 4
+          echo "Select player two of losing team:<br>";
+          echo "<form method=\"post\" action=\"insert_game.php\">";
+          echo "<select name=\"player4\" size=\"1\">";
+          for ($j = 0; $j < $rows; ++$j) {
+            $result->data_seek($j);
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            echo "<option value=\"" . $row['id'] . "\">" . 
+              $row['firstname'] . " " . $row['lastname'] . "</option>";
+          }
+          echo "</select><br><br>";
         ?>
         <br><br>
         <input type="submit" value="Enter Game">
