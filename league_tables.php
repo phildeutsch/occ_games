@@ -84,48 +84,31 @@
 		<p>
 			<?php
         require_once("login.php");
+        require_once("functions.php");
 
-				if (!mysql_connect($host, $user, $pass))
-					die("Can't connect to database");
-
-				if (!mysql_select_db($db))
-					die("Can't select database");
+        $conn = new mysqli($host, $user, $pass, $db);
+        if ($conn->connect_error) die($conn->connect_error);
 
 				// sending query
-				$result = mysql_query("SELECT * FROM players order by elo desc");
-				if (!$result) {
-					die("Query to show fields from table failed");
-				}
+				$query = "SELECT * FROM players order by elo desc";
+        $result = $conn->query($query);
+        if(!$result) die($conn->error);
 
-				$fields_num = mysql_num_fields($result);
+        $rows = $result->num_rows;
 
-				echo "<table border='1'><tr>";
-				// printing table headers
-				for($i=0; $i<$fields_num; $i++)
-				{
-					$field = mysql_fetch_field($result);
-					echo "<td>{$field->name}</td>";
-				}
-				echo "</tr>\n";
-				// printing table rows
-				while($row = mysql_fetch_row($result))
-				{
-					echo "<tr>";
+        echo 'Name Score <br>';
+        for ($j = 0; $j < $rows; ++$j) {
+          $result->data_seek($j);
+          $row = $result->fetch_array(MYSQLI_ASSOC);
 
-					// $row is array... foreach( .. ) puts every element
-					// of $row to $cell variable
-					foreach($row as $cell)
-						echo "<td>$cell</td>";
-
-					echo "</tr>\n";
-				}
-				mysql_free_result($result);
+          echo $row['firstname'] . ' ' . $row['lastname'] . ' ' . $row['elo'] . '<br>';
+        }
+        $result->close();
+        $conn->close();
 			?>
 		</p>
-
-      </div>
-
-    </div> <!-- /container -->
+  </div>
+  </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript
