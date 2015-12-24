@@ -1,5 +1,7 @@
 <?php
     require_once("login.php");
+    require_once("functions.php");
+
 				
 	$con = mysql_connect($host, $user, $pass);
 
