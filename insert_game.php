@@ -67,6 +67,8 @@
 <div class="container">
 		<p>
 			<?php
+				require_once("login.php");
+
 				$id1 = $_POST['player1'][0];
 				$id2 = $_POST['player2'][0];
 				$id3 = $_POST['player3'][0];
@@ -76,6 +78,25 @@
 				echo "ID2: " . $id2 . "<br>";
 				echo "ID3: " . $id3 . "<br>";
 				echo "ID4: " . $id4 . "<br>";
+
+				// Check if there is at least one player per team
+				if ($id1==0 && $id2==0) die("No player on winning team.");
+				if ($id3==0 && $id4==0) die("No player on losing team.");
+
+				// Check if a player is selected more than once
+				$data   = array($id1, $id2, $id3, $id4);
+				$unique = array_unique($data);
+				if ( count($data) != count($unique) ) {
+				  echo "Each player can only play on one team.";
+				}
+
+				// Enter match into matches table
+
+
+				// Enter winners and losers
+
+				// Update elo
+
 			?>
 		</p>
   </div>
