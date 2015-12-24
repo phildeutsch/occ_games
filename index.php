@@ -30,8 +30,9 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Hello</h1>
-        <p>This is the OC&C TF portal </p>
+        <!-- <h1>Hello</h1>-->
+        <br>
+        <p>Welcome to the OC&C TF portal </p>
 <!--
 		<p> <?php
 			$python = `python python.py`;

@@ -18,9 +18,10 @@
 	}
 	if (mysql_fetch_row($result)[0]==0) {
 		// TODO: Send email to player and only enter them after they have confirmed
-		$sql = "INSERT INTO players (firstname, lastname, elo) 
-	    		VALUES ('$_POST[fname]','$_POST[lname]', 1000)";
-		mysql_query($sql,$con);
+		$email = "TODO";
+		$sql = "INSERT INTO players (firstname, lastname, elo, email) 
+	    		VALUES ('$_POST[fname]','$_POST[lname]', 1000, '$email')";
+	    mysql_query($sql,$con);
 	} else {
 		// player already in the DB
 		// TODO: Notify user and go back to previous page
