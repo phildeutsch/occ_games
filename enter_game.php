@@ -1,30 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="index.php">OC&C TF Portal</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-<!--          <form class="navbar-form navbar-right">
-           <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form> */
-        </div><
-      </div>
--->
     </nav>
 
   <head>
@@ -77,22 +58,41 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>.</h1>
+<!--        <h1>.</h1> -->
         <p>Enter your game here.</p>
         <p> This does not work yet! </p>
-
       </div>
 
 	  <div class="container">
-	          <p>
-			<form action="insert_game.php" method="post">
-				Firstname Team 1: <input type="text" name="fname1" /><br><br>
-				Lastname Team 1: <input type="text" name="lname1" /><br><br>
-				Firstname Team 2: <input type="text" name="fname2" /><br><br>
-				Lastname Team 2: <input type="text" name="lname2" /><br><br>
-			<input type="submit" />
-			</form>
-        </p>
+      <p>
+        <?php
+          require_once("login.php");
+          require_once("functions.php");
+
+          $conn = new mysqli($host, $user, $pass, $db);
+          if ($conn->connect_error) die($conn->connect_error);
+
+          // sending query
+          $query = "SELECT * FROM players order by firstname desc";
+          $result = $conn->query($query);  
+
+          $rows = $result->num_rows;
+
+          echo "Select player 1:<br>";
+          echo "<form method=\"post\" action=\"insert_game.php\">";
+          echo "<select name=\"player1\" size=\"1\">";
+          for ($j = 0; $j < $rows; ++$j) {
+            $result->data_seek($j);
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            echo "<option value=\"" . $row['id'] . "\">" . 
+              $row['firstname'] . " " . $row['lastname'] . "</option>";
+          }
+          echo "</select>";
+        ?>
+        <br><br>
+        <input type="submit" value="Enter Game">
+        </form>; 
+      </p>
 	  </div>
     </div> <!-- /container -->
 
