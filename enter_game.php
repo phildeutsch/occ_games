@@ -82,6 +82,7 @@
           echo "Select player one of winning team:<br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player1\" size=\"1\">";
+          echo "<option value=\"0\">None</option>";
           for ($j = 0; $j < $rows; ++$j) {
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -94,6 +95,7 @@
           echo "Select player two of winning team:<br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player2\" size=\"1\">";
+          echo "<option value=\"0\">None</option>";
           for ($j = 0; $j < $rows; ++$j) {
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -106,6 +108,7 @@
           echo "Select player one of losing team:<br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player3\" size=\"1\">";
+          echo "<option value=\"0\">None</option>";
           for ($j = 0; $j < $rows; ++$j) {
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -118,6 +121,7 @@
           echo "Select player two of losing team:<br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player4\" size=\"1\">";
+          echo "<option value=\"0\">None</option>";
           for ($j = 0; $j < $rows; ++$j) {
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);

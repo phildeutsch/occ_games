@@ -18,7 +18,7 @@
 	}
 	if (mysql_fetch_row($result)[0]==0) {
 		// TODO: Send email to player and only enter them after they have confirmed
-		$email = "TODO";
+		$email = strtolower($_POST[fname] . "." . $_POST[lname] . "@occstrategy.com");
 		$sql = "INSERT INTO players (firstname, lastname, elo, email) 
 	    		VALUES ('$_POST[fname]','$_POST[lname]', 1000, '$email')";
 	    mysql_query($sql,$con);
