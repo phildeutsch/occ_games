@@ -1,9 +1,5 @@
 <?php
-	$host = "localhost"; 
-	//$host = "fdb14.biz.nf"; 
-	$user = "2019813_tf"; 
-	$pass = "occtf123"; 
-	$db   = "2019813_tf";
+    require_once("login.php");
 				
 	$con = mysql_connect($host, $user, $pass);
 
