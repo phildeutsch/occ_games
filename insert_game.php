@@ -112,12 +112,18 @@
           					  VALUES ('$match_id', '$id1')";
           			$result = $conn->query($query);
         			if(!$result) die($conn->error);
+
+        			echo "Player " . $id1 . " added as winner ";
+        			echo "for match " . $match_id . ".<br>";
           		}
           		if ($id2>0) {
           			$query = "INSERT INTO winners (match_id, player_id) 
           					  VALUES ('$match_id', '$id2')";
           			$result = $conn->query($query);
         			if(!$result) die($conn->error);
+
+        			echo "Player " . $id2 . " added as winner ";
+        			echo "for match " . $match_id . ".<br>";
           		}
 
           		// Enter losers
@@ -126,12 +132,18 @@
           					  VALUES ('$match_id', '$id3')";
           			$result = $conn->query($query);
         			if(!$result) die($conn->error);
+
+        			echo "Player " . $id3 . " added as loser ";
+        			echo "for match " . $match_id . ".<br>";
           		}
           		if ($id4>0) {
           			$query = "INSERT INTO losers (match_id, player_id) 
           					  VALUES ('$match_id', '$id4')";
           			$result = $conn->query($query);
         			if(!$result) die($conn->error);
+
+        			echo "Player " . $id4 . " added as loser ";
+        			echo "for match " . $match_id . ".<br>";
           		}
 
 				// Update elo
