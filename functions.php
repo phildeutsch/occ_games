@@ -11,4 +11,8 @@
 		$var = sanitizeString($var);
 		return($var);
 	}
+
+	function array_delete($array, $element) {
+    	return array_diff($array, [$element]);
+    }
 ?>

@@ -68,6 +68,7 @@
 		<p>
 			<?php
 				require_once("login.php");
+				require_once("functions.php");
 
 				$id1 = $_POST['player1'][0];
 				$id2 = $_POST['player2'][0];
@@ -85,15 +86,53 @@
 
 				// Check if a player is selected more than once
 				$data   = array($id1, $id2, $id3, $id4);
+				$data   = array_delete($data, 0);
 				$unique = array_unique($data);
 				if ( count($data) != count($unique) ) {
-				  echo "Each player can only play on one team.";
+				  die("Each player can only play on one team.");
 				}
 
+				// Connect to DB
+				$conn = new mysqli($host, $user, $pass, $db);
+        		if ($conn->connect_error) die($conn->connect_error);
+
 				// Enter match into matches table
+        		$query = "INSERT INTO matches VALUES ()";
+        		$result = $conn->query($query);
+        		$query = "SELECT max(id) from matches";
+        		$result = $conn->query($query);
+				if(!$result) die($conn->error);
+				$result->data_seek(0);
+          		$row = $result->fetch_array(MYSQLI_NUM);
+          		$match_id = $row[0];
 
+				// Enter winners
+				if ($id1>0) {
+          			$query = "INSERT INTO winners (match_id, player_id) 
+          					  VALUES ('$match_id', '$id1')";
+          			$result = $conn->query($query);
+        			if(!$result) die($conn->error);
+          		}
+          		if ($id2>0) {
+          			$query = "INSERT INTO winners (match_id, player_id) 
+          					  VALUES ('$match_id', '$id2')";
+          			$result = $conn->query($query);
+        			if(!$result) die($conn->error);
+          		}
 
-				// Enter winners and losers
+          		// Enter losers
+				if ($id3>0) {
+          			$query = "INSERT INTO losers (match_id, player_id) 
+          					  VALUES ('$match_id', '$id3')";
+          			$result = $conn->query($query);
+        			if(!$result) die($conn->error);
+          		}
+          		if ($id4>0) {
+          			$query = "INSERT INTO losers (match_id, player_id) 
+          					  VALUES ('$match_id', '$id4')";
+          			$result = $conn->query($query);
+        			if(!$result) die($conn->error);
+          		}
 
 				// Update elo
 
