@@ -60,7 +60,6 @@
       <div class="jumbotron">
 <!--        <h1>.</h1> -->
         <p>Enter your game here.</p>
-        <p> This does not work yet! </p>
       </div>
 
 	  <div class="container">
@@ -132,7 +131,7 @@
         ?>
         <br><br>
         <input type="submit" value="Enter Game">
-        </form>; 
+        </form>
       </p>
 	  </div>
     </div> <!-- /container -->
