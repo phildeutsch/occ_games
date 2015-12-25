@@ -60,7 +60,6 @@
       <div class="jumbotron">
 <!--        <h1>.</h1> -->
         <p>Enter your game here.</p>
-        <p> This does not work yet! </p>
       </div>
 
 
@@ -79,6 +78,7 @@
 				echo "ID2: " . $id2 . "<br>";
 				echo "ID3: " . $id3 . "<br>";
 				echo "ID4: " . $id4 . "<br>";
+				echo "<br>";
 
 				// Check if there is at least one player per team
 				if ($id1==0 && $id2==0) die("No player on winning team.");
@@ -106,44 +106,76 @@
           		$row = $result->fetch_array(MYSQLI_NUM);
           		$match_id = $row[0];
 
-				// Enter winners
+          		// Get Elo ratings
+          		$elo1 = get_elo($id1, $conn);
+          		$elo2 = get_elo($id2, $conn);
+          		$elo3 = get_elo($id3, $conn);
+          		$elo4 = get_elo($id4, $conn);
+
+          		echo "Elo 1: " . $elo1 . "<br>";
+          		echo "Elo 2: " . $elo2 . "<br>";
+          		echo "Elo 3: " . $elo3 . "<br>";
+          		echo "Elo 4: " . $elo4 . "<br>";
+				echo "<br>";
+
+
+          		if ($id1 > 0 && $id2 > 0) {
+          			$elo_winners = ($elo1 + $elo2) / 2;
+          		} else {
+          			$elo_winners = max(array($elo1, $elo2));
+          		}
+          		if ($id3> 0 && $id4 > 0) {
+          			$elo_losers = ($elo3 + $elo4) / 2;
+          		} else {
+          			$elo_losers = max(array($elo3, $elo4));
+          		}
+
+          		echo "Elo winners: " . $elo_winners . "<br>";
+          		echo "Elo losers: " . $elo_losers . "<br>";
+          		echo "<br>";
+
+				// Enter winners and update elo
 				if ($id1>0) {
-          			$query = "INSERT INTO winners (match_id, player_id) 
-          					  VALUES ('$match_id', '$id1')";
-          			$result = $conn->query($query);
-        			if(!$result) die($conn->error);
+					$delo = elo_change($elo1, $elo_losers, 32, 1);
+          			insert_winner($match_id, $id1, $delo, $conn);
+          			update_elo($id1, $delo, $conn);
 
         			echo "Player " . $id1 . " added as winner ";
         			echo "for match " . $match_id . ".<br>";
+
+        			echo "Elo change: " . $delo . "<br>";
           		}
           		if ($id2>0) {
-          			$query = "INSERT INTO winners (match_id, player_id) 
-          					  VALUES ('$match_id', '$id2')";
-          			$result = $conn->query($query);
-        			if(!$result) die($conn->error);
+					$delo = elo_change($elo2, $elo_losers, 32, 1);
+          			insert_winner($match_id, $id1, $delo, $conn);
+          			update_elo($id2, $delo, $conn);
 
         			echo "Player " . $id2 . " added as winner ";
         			echo "for match " . $match_id . ".<br>";
+
+        			echo "Elo change: " . $delo . "<br>";
           		}
 
           		// Enter losers
 				if ($id3>0) {
-          			$query = "INSERT INTO losers (match_id, player_id) 
-          					  VALUES ('$match_id', '$id3')";
-          			$result = $conn->query($query);
-        			if(!$result) die($conn->error);
+					$delo = elo_change($elo3, $elo_winners, 32, 0);
+          			insert_winner($match_id, $id3, $delo, $conn);
+          			update_elo($id3, $delo, $conn);
 
         			echo "Player " . $id3 . " added as loser ";
         			echo "for match " . $match_id . ".<br>";
+
+        			echo "Elo change: " . $delo . "<br>";
           		}
           		if ($id4>0) {
-          			$query = "INSERT INTO losers (match_id, player_id) 
-          					  VALUES ('$match_id', '$id4')";
-          			$result = $conn->query($query);
-        			if(!$result) die($conn->error);
+					$delo = elo_change($elo4, $elo_winners, 32, 0);
+          			insert_winner($match_id, $id4, $delo, $conn);
+          			update_elo($id4, $delo, $conn);
 
         			echo "Player " . $id4 . " added as loser ";
         			echo "for match " . $match_id . ".<br>";
+
+        			echo "Elo change: " . $delo . "<br>";
           		}
 
 				// Update elo
