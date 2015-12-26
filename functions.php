@@ -60,4 +60,12 @@
 	        if(!$result) die($conn->error);
 	        return 0;
     }
+
+    function add_game($player_id, $conn) {
+            $query = "UPDATE players SET games_played = games_played + 1
+                      WHERE id = $player_id";
+            $result = $conn->query($query);
+            if(!$result) die($conn->error);
+            return 0;
+    }
 ?>

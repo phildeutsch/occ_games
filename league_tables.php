@@ -24,7 +24,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="navbar.css" rel="stylesheet">
+    <link href="tf.css" rel="stylesheet">
   </head>
 
   <body>
@@ -78,13 +78,19 @@
 
         $rows = $result->num_rows;
 
-        echo 'Name Score <br>';
+        echo "<table><tr><th>Name</th><th>Score</th><th>Games</th></tr>";
         for ($j = 0; $j < $rows; ++$j) {
           $result->data_seek($j);
           $row = $result->fetch_array(MYSQLI_ASSOC);
 
-          echo $row['firstname'] . ' ' . $row['lastname'] . ' ' . $row['elo'] . '<br>';
+          //echo $row['firstname'] . ' ' . $row['lastname'] . ' ' . $row['elo'] . '<br>';
+          echo "<tr><td>" . $row['firstname'] . " " . $row['lastname'] . "</td>";
+          echo "<td>" . $row['elo'] . "</td>";
+          echo "<td>" . $row['games_played'] . "</td></tr>";
         }
+        echo "</table>";
+
+
         $result->close();
         $conn->close();
 			?>
