@@ -73,45 +73,45 @@
 
 				// Connect to DB
 				$conn = new mysqli($host, $user, $pass, $db);
-        		if ($conn->connect_error) die($conn->connect_error);
+        if ($conn->connect_error) die($conn->connect_error);
 
 				// Enter match into matches table
-        		$query = "INSERT INTO matches VALUES ()";
-        		$result = $conn->query($query);
-        		$query = "SELECT max(id) from matches";
-        		$result = $conn->query($query);
+        $query = "INSERT INTO matches VALUES ()";
+        $result = $conn->query($query);
+        $query = "SELECT max(id) from matches";
+        $result = $conn->query($query);
 				if(!$result) die($conn->error);
 				$result->data_seek(0);
-          		$row = $result->fetch_array(MYSQLI_NUM);
-          		$match_id = $row[0];
+        $row = $result->fetch_array(MYSQLI_NUM);
+        $match_id = $row[0];
 
-          		// Get Elo ratings
-          		$elo1 = get_elo($id1, $conn);
-          		$elo2 = get_elo($id2, $conn);
-          		$elo3 = get_elo($id3, $conn);
-          		$elo4 = get_elo($id4, $conn);
+        // Get Elo ratings
+        $elo1 = get_elo($id1, $conn);
+        $elo2 = get_elo($id2, $conn);
+        $elo3 = get_elo($id3, $conn);
+        $elo4 = get_elo($id4, $conn);
 
-          		echo "Elo 1: " . $elo1 . "<br>";
-          		echo "Elo 2: " . $elo2 . "<br>";
-          		echo "Elo 3: " . $elo3 . "<br>";
-          		echo "Elo 4: " . $elo4 . "<br>";
+     		echo "Elo 1: " . $elo1 . "<br>";
+     		echo "Elo 2: " . $elo2 . "<br>";
+     		echo "Elo 3: " . $elo3 . "<br>";
+     		echo "Elo 4: " . $elo4 . "<br>";
 				echo "<br>";
 
 
-          		if ($id1 > 0 && $id2 > 0) {
-          			$elo_winners = ($elo1 + $elo2) / 2;
-          		} else {
-          			$elo_winners = max(array($elo1, $elo2));
-          		}
-          		if ($id3> 0 && $id4 > 0) {
-          			$elo_losers = ($elo3 + $elo4) / 2;
-          		} else {
-          			$elo_losers = max(array($elo3, $elo4));
-          		}
+     		if ($id1 > 0 && $id2 > 0) {
+     			$elo_winners = ($elo1 + $elo2) / 2;
+     		} else {
+     			$elo_winners = max(array($elo1, $elo2));
+     		}
+     		if ($id3> 0 && $id4 > 0) {
+     			$elo_losers = ($elo3 + $elo4) / 2;
+     		} else {
+     			$elo_losers = max(array($elo3, $elo4));
+     		}
 
-          		echo "Elo winners: " . $elo_winners . "<br>";
-          		echo "Elo losers: " . $elo_losers . "<br>";
-          		echo "<br>";
+     		echo "Elo winners: " . $elo_winners . "<br>";
+     		echo "Elo losers: " . $elo_losers . "<br>";
+     		echo "<br>";
 
 				// Enter winners and update elo
 				if ($id1>0) {
