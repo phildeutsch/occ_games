@@ -7,11 +7,11 @@
 				$id3 = $_POST['player3'][0];
 				$id4 = $_POST['player4'][0];
 
-				echo "ID1: " . $id1 . "<br>";
-				echo "ID2: " . $id2 . "<br>";
-				echo "ID3: " . $id3 . "<br>";
-				echo "ID4: " . $id4 . "<br>";
-				echo "<br>";
+				// echo "ID1: " . $id1 . "<br>";
+				// echo "ID2: " . $id2 . "<br>";
+				// echo "ID3: " . $id3 . "<br>";
+				// echo "ID4: " . $id4 . "<br>";
+				// echo "<br>";
 
 				// Check if there is at least one player per team
 				if ($id1==0 && $id2==0) die("No player on winning team.");
