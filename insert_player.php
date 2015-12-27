@@ -5,8 +5,8 @@
 	$conn = new mysqli($host, $user, $pass, $db);
     if ($conn->connect_error) die($conn->connect_error);
 
-    $fname = $_POST[fname];
-    $lname = $_POST[lname];
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
 
     // capitalize first letter
     $fname = ucfirst(strtolower($fname));
@@ -34,6 +34,6 @@
 		// TODO: Notify user and go back to previous page
 	}
 	
-	header("Location: index.php");
+	header('Location: index.php#table');
 	exit();
 ?>

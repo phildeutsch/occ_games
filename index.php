@@ -1,81 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="OC&C TF website" content="">
-    <meta name="Philipp Deutsch" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <title>OC&C TF Portal</title>
+    <title>Scrolling Nav - Start Bootstrap Template</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="tf.css" rel="stylesheet">
-  </head>
+    <!-- Custom CSS -->
+    <link href="css/tf.css" rel="stylesheet">
 
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="index.php">OC&C TF Portal</a>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">OC&C TF Portal</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#table">League Table</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#results">Enter Results</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#player">Add Player</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <!-- /.container -->
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <!-- <h1>Hello</h1>-->
-        <br>
-        <p>Welcome to the OC&C TF portal </p>
-<!--
-		<p> <?php
-			$python = `python python.py`;
-			echo $python; ?>
-		</p>
--->
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>League Tables</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="league_tables.php" role="button">View details &raquo;</a></p>
+    <!-- Intro Section -->
+    <section id="intro" class="intro-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>The OC&C TF Portal</h1>
+                    <p>This page shows the current TF league table of the OC&C London office.</p>
+                    <a class="btn btn-default page-scroll" href="#table">Show me the standings!</a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-          <h2>Enter Game</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="add_game.php" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Add Player</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="add_player.php" role="button">View details &raquo;</a></p>
+    </section>
+
+    <!-- About Section -->
+    <section id="table" class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>League Table</h1>
+                </div>
+                <p> <?php include("league_tables.php"); ?> </p>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <hr>
-      <footer>
-        <p>&copy; 2015 Philipp Deutsch & Amr El-Abban</p>
-      </footer>
-    </div> <!-- /container -->
+    <!-- Services Section -->
+    <section id="results" class="services-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Enter Results</h1>
+                </div>
+            </div>
+            <p> <?php include("add_game.php"); ?> </p>
+        </div>
+    </section>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+    <!-- Contact Section -->
+    <section id="player" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Add Player</h1>
+                </div>
+            </div>
+                          <p>
+            <form action="insert_player.php" method="post">
+                First name: <input type="text" id="fname" name="fname" /><br><br>
+                Last name: <input type="text" id="lname" name="lname" /><br><br>
+            <input type="submit" id="player-button" value="Add player">
+            </form>
+
+        </p>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+
+</body>
+
 </html>
-

@@ -1,49 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="OC&C TF website" content="">
-    <meta name="Philipp Deutsch" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>OC&C TF Portal</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="tf.css" rel="stylesheet">
-  </head>
-
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="index.php">OC&C TF Portal</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-    </nav>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <!-- <h1>Hello</h1>-->
-        <br>
-        <p>Welcome to the OC&C TF portal </p>
-<!--
-    <p> <?php
-      $python = `python python.py`;
-      echo $python; ?>
-    </p>
--->
-      </div>
-    </div>
-
-<div class="container">
-		<p>
 			<?php
 				require_once("login.php");
 				require_once("functions.php");
@@ -91,11 +45,11 @@
         $elo3 = get_elo($id3, $conn);
         $elo4 = get_elo($id4, $conn);
 
-     		echo "Elo 1: " . $elo1 . "<br>";
-     		echo "Elo 2: " . $elo2 . "<br>";
-     		echo "Elo 3: " . $elo3 . "<br>";
-     		echo "Elo 4: " . $elo4 . "<br>";
-				echo "<br>";
+    //  		echo "Elo 1: " . $elo1 . "<br>";
+    //  		echo "Elo 2: " . $elo2 . "<br>";
+    //  		echo "Elo 3: " . $elo3 . "<br>";
+    //  		echo "Elo 4: " . $elo4 . "<br>";
+				// echo "<br>";
 
 
      		if ($id1 > 0 && $id2 > 0) {
@@ -109,9 +63,9 @@
      			$elo_losers = max(array($elo3, $elo4));
      		}
 
-     		echo "Elo winners: " . $elo_winners . "<br>";
-     		echo "Elo losers: " . $elo_losers . "<br>";
-     		echo "<br>";
+     		// echo "Elo winners: " . $elo_winners . "<br>";
+     		// echo "Elo losers: " . $elo_losers . "<br>";
+     		// echo "<br>";
 
 				// Enter winners and update elo
 				if ($id1>0) {
@@ -120,9 +74,9 @@
           update_elo($id1, $delo, $conn);
           add_game($id1, $conn);
 
-        	echo "Player " . $id1 . " added as winner ";
-        	echo "for match " . $match_id . ".<br>";
-     			echo "Elo change: " . $delo . "<br>";
+        // 	echo "Player " . $id1 . " added as winner ";
+        // 	echo "for match " . $match_id . ".<br>";
+     			// echo "Elo change: " . $delo . "<br>";
      		}
      		if ($id2>0) {
   				$delo = elo_change($elo_winners, $elo_losers, 32, 1);
@@ -130,9 +84,9 @@
      			update_elo($id2, $delo, $conn);
           add_game($id2, $conn);
 
-     			echo "Player " . $id2 . " added as winner ";
-     			echo "for match " . $match_id . ".<br>";
-     			echo "Elo change: " . $delo . "<br>";
+     			// echo "Player " . $id2 . " added as winner ";
+     			// echo "for match " . $match_id . ".<br>";
+     			// echo "Elo change: " . $delo . "<br>";
      		}
 
      		// Enter losers
@@ -142,9 +96,9 @@
      			update_elo($id3, $delo, $conn);
           add_game($id3, $conn);
 
-     			echo "Player " . $id3 . " added as loser ";
-     			echo "for match " . $match_id . ".<br>";
-    			echo "Elo change: " . $delo . "<br>";
+     		// 	echo "Player " . $id3 . " added as loser ";
+     		// 	echo "for match " . $match_id . ".<br>";
+    			// echo "Elo change: " . $delo . "<br>";
        		}
      		if ($id4>0) {
   				$delo = elo_change($elo_losers, $elo_winners, 32, 0);
@@ -152,25 +106,10 @@
      			update_elo($id4, $delo, $conn);
           add_game($id4, $conn);
 
-     			echo "Player " . $id4 . " added as loser ";
-     			echo "for match " . $match_id . ".<br>";
-     			echo "Elo change: " . $delo . "<br>";
+     			// echo "Player " . $id4 . " added as loser ";
+     			// echo "for match " . $match_id . ".<br>";
+     			// echo "Elo change: " . $delo . "<br>";
      		}
 
-				// Update elo
-
+            header('Location: index.php#table')
 			?>
-		</p>
-  </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
-
