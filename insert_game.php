@@ -115,7 +115,7 @@
 
 				// Enter winners and update elo
 				if ($id1>0) {
-					$delo = elo_change($elo1, $elo_losers, 32, 1);
+					$delo = elo_change($elo_winners, $elo_losers, 32, 1);
           insert_winner($match_id, $id1, $delo, $conn);
           update_elo($id1, $delo, $conn);
           add_game($id1, $conn);
@@ -125,7 +125,7 @@
      			echo "Elo change: " . $delo . "<br>";
      		}
      		if ($id2>0) {
-  				$delo = elo_change($elo2, $elo_losers, 32, 1);
+  				$delo = elo_change($elo_winners, $elo_losers, 32, 1);
      			insert_winner($match_id, $id1, $delo, $conn);
      			update_elo($id2, $delo, $conn);
           add_game($id2, $conn);
@@ -137,7 +137,7 @@
 
      		// Enter losers
 				if ($id3>0) {
-  				$delo = elo_change($elo3, $elo_winners, 32, 0);
+  				$delo = elo_change($elo_losers, $elo_winners, 32, 0);
      			insert_winner($match_id, $id3, $delo, $conn);
      			update_elo($id3, $delo, $conn);
           add_game($id3, $conn);
@@ -147,7 +147,7 @@
     			echo "Elo change: " . $delo . "<br>";
        		}
      		if ($id4>0) {
-  				$delo = elo_change($elo4, $elo_winners, 32, 0);
+  				$delo = elo_change($elo_losers, $elo_winners, 32, 0);
      			insert_winner($match_id, $id4, $delo, $conn);
      			update_elo($id4, $delo, $conn);
           add_game($id4, $conn);
