@@ -89,7 +89,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Enter Results</h1>
+                    <h1><font color="white">Enter Results</font></h1>
                 </div>
             </div>
             <p> <?php include("add_game.php"); ?> </p>

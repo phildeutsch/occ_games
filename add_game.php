@@ -12,10 +12,10 @@
           $rows = $result->num_rows;
 
           // Player 1
-          echo "Select player one of winning team:<br>";
+          echo "<font color=\"white\">Select player one of winning team:</font><br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
-          echo "<select name=\"player1\" size=\"1\">";
-          echo "<option value=\"0\">None</option>";
+          echo "<select name=\"player1\" size=\"1\" color:#fff>";
+          echo "<option class=resultsform value=\"0\">None</option>";
           for ($j = 0; $j < $rows; ++$j) {
             $result->data_seek($j);
             $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -25,7 +25,7 @@
           echo "</select><br><br>";
 
           // Player 2
-          echo "Select player two of winning team:<br>";
+          echo "<font color=\"white\">Select player two of winning team:</font><br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player2\" size=\"1\">";
           echo "<option value=\"0\">None</option>";
@@ -38,7 +38,7 @@
           echo "</select><br><br>";
 
           // Player 3
-          echo "Select player one of losing team:<br>";
+          echo "<font color=\"white\">Select player one of losing team:</font><br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player3\" size=\"1\">";
           echo "<option value=\"0\">None</option>";
@@ -51,7 +51,7 @@
           echo "</select><br><br>";
 
           // Player 4
-          echo "Select player two of losing team:<br>";
+          echo "<font color=\"white\">Select player two of losing team:</font><br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
           echo "<select name=\"player4\" size=\"1\">";
           echo "<option value=\"0\">None</option>";
