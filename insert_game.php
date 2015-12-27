@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-   <nav class="navbar navbar-inverse navbar-fixed-top">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="OC&C TF website" content="">
+    <meta name="Philipp Deutsch" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>OC&C TF Portal</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="tf.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand" href="index.php">OC&C TF Portal</a>
@@ -8,60 +27,20 @@
         <div id="navbar" class="navbar-collapse collapse">
     </nav>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Navbar Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="navbar.css" rel="stylesheet">
-  </head>
-
-  <body>
-
-    <div class="container">
-      <nav class="navbar navbar-light bg-faded">
-        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">
-          &#9776;
-        </button>
-        <div class="collapse navbar-toggleable-xs" id="navbar-header">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <ul class="nav navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-          </ul>
-          <form class="form-inline pull-xs-right">
-            <input class="form-control" type="text" placeholder="Search">
-            <button class="btn btn-success-outline" type="submit">Search</button>
-          </form>
-        </div>
-      </nav> <!-- /navbar -->
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-<!--        <h1>.</h1> -->
-        <p>Enter your game here.</p>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <!-- <h1>Hello</h1>-->
+        <br>
+        <p>Welcome to the OC&C TF portal </p>
+<!--
+    <p> <?php
+      $python = `python python.py`;
+      echo $python; ?>
+    </p>
+-->
       </div>
-
+    </div>
 
 <div class="container">
 		<p>
