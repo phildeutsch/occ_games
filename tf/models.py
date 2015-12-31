@@ -6,8 +6,9 @@ from django.db import models
 class TfPlayer(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
-    score = models.IntegerField(default=0)
+    score = models.IntegerField(default=800)
     matches_played = models.IntegerField(default=0)
 
     def __str__(self):
