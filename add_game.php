@@ -11,6 +11,11 @@
 
           $rows = $result->num_rows;
 
+          echo "<div class=\"container\">";
+          echo "<div class=\"row\">";
+          echo "<div id=\"gamebox\" class=\"col-lg-6\">";
+          echo "<h3>Winning Team</h3>";
+
           // Player 1
           echo "<font color=\"white\">Select player one of winning team:</font><br>";
           echo "<form method=\"post\" action=\"insert_game.php\">";
@@ -36,6 +41,9 @@
               $row['firstname'] . " " . $row['lastname'] . "</option>";
           }
           echo "</select><br><br>";
+          echo "</div>"; // column
+          echo "<div id=\"gamebox\" class=\"col-lg-6\">";
+          echo "<h3>Losing Team</h3>";
 
           // Player 3
           echo "<font color=\"white\">Select player one of losing team:</font><br>";
@@ -62,8 +70,13 @@
               $row['firstname'] . " " . $row['lastname'] . "</option>";
           }
           echo "</select><br><br>";
+
+        echo "</div>"; // column
+        echo "</div>"; // row
+        echo "</div>"; // container
         
         echo "<br><br>";
+
         echo "<input type=\"submit\" value=\"Enter Game\">";
         echo "</form>";
         ?>

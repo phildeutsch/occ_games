@@ -104,14 +104,14 @@
                     <h1>Add Player</h1>
                 </div>
             </div>
-                          <p>
+            <p>
             <form action="insert_player.php" method="post">
                 First name: <input type="text" id="fname" name="fname" /><br><br>
                 Last name: <input type="text" id="lname" name="lname" /><br><br>
             <input type="submit" id="player-button" value="Add player">
             </form>
-
         </p>
+        <p id="addplayertext"><br>Player X has been added!</p>
         </div>
     </section>
 
