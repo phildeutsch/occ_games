@@ -8,16 +8,8 @@ def index(request):
     matches = TfMatch.objects.order_by('played_date')[:5]
     players = TfPlayer.objects.order_by('-score')
 
-    # if request.method == "POST":
-    #     new_match_player = TfPlayerSelectForm(request.POST)
-    #     if new_match_player.is_valid():
-    #         return redirect('index')
-    # else:
-    #     new_match_player = TfPlayerSelectForm()
-
     return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players})#,
-                                            # 'player_form': new_match_player})
+                                             'players': players})
 
 def player_new(request):
     if request.method == "POST":
