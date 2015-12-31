@@ -8,16 +8,8 @@ def index(request):
     matches = TfMatch.objects.order_by('played_date')[:5]
     players = TfPlayer.objects.order_by('-score')
 
-    # if request.method == "POST":
-    #     new_match_player = TfPlayerSelectForm(request.POST)
-    #     if new_match_player.is_valid():
-    #         return redirect('index')
-    # else:
-    #     new_match_player = TfPlayerSelectForm()
-
     return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players})#,
-                                            # 'player_form': new_match_player})
+                                             'players': players})
 
 def player_new(request):
     if request.method == "POST":
@@ -30,3 +22,13 @@ def player_new(request):
     else:
         new_player_form = TfNewPlayerForm()
     return render(request, 'tf/add_player.html', {'form': new_player_form})
+
+def add_match(request):
+    team1_player1_id = request.POST.get('team1_player1')
+    team1_player2_id = request.POST.get('team1_player2')
+    team2_player1_id = request.POST.get('team2_player1')
+    team2_player2_id = request.POST.get('team2_player2')
+
+    player_ids = [team1_player1_id, team1_player2_id, team2_player1_id, team2_player2_id]
+
+    return redirect(index)
