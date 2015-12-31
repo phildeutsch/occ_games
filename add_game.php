@@ -13,7 +13,7 @@
 
           echo "<div class=\"container\">";
           echo "<div class=\"row\">";
-          echo "<div id=\"gamebox\" class=\"col-lg-6\">";
+          echo "<div id=\"gamebox\" class=\"col-lg-4\">";
           echo "<h3>Winning Team</h3>";
 
           // Player 1
@@ -42,7 +42,8 @@
           }
           echo "</select><br><br>";
           echo "</div>"; // column
-          echo "<div id=\"gamebox\" class=\"col-lg-6\">";
+          echo "<div class=\"col-lg-4\"></div>";
+          echo "<div id=\"gamebox\" class=\"col-lg-4\">";
           echo "<h3>Losing Team</h3>";
 
           // Player 3
