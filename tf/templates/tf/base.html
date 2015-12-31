@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>OC&C TF Portal</title>
+
+    <link rel="stylesheet" href="{% static 'tf/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+{% block content %}
+{% endblock %}
+
+
+<!-- jQuery -->
+<script src="{% static 'tf/js/jquery.js' %}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'tf/js/bootstrap.min.js' %}"></script>
+
+<!-- Scrolling Nav JavaScript -->
+<script src="{% static 'tf/js/jquery.easing.min.js' %}"></script>
+<script src="{% static 'tf/js/scrolling-nav.js' %}"></script>
+
+</body>
+</html>

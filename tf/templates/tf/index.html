@@ -39,9 +39,6 @@
                     <li>
                         <a class="page-scroll" href="#results">Enter Results</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="#player">Add Player</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -90,22 +87,10 @@
                     <h1><font color="white">Enter Results</font></h1>
                 </div>
             </div>
+            <h4>
+            Add a new player <a href="{% url 'player_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            </h4>
             <!--<p> <?php include("add_game.php"); ?> </p>-->
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="player" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Add Player</h1>
-                </div>
-            </div>
-             <form method="POST" class="post-form">{% csrf_token %}
-                {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
-         </form>
         </div>
     </section>
 
