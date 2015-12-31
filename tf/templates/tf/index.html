@@ -1,119 +1,164 @@
 {% load staticfiles %}
 <html>
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>OC&C TF Portal</title>
+    <title>OC&C TF Portal</title>
 
-        <link rel="stylesheet" href="{% static 'tf/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
-    </head>
+    <link rel="stylesheet" href="{% static 'tf/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
+</head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top">OC&C TF Portal</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <li class="hidden">
-                        <a class="page-scroll" href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#table">League Table</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#results">Enter Results</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">OC&C TF Portal</a>
         </div>
-        <!-- /.container -->
-    </nav>
 
-    <!-- Intro Section -->
-    <section id="intro" class="intro-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>The OC&C TF Portal</h1>
-                    <p>This page shows the current TF league table of the OC&C London office.</p>
-
-                    <h3>Latest Results</h3>
-                        {% for match in matches %}
-                        <div>
-                        <p>played: {{ match.played_date }}</p>
-                        <h4><a href="">{{ match }}</a></h4>
-                        </div>
-                        {% endfor %}
-                    <!--<a class="btn btn-default page-scroll" href="#table">Show me the standings!</a>-->
-                </div>
-            </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a class="page-scroll" href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#table">League Table</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#results">Enter Results</a>
+                </li>
+            </ul>
         </div>
-    </section>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
-    <!-- About Section -->
-    <section id="table" class="about-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>League Table</h1>
+<!-- Intro Section -->
+<section id="intro" class="intro-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>The OC&C TF Portal</h1>
+
+                <p>This page shows the current TF league table of the OC&C London office.</p>
+
+                <h3>Latest Results</h3>
+                {% for match in matches %}
+                <div>
+                    <p>played: {{ match.played_date }}</p>
+                    <h4><a href="">{{ match }}</a></h4>
                 </div>
-                <table>
-                    <tr>
-                        <th>Name</th><th>Score</th><th>Games</th>
-                    </tr>
-                {% for player in players %}
-                    <tr>
-                        <td> {{ player.full_name}} </td>
-                        <td> {{player.score}}</td>
-                        <td> {{player.matches_played}}</td>
-                    </tr>
                 {% endfor %}
-                    </table>
+                <!--<a class="btn btn-default page-scroll" href="#table">Show me the standings!</a>-->
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Services Section -->
-    <section id="results" class="services-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1><font color="white">Enter Results</font></h1>
-                </div>
+<!-- About Section -->
+<section id="table" class="about-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>League Table</h1>
             </div>
-            <h4>
-            Add a new player <a href="{% url 'player_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-            </h4>
-            <!--<p> <?php include("add_game.php"); ?> </p>-->
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Games</th>
+                </tr>
+                {% for player in players %}
+                <tr>
+                    <td> {{ player.full_name}}</td>
+                    <td> {{player.score}}</td>
+                    <td> {{player.matches_played}}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- jQuery -->
-    <script src="{% static 'tf/js/jquery.js' %}"></script>
+<!-- Services Section -->
+<section id="results" class="services-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1><font color="white">Enter Results</font></h1>
+            </div>
+        </div>
+        <h4>
+            Add a new player <a href="{% url 'player_new' %}" class="top-menu"><span
+                class="glyphicon glyphicon-plus"></span></a>
+        </h4>
 
-    <!-- Bootstrap Core JavaScript -->
-     <script src="{% static 'tf/js/bootstrap.min.js' %}"></script>
+        <form>
+            <table>
+                <tr>
+                    <th> Team 1</th>
+                    <th> Team 2</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="team1_player1">
+                            {% for player in players %}
+                            <option value="{{ player.id }}" selected>{{ player.full_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="team1_player2">
+                            {% for player in players %}
+                            <option value="{{ player.id }}" selected>{{ player.full_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="team2_player1">
+                            {% for player in players %}
+                            <option value="{{ player.id }}" selected>{{ player.full_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="team2_player2">
+                            {% for player in players %}
+                            <option value="{{ player.id }}" selected>{{ player.full_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="team1_score">Team 1 Score:</label> <input id="team1_score" maxlength="2"
+                                                                              name="team1_score" type="text"/></td>
+                    <td><label for="team2_score">Team 2 Score:</label> <input id="team2_score" maxlength="200"
+                                                                              name="team2_score" type="text"/></td>
+                </tr>
+            </table>
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    </div>
+</section>
 
-    <!-- Scrolling Nav JavaScript -->
-    <script src="{% static 'tf/js/jquery.easing.min.js' %}"></script>
-    <script src="{% static 'tf/js/scrolling-nav.js' %}"></script>
+<!-- jQuery -->
+<script src="{% static 'tf/js/jquery.js' %}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'tf/js/bootstrap.min.js' %}"></script>
+
+<!-- Scrolling Nav JavaScript -->
+<script src="{% static 'tf/js/jquery.easing.min.js' %}"></script>
+<script src="{% static 'tf/js/scrolling-nav.js' %}"></script>
 
 </body>
 </html>
