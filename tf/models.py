@@ -11,7 +11,13 @@ class TfPlayer(models.Model):
     score = models.IntegerField(default=800)
     matches_played = models.IntegerField(default=0)
 
+    # def __eq__(self, other):
+    #     return self.first_name == other.first_name and self.last_name == other.last_name
+
     def __str__(self):
+        return self.first_name + ' ' + self.last_name
+
+    def __unicode__(self):
         return self.first_name + ' ' + self.last_name
 
 class TfTeam(models.Model):
