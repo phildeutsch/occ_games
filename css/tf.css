@@ -29,10 +29,18 @@ html {
 }
 
 /* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
-The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children 
+The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children
 of those sections to manage the look and feel of the site. */
 
 .intro-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #fff;
+    color: #00539F;
+}
+
+.about-section {
     height: 100%;
     padding-top: 150px;
     text-align: center;
@@ -40,26 +48,20 @@ of those sections to manage the look and feel of the site. */
     color: #eee;
 }
 
-.about-section {
-    height: 100%;
-    padding-top: 150px;
-    text-align: center;
-    background: #C0C0C0;
-}
-
 .services-section {
     height: 100%;
     padding-top: 150px;
     text-align: center;
-    background: #00539F;
-    color: black;
+    background: #eee;
+    color: #00539F;
 }
 
 .contact-section {
     height: 100%;
     padding-top: 150px;
     text-align: center;
-    background: #C0C0C0;
+    background: #eee;
+    color: #00539F;
 }
 
 table {
@@ -70,9 +72,10 @@ table {
 th, td {
     text-align: left;
     padding: 8px;
+    color: black
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even){background-color: #C0C0C0}
 
 th {
     background-color: #00539F;
@@ -86,6 +89,6 @@ th {
 
 #gamebox {
     border-style: solid;
-    border-width: 5px;
+    border-width: 0px;
     border-color: white;
 }

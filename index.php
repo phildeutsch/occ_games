@@ -44,13 +44,10 @@
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#table">League Table</a>
+                        <a class="page-scroll" href="#table">League Table (Single)</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#results">Enter Results</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#player">Add Player</a>
+                        <a class="page-scroll" href="#results">League Table (Teams)</a>
                     </li>
                 </ul>
             </div>
@@ -61,12 +58,31 @@
 
     <!-- Intro Section -->
     <section id="intro" class="intro-section">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
+                    <!--
                     <h1>The OC&C TF Portal</h1>
-                    <p>This page shows the current TF league table of the OC&C London office.</p>
-                    <a class="btn btn-default page-scroll" href="#table">Show me the standings!</a>
+                  -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h2> Current Top 20 </h2>
+                    <p> <?php include("league_tables.php"); ?> </p>
+                </div>
+                <div class="col-xs-6" id="recent_games">
+                  <div>
+                    <h2> Recent Matches </h2>
+                    <p> <?php include("recent_matches.php"); ?> </p>
+                  </div>
+                  <div>
+                      <h3> <br> Options </h2> <p> <br> </p>
+                        <p> Enter results </p>
+                        <p> Enter player </p>
+                        <p> Sign in </p>
+                        <p> Contact </p>
+                  </div>
                 </div>
             </div>
         </div>
