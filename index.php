@@ -17,6 +17,13 @@
     <!-- Custom CSS -->
     <link href="css/tf.css" rel="stylesheet">
 
+    <!-- SweetAlert -->
+    <script src="js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+    <!-- Popup -->
+    <script src="js/popup.js"></script>
+
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -44,10 +51,10 @@
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#table">League Table (Single)</a>
+                        <a class="page-scroll" href="#table_single">League Table (Single)</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#results">League Table (Teams)</a>
+                        <a class="page-scroll" href="#table_team">League Table (Teams)</a>
                     </li>
                 </ul>
             </div>
@@ -77,11 +84,12 @@
                     <p> <?php include("recent_matches.php"); ?> </p>
                   </div>
                   <div>
-                      <h3> <br> Options </h2> <p> <br> </p>
-                        <p> Enter results </p>
-                        <p> Enter player </p>
-                        <p> Sign in </p>
-                        <p> Contact </p>
+                      <h3> <br> </h2>
+
+                        <p> <button onclick="myFunction()" class="btn"> Enter results</button></p>
+                        <p> <button onclick="myFunction()" class="btn"> Enter player</button></p>
+                        <p> <button onclick="myFunction()" class="btn"> Sign in</button></p>
+                        <p> <button onclick="myFunction()" class="btn"> Contact</button></p>
                   </div>
                 </div>
             </div>
@@ -89,11 +97,11 @@
     </section>
 
     <!-- About Section -->
-    <section id="table" class="about-section">
+    <section id="table_single" class="table-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>League Table</h1>
+                    <h1>League Table (Single)</h1>
                 </div>
                 <p> <?php include("league_tables.php"); ?> </p>
             </div>
@@ -101,35 +109,16 @@
     </section>
 
     <!-- Services Section -->
-    <section id="results" class="services-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1><font color="white">Enter Results</font></h1>
-                </div>
-            </div>
-            <p> <?php include("add_game.php"); ?> </p>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="player" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Add Player</h1>
-                </div>
-            </div>
-            <p>
-            <form action="insert_player.php" method="post">
-                First name: <input type="text" id="fname" name="fname" /><br><br>
-                Last name: <input type="text" id="lname" name="lname" /><br><br>
-            <input type="submit" id="player-button" value="Add player">
-            </form>
-        </p>
-        <p id="addplayertext"><br>Player X has been added!</p>
-        </div>
-    </section>
+    <section id="table_team" class="table-section">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h1>League Table (Team)</h1>
+              </div>
+              <p> <?php include("league_tables.php"); ?> </p>
+          </div>
+      </div>
+  </section>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
