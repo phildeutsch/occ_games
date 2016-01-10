@@ -38,7 +38,6 @@ def index(request):
             team1 = get_team(team1_player1, team1_player2)
             team2 = get_team(team2_player1, team2_player2)
 
-<<<<<<< HEAD
             match = TfMatch(team1=team1, team2=team2, score1=team1_score, score2=team2_score, played_date=timezone.now())
             match.save()
 
@@ -55,10 +54,7 @@ def index(request):
                                              'players': players,
                                              'match_form': match_form})
 
-=======
-    return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players})
->>>>>>> 63c233fb370f350e60c6a775d7343a2232679a13
+
 
 def player_new(request):
     if request.method == "POST":
