@@ -7,8 +7,26 @@
 
     <title>OC&C TF Portal</title>
 
+    <!-- Load CSS -->
     <link rel="stylesheet" href="{% static 'tf/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
+    <link rel="stylesheet" href="{% static 'tf/css/sweetalert.css' %}">
+
+
+    <!-- Load JS -->
+    <script src="{% static 'tf/js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'tf/js/popup.js' %}"></script>
+
+    <!-- jQuery -->
+    <script src="{% static 'tf/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'tf/js/bootstrap.min.js' %}"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="{% static 'tf/js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'tf/js/scrolling-nav.js' %}"></script>
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -25,8 +43,8 @@
             </button>
             <a class="navbar-brand page-scroll" href="#page-top">OC&C TF Portal</a>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
+
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
@@ -34,10 +52,13 @@
                     <a class="page-scroll" href="#page-top"></a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#table">League Table</a>
+                    <a class="page-scroll" href="#table_single">League Table (Single)</a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#results">Enter Results</a>
+                    <a class="page-scroll" href="#table_team">League Table (Team)</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#faq">FAQ</a>
                 </li>
             </ul>
         </div>
@@ -48,32 +69,71 @@
 
 <!-- Intro Section -->
 <section id="intro" class="intro-section">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
+                <!--
                 <h1>The OC&C TF Portal</h1>
+              -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h2> Current Top 20 </h2>
+                <p>
+                  <table>
+                      <tr>
+                          <th>Name</th>
+                          <th>Score</th>
+                          <th>Games</th>
+                      </tr>
+                      {% for player in players %}
+                      <tr>
+                          <td> {{player.full_name}}</td>
+                          <td> {{player.player_elo}}</td>
+                          <td> {{player.matches_played}}</td>
+                      </tr>
+                      {% endfor %}
+                  </table>
+                </p>
+            </div>
+            <div class="col-xs-6" id="recent_games">
+              <div>
+                <h2> Recent Matches </h2>
+                <p>
+                  <table>
+                      <tr>
+                          <th>Time</th>
+                          <th>Match</th>
+                      </tr>
+                      {% for match in matches %}
+                      <tr>
+                          <td> {{ match.played_date }}</td>
+                          <td> {{ match }}</td>
+                      </tr>
+                      {% endfor %}
+                  </table>
+                </p>
+              </div>
+              <div>
+                  <h3> <br> </h2>
 
-                <p>This page shows the current TF league table of the OC&C London office.</p>
-
-                <h3>Latest Results</h3>
-                {% for match in matches %}
-                <div>
-                    <p>played: {{ match.played_date }}</p>
-                    <h4><a href="">{{ match }}</a></h4>
-                </div>
-                {% endfor %}
-                <!--<a class="btn btn-default page-scroll" href="#table">Show me the standings!</a>-->
+                    <p> <button onclick="myFunction()" class="btn"> Enter results</button></p>
+                    <p> <button onclick="myFunction()" class="btn"> Enter player</button></p>
+                    <p> <button onclick="myFunction()" class="btn"> Sign in</button></p>
+                    <p> <button onclick="myFunction()" class="btn"> Contact</button></p>
+              </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- About Section -->
-<section id="table" class="about-section">
+<!-- Player league table -->
+<section id="table_single" class="table-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1>League Table</h1>
+                <h1>League Table (Single Player)</h1>
             </div>
             <table>
                 <tr>
@@ -93,23 +153,41 @@
     </div>
 </section>
 
-<!-- Services Section -->
-<section id="results" class="services-section">
+<!-- Player league table -->
+<section id="table_team" class="table-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1><font color="white">Enter Results</font></h1>
+                <h1>League Table (Team) (TBD)</h1>
             </div>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Games</th>
+                </tr>
+                {% for player in players %}
+                <tr>
+                    <td> {{player.full_name}}</td>
+                    <td> {{player.player_elo}}</td>
+                    <td> {{player.matches_played}}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
-        <h4>
-            Add a new player <a href="{% url 'player_new' %}" class="top-menu"><span
-                class="glyphicon glyphicon-plus"></span></a>
-        </h4>
+    </div>
+</section>
 
-        <form method="POST" class="post-form">{% csrf_token %}
-            {{ match_form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+<!-- Player league table -->
+<section id="faq" class="faq-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>FAQ</h1>
+            </div>
+            <p> Question: </p>
+            <p> Answer </p>
+        </div>
     </div>
 </section>
 
