@@ -3,7 +3,7 @@ from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm
 
-
+# TODO move to central functions file
 def get_team(player1, player2):
     if player1.id > player2.id:
         tmp = player1
@@ -14,6 +14,7 @@ def get_team(player1, player2):
         team = TfTeam.objects.get(player1=player1, player2=player2)
     except TfTeam.DoesNotExist:
         team = TfTeam(player1=player1, player2=player2, team_matches_played=0)
+        team.is_single_player = True if player1.id == 0 else False
         team.update_elo()
         team.save()
 
@@ -21,7 +22,7 @@ def get_team(player1, player2):
 
 # Create your views here.
 def index(request):
-    matches = TfMatch.objects.order_by('played_date')[:5]
+    matches = TfMatch.objects.order_by('-played_date')[:5]
     players = TfPlayer.objects.order_by('-player_elo')
 
     if request.method == 'POST':
@@ -53,6 +54,7 @@ def index(request):
     return render(request, "tf/index.html", {'matches': matches,
                                              'players': players,
                                              'match_form': match_form})
+
 
 
 def player_new(request):

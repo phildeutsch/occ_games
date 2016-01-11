@@ -34,13 +34,20 @@ class TfTeam(models.Model):
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
     team_elo = models.IntegerField(default=0)
     team_matches_played = models.IntegerField(default=0)
+    is_single_player = models.BooleanField(default=False)
 
     def update_elo(self):
-        self.team_elo = (self.player1.player_elo + self.player2.player_elo) / 2
+        if self.is_single_player:
+            self.team_elo = self.player2.player_elo
+        else:
+            self.team_elo = (self.player1.player_elo + self.player2.player_elo) / 2
         self.save()
 
     def __str__(self):
-        return str(self.player1) + ', ' + str(self.player2)
+        if self.is_single_player:
+            return str(self.player2)
+        else:
+            return str(self.player1) + ', ' + str(self.player2)
 
 class TfMatch(models.Model):
     team1 = models.ForeignKey(TfTeam, related_name='team1')
