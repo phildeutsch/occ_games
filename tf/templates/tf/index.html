@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
     <link rel="stylesheet" href="{% static 'tf/css/sweetalert.css' %}">
 
-
-    <!-- Load JS -->
-    <script src="{% static 'tf/js/sweetalert.min.js' %}"></script>
-    <script src="{% static 'tf/js/popup.js' %}"></script>
-
     <!-- jQuery -->
     <script src="{% static 'tf/js/jquery.js' %}"></script>
 
@@ -118,10 +113,10 @@
               <div>
                   <h3> <br> </h2>
 
-                    <p> <button onclick="myFunction()" class="btn"> Enter results</button></p>
-                    <p> <button onclick="myFunction()" class="btn"> Enter player</button></p>
-                    <p> <button onclick="myFunction()" class="btn"> Sign in</button></p>
-                    <p> <button onclick="myFunction()" class="btn"> Contact</button></p>
+                    <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Enter result</button> </p>
+                    <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add player</button> </p>
+                    <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Sign in</button> </p>
+                    <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Contact</button> </p>
               </div>
             </div>
         </div>
@@ -190,6 +185,27 @@
         </div>
     </div>
 </section>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- jQuery -->
 <script src="{% static 'tf/js/jquery.js' %}"></script>
