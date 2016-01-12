@@ -23,11 +23,20 @@ def get_team(player1, player2):
 # Create your views here.
 def index(request):
     matches = TfMatch.objects.order_by('-played_date')[:5]
-    players = TfPlayer.objects.order_by('-player_elo')
+    players = TfPlayer.objects.all().filter(id__gt=0)
+    players_ordered =  players.order_by('-player_elo')
 
     if request.method == 'POST':
+        player_form = TfNewPlayerForm(request.POST)
         match_form = TfNewMatchForm(request.POST)
-        if match_form.is_valid():
+
+        if player_form.is_valid():
+            player = player_form.save(commit=False)
+            player.full_name = player.first_name + ' ' + player.last_name
+            player.save()
+            return redirect('index')
+
+        elif match_form.is_valid():
             team1_player1 = match_form.cleaned_data['team1_player1']
             team1_player2 = match_form.cleaned_data['team1_player2']
             team1_score = match_form.cleaned_data['team1_score']
@@ -50,12 +59,12 @@ def index(request):
 
     else:
         match_form = TfNewMatchForm()
+        player_form = TfNewPlayerForm()
 
     return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players,
-                                             'match_form': match_form})
-
-
+                                             'players': players_ordered,
+                                             'match_form': match_form,
+                                             'player_form': player_form})
 
 def player_new(request):
     if request.method == "POST":
