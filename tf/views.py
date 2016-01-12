@@ -55,6 +55,16 @@ def index(request):
             team1.update_elo()
             team2.update_elo()
 
+            team1_player1.matches_played += 1
+            team1_player2.matches_played += 1
+            team2_player1.matches_played += 1
+            team2_player2.matches_played += 1
+
+            team1_player1.save()
+            team1_player2.save()
+            team2_player1.save()
+            team2_player2.save()
+
             return redirect('index')
 
     else:
