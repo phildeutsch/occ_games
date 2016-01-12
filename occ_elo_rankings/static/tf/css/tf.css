@@ -105,3 +105,10 @@ th {
   text-decoration: none;
   color: white
 }
+
+.na {
+  background: #C0C0C0
+}
+.na:hover {
+  background: #C0C0C0
+}

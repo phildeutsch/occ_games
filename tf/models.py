@@ -24,10 +24,10 @@ class TfPlayer(models.Model):
     #     return self.first_name == other.first_name and self.last_name == other.last_name
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.full_name
 
     def __unicode__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.full_name
 
 class TfTeam(models.Model):
     player1 = models.ForeignKey(TfPlayer, related_name='player1')
@@ -56,6 +56,24 @@ class TfMatch(models.Model):
     score2 = models.IntegerField(default=0)
     played_date = models.DateTimeField('date played')
 
+    def get_winner(self):
+        if self.score1 > self.score2:
+            return self.team1
+        else:
+            return self.team2
+
+    def get_loser(self):
+        if self.score1 > self.score2:
+            return self.team2
+        else:
+            return self.team1
+
+    def get_scores(self):
+        if self.score1 > self.score2:
+            return str(self.score1) + '-' + str(self.score2)
+        else:
+            return str(self.score2) + '-' + str(self.score1)
+            
     def update_player_elos(self):
         elo_change(self.team1.player1, self.team2.team_elo, self.score1, self.score2)
         elo_change(self.team1.player2, self.team2.team_elo, self.score1, self.score2)
@@ -63,6 +81,9 @@ class TfMatch(models.Model):
         elo_change(self.team2.player2, self.team1.team_elo, self.score2, self.score1)
 
     def __str__(self):
-        return 'Match ' + str(self.id) + ': ' \
-               + str(self.team1) + ' ' + str(self.score1) + '-' \
+        if self.score1 > self.score2:
+            return  str(self.team1) + ' ' + str(self.score1) + '-' \
                + str(self.score2) + ' ' + str(self.team2)
+        else:
+            return  str(self.team2) + ' ' + str(self.score2) + '-' \
+               + str(self.score1) + ' ' + str(self.team1)
