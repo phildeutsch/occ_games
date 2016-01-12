@@ -1,5 +1,5 @@
 from django import forms
-
+from django.core.exceptions import ValidationError
 from .models import TfPlayer
 
 
@@ -19,15 +19,27 @@ class TfNewMatchForm(forms.Form):
     team2_player2 = forms.ModelChoiceField(queryset=players, label='Team 2, Player 2', initial=0)
     team2_score = forms.IntegerField(initial=0)
 
-    # def is_valid(self):
-    #     player_list = [self.team1_player1, self.team1_player2, self.team2_player1, self.team2_player2]
-    #
-    #     return len(player_list) == len(set(player_list))
+    def clean(self):
+        form_data = self.cleaned_data
+        team1_player1 = form_data['team1_player1']
+        team1_player2 = form_data['team1_player2']
+        team1_score = form_data['team1_score']
 
-# TODO: Validation
-# each player can only be once involved
-# each team has to have at least one player
-# one score has to be greater than 0
-# score needs to be different (there needs to ba winner)
+        team2_player1 = form_data['team2_player1']
+        team2_player2 = form_data['team2_player2']
+        team2_score = form_data['team2_score']
 
-# update game counter after each match
+        player_list = filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2])
+
+        if len(player_list) != len(set(player_list)):
+            raise ValidationError("Each player can only play once")
+
+        if team1_score == 0 and team2_score == 0:
+            raise ValidationError("Must play at least one game")
+
+        if (team1_player1.id == 0 and team1_player2.id == 0) or \
+                (team2_player1.id == 0 and team2_player2.id == 0):
+            raise ValidationError("Each team must have at least one player")
+
+        return form_data
+
