@@ -99,16 +99,16 @@
                   <table>
                       <tr>
                           <th>Time</th>
-                          <th style="align:right;">Winner</th>
-                          <th>vs</th>
-                          <th>Loser</th>
+                          <th style="text-align:right;">Winner</th>
+                          <th style="text-align:center;">vs</th>
+                          <th style="text-align:left;">Loser</th>
                       </tr>
                       {% for match in matches %}
                       <tr>
                           <td> {{ match.played_date.date }}</td>
-                          <td> {{ match.get_winner }}</td>
-                          <td> {{ match.get_scores }}</td>
-                          <td> {{ match.get_loser }}</td>
+                          <td style="text-align:right;"> {{ match.get_winner }}</td>
+                          <td style="text-align:center;"> {{ match.get_scores }}</td>
+                          <td style="text-align:left;"> {{ match.get_loser }}</td>
                       </tr>
                       {% endfor %}
                   </table>
@@ -120,7 +120,7 @@
                     <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#enter_match_dialog">Enter result</button> </p>
                     <p> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#enter_player_dialog">Add player</button> </p>
                     <p> <button type="button" class="btn btn-info btn-lg na"> Sign in</button> </p>
-                    <p> <button type="button" class="btn" href="mailto:ocandctf@gmail.com">Contact</button> </p>
+                    <p> <a type="button" class="btn" href="mailto:ocandctf@gmail.com">Contact</a> </p>
               </div>
             </div>
         </div>
@@ -200,15 +200,15 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Add match results</h4>
       </div>
+      <form method="POST" class="post-form">{% csrf_token %}
       <div class="modal-body">
         <p>Please enter player name:</p>
-        <form method="POST" class="post-form">{% csrf_token %}
             {{ match_form.as_p }}
-        </form>
       </div>
       <div class="modal-footer">
         <button type="submit" class="save btn btn-default">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </form>
       </div>
     </div>
 
@@ -223,15 +223,16 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Enter player</h4>
       </div>
+      <form method="POST" class="post-form">{% csrf_token %}
       <div class="modal-body">
-        <form method="POST" class="post-form">{% csrf_token %}
             {{ player_form.as_p }}
-            </form>
           </div>
           <div class="modal-footer">
             <button type="submit" class="save btn btn-default">Save</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
+    </form>
+
     </div>
 
   </div>
