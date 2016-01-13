@@ -10,7 +10,6 @@
     <!-- Load CSS -->
     <link rel="stylesheet" href="{% static 'tf/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'tf/css/tf.css' %}">
-    <link rel="stylesheet" href="{% static 'tf/css/sweetalert.css' %}">
 
     <!-- jQuery -->
     <script src="{% static 'tf/js/jquery.js' %}"></script>
@@ -191,7 +190,7 @@
 </section>
 
 <!-- Modal -->
-<div id="enter_match_dialog" class="modal fade" role="dialog">
+<div id="enter_match_dialog" class="modal fade" role="dialog" id="match_modal">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -202,13 +201,13 @@
       </div>
       <div class="modal-body">
         <p>Please enter player name:</p>
-        <form method="POST" class="post-form">{% csrf_token %}
+        <form method="POST" class="post-form" name="add_match_button">{% csrf_token %}
             {{ match_form.as_p }}
+
+
+            <button type="submit" class="save btn btn-default">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="save btn btn-default">Save</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
@@ -229,7 +228,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="save btn btn-default">Save</button>
+            <button type="submit" class="save btn btn-default" name="add_player_button">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
