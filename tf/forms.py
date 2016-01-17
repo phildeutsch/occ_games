@@ -11,13 +11,13 @@ class TfNewPlayerForm(forms.ModelForm):
 class TfNewMatchForm(forms.Form):
     players = TfPlayer.objects.order_by('last_name')
 
-    team1_player1 = forms.ModelChoiceField(queryset=players, label='Team 1, Player 1', initial=0)
-    team1_player2 = forms.ModelChoiceField(queryset=players, label='Team 1, Player 2', initial=0)
-    team1_score = forms.IntegerField(initial=0)
+    team1_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
+    team1_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
+    team1_score = forms.IntegerField(initial=0, label='Score')
 
-    team2_player1 = forms.ModelChoiceField(queryset=players, label='Team 2, Player 1', initial=0)
-    team2_player2 = forms.ModelChoiceField(queryset=players, label='Team 2, Player 2', initial=0)
-    team2_score = forms.IntegerField(initial=0)
+    team2_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
+    team2_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
+    team2_score = forms.IntegerField(initial=0, label='Score')
 
     def clean(self):
         form_data = self.cleaned_data
