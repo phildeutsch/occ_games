@@ -28,17 +28,20 @@ def index(request):
 
     if request.method == 'POST':
 
-        if 'add_player_button' in request.POST:
-            player_form = TfNewPlayerForm(request.POST)
+        if 'add_player-first_name' in request.POST:
+            match_form = TfNewMatchForm(prefix='add_match')
+            player_form = TfNewPlayerForm(request.POST, prefix='add_player')
             if player_form.is_valid():
                 player = player_form.save(commit=False)
+                player.first_name.strip()
+                player.last_name.strip()
                 player.full_name = player.first_name + ' ' + player.last_name
                 player.save()
                 return redirect('index')
-            match_form = TfNewMatchForm()
 
-        elif 'add_match_button' in request.POST:
-            match_form = TfNewMatchForm(request.POST)
+        elif 'add_match-team1_score' in request.POST:
+            player_form = TfNewPlayerForm(prefix='add_player')
+            match_form = TfNewMatchForm(request.POST, prefix='add_match')
             if match_form.is_valid():
                 team1_player1 = match_form.cleaned_data['team1_player1']
                 team1_player2 = match_form.cleaned_data['team1_player2']
@@ -70,10 +73,9 @@ def index(request):
                 team2_player2.save()
 
                 return redirect('index')
-            player_form = TfNewPlayerForm()
     else:
-        match_form = TfNewMatchForm()
-        player_form = TfNewPlayerForm()
+        match_form = TfNewMatchForm(prefix='add_match')
+        player_form = TfNewPlayerForm(prefix='add_player')
 
     return render(request, "tf/index.html", {'matches': matches,
                                              'players': players_ordered,

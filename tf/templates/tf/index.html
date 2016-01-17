@@ -191,50 +191,58 @@
 
 <!-- Modal -->
 <div id="enter_match_dialog" class="modal fade" role="dialog" id="match_modal">
-  <div class="modal-dialog">
+<form method="POST" class="post-form" name="add_match_button">{% csrf_token %}
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add match results</h4>
-      </div>
-      <div class="modal-body">
-        <p>Please enter player name:</p>
-        <form method="POST" class="post-form" name="add_match_button">{% csrf_token %}
-            {{ match_form.as_p }}
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add match results</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter player name:</p>
 
 
-            <button type="submit" class="save btn btn-default">Save</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </form>
-      </div>
+                    {{ match_form.as_p }}
+
+
+                    <button type="submit" class="save btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+
     </div>
-
-  </div>
+ </form>
 </div>
+
+
 <div id="enter_player_dialog" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+   <form method="POST" class="post-form">{% csrf_token %}
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Enter player</h4>
-      </div>
-      <div class="modal-body">
-        <form method="POST" class="post-form">{% csrf_token %}
-            {{ player_form.as_p }}
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="save btn btn-default" name="add_player_button">Save</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter player</h4>
+            </div>
+            <div class="modal-body">
+
+                    {{ player_form.as_p }}
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" name="add_player_button">Close</button>
+            </div>
+        </div>
+
     </div>
-
-  </div>
+    </form>
 </div>
+
 <div id="sign_in_dialog" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
