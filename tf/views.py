@@ -26,6 +26,8 @@ def index(request):
     matches = TfMatch.objects.order_by('-played_date')[:5]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
 
+    modal_js = ''
+
     if request.method == 'POST':
 
         if 'add_player-first_name' in request.POST:
@@ -38,6 +40,11 @@ def index(request):
                 player.full_name = player.first_name + ' ' + player.last_name
                 player.save()
                 return redirect('index')
+            else:
+                modal_js='<script type=\"text/javascript\">' \
+                         '$(window).load(function(){' \
+                         '$(\'#enter_player_dialog\').modal(\'show\');' \
+                         '});</script>'
 
         elif 'add_match-team1_score' in request.POST:
             player_form = TfNewPlayerForm(prefix='add_player')
@@ -73,6 +80,11 @@ def index(request):
                 team2_player2.save()
 
                 return redirect('index')
+            else:
+                modal_js='<script type=\"text/javascript\">' \
+                         '$(window).load(function(){' \
+                         '$(\'#enter_match_dialog\').modal(\'show\');' \
+                         '});</script>'
     else:
         match_form = TfNewMatchForm(prefix='add_match')
         player_form = TfNewPlayerForm(prefix='add_player')
@@ -80,7 +92,8 @@ def index(request):
     return render(request, "tf/index.html", {'matches': matches,
                                              'players': players_ordered,
                                              'match_form': match_form,
-                                             'player_form': player_form})
+                                             'player_form': player_form,
+                                             'modal_js': modal_js})
 
 
 def player_new(request):
