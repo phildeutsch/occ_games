@@ -29,6 +29,11 @@ class TfPlayer(models.Model):
     def __unicode__(self):
         return self.full_name
 
+    def clean(self):
+        self.first_name = self.first_name.capitalize()
+        self.last_name = self.last_name.capitalize()
+        self.full_name = self.first_name + '_' + self.last_name
+
 class TfTeam(models.Model):
     player1 = models.ForeignKey(TfPlayer, related_name='player1')
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
@@ -73,7 +78,7 @@ class TfMatch(models.Model):
             return str(self.score1) + '-' + str(self.score2)
         else:
             return str(self.score2) + '-' + str(self.score1)
-            
+
     def update_player_elos(self):
         elo_change(self.team1.player1, self.team2.team_elo, self.score1, self.score2)
         elo_change(self.team1.player2, self.team2.team_elo, self.score1, self.score2)

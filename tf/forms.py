@@ -42,4 +42,3 @@ class TfNewMatchForm(forms.Form):
             raise ValidationError("Each team must have at least one player")
 
         return form_data
-
