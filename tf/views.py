@@ -25,7 +25,7 @@ def get_team(player1, player2):
 def index(request):
     matches = TfMatch.objects.order_by('-played_date')[:5]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
-
+    teams_ordered = TfTeam.objects.all().order_by('-team_elo')
     modal_js = ''
 
     if request.method == 'POST':
@@ -89,11 +89,12 @@ def index(request):
         match_form = TfNewMatchForm(prefix='add_match')
         player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players_ordered,
-                                             'match_form': match_form,
-                                             'player_form': player_form,
-                                             'modal_js': modal_js})
+    return render(request, "tf/index.html", {'matches'      : matches,
+                                             'players'      : players_ordered,
+                                             'teams'        : teams_ordered,
+                                             'match_form'   : match_form,
+                                             'player_form'  : player_form,
+                                             'modal_js'     : modal_js})
 
 
 def player_new(request):

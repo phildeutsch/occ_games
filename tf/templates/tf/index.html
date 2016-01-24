@@ -176,15 +176,15 @@
             </div>
             <table>
                 <tr>
-                    <th>Name</th>
+                    <th>Team players</th>
                     <th>Score</th>
                     <th>Games</th>
                 </tr>
-                {% for player in players %}
+                {% for team in teams %}
                 <tr>
-                    <td> {{player.full_name}}</td>
-                    <td> {{player.player_elo}}</td>
-                    <td> {{player.matches_played}}</td>
+                    <td> {{team.team}}</td>
+                    <td> {{team.team_elo}}</td>
+                    <td> {{team.team_matches_played}}</td>
                 </tr>
                 {% endfor %}
             </table>
