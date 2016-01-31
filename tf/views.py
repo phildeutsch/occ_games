@@ -25,7 +25,7 @@ def get_team(player1, player2):
 def index(request):
     matches = TfMatch.objects.order_by('-played_date')[:5]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
-    teams_ordered = TfTeam.objects.all().order_by('-team_elo')
+    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')
     modal_js = ''
 
     if request.method == 'POST':
@@ -67,6 +67,9 @@ def index(request):
                 team1.update_elo()
                 team2.update_elo()
 
+                team1.team_matches_played += 1
+                team2.team_matches_played += 1
+
                 team1_player1.matches_played += 1
                 team1_player2.matches_played += 1
                 team2_player1.matches_played += 1
@@ -76,6 +79,9 @@ def index(request):
                 team1_player2.save()
                 team2_player1.save()
                 team2_player2.save()
+
+                team1.save()
+                team2.save()
 
                 return redirect('index')
             else:
