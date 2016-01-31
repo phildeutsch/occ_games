@@ -35,8 +35,6 @@ def index(request):
             player_form = TfNewPlayerForm(request.POST, prefix='add_player')
             if player_form.is_valid():
                 player = player_form.save(commit=False)
-                player.first_name.strip()
-                player.last_name.strip()
                 player.full_name = player.first_name + ' ' + player.last_name
                 player.save()
                 return redirect('index')

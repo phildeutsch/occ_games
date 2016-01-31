@@ -8,6 +8,32 @@ class TfNewPlayerForm(forms.ModelForm):
         model = TfPlayer
         fields = ('first_name', 'last_name',)
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        first_name.strip()
+        first_name = first_name.capitalize()
+
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data['last_name']
+        last_name.strip()
+        last_name = last_name.capitalize()
+
+        return last_name
+
+    def clean(self):
+        form_data = self.cleaned_data
+        first_name = form_data['first_name']
+        last_name = form_data['last_name']
+        full_name = first_name + ' ' + last_name
+
+        if TfPlayer.objects.all().filter(full_name__exact=full_name).exists():
+            self.add_error(None, ValidationError("This player is already in the database"))
+
+        return form_data
+
+
 class TfNewMatchForm(forms.Form):
     players = TfPlayer.objects.order_by('last_name')
 

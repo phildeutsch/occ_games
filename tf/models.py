@@ -29,11 +29,6 @@ class TfPlayer(models.Model):
     def __unicode__(self):
         return self.full_name
 
-    def clean(self):
-        self.first_name = self.first_name.capitalize()
-        self.last_name = self.last_name.capitalize()
-        self.full_name = self.first_name + '_' + self.last_name
-
 class TfTeam(models.Model):
     player1 = models.ForeignKey(TfPlayer, related_name='player1')
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
