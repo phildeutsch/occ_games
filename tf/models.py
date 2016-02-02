@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import os
 
 # TODO Move this to separate functions file
 def elo_change(player, elo2, score1, score2, k=32):
@@ -47,7 +48,7 @@ class TfTeam(models.Model):
         if self.is_single_player:
             return str(self.player2)
         else:
-            return str(self.player1) + ', ' + str(self.player2)
+            return str(self.player1) + os.linesep + str(self.player2)
 
 class TfMatch(models.Model):
     team1 = models.ForeignKey(TfTeam, related_name='team1')
