@@ -63,6 +63,9 @@ class TfNewMatchForm(forms.Form):
         if team1_score == 0 and team2_score == 0:
             self.add_error(None, ValidationError("Must play at least one game"))
 
+        if team1_score < 0 or team2_score < 0:
+            self.add_error(None, ValidationError("Cannot play a negative number of games!"))
+
         if (team1_player1.id == 0 and team1_player2.id == 0) or \
                 (team2_player1.id == 0 and team2_player2.id == 0):
             self.add_error(None, ValidationError("Each team must have at least one player"))
