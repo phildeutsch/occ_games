@@ -87,7 +87,7 @@
                         <th>Score</th>
                         <th>Games</th>
                     </tr>
-                    {% for player in players %}
+                    {% for player in players|slice:":19" %}
                     <tr>
                         <td style="text-align:center;"> {{forloop.counter}}</td>
                         <td> {{player.full_name}}</td>
