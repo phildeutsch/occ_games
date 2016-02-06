@@ -239,7 +239,6 @@
                     <h4 class="modal-title">Add match results</h4>
                 </div>
                 <div class="modal-body">
-                    {{ match_form.non_field_errors }}
                     <table>
                         <tr>
                             <th>Team 1</th>
@@ -302,6 +301,7 @@
                             <!--</td>-->
                         <!--</tr>-->
                     </table>
+                    {{ match_form.non_field_errors }}
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="save btn btn-default">Save</button>
