@@ -25,57 +25,80 @@ def get_team(player1, player2):
 def index(request):
     matches = TfMatch.objects.order_by('-played_date')[:5]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
+    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')
+    modal_js = ''
 
     if request.method == 'POST':
-        player_form = TfNewPlayerForm(request.POST)
-        match_form = TfNewMatchForm(request.POST)
 
-        if player_form.is_valid():
-            player = player_form.save(commit=False)
-            player.full_name = player.first_name + ' ' + player.last_name
-            player.save()
-            return redirect('index')
+        if 'add_player-first_name' in request.POST:
+            match_form = TfNewMatchForm(prefix='add_match')
+            player_form = TfNewPlayerForm(request.POST, prefix='add_player')
+            if player_form.is_valid():
+                player = player_form.save(commit=False)
+                player.full_name = player.first_name + ' ' + player.last_name
+                player.save()
+                return redirect('index')
+            else:
+                modal_js='<script type=\"text/javascript\">' \
+                         '$(window).load(function(){' \
+                         '$(\'#enter_player_dialog\').modal(\'show\');' \
+                         '});</script>'
 
-        elif match_form.is_valid():
-            team1_player1 = match_form.cleaned_data['team1_player1']
-            team1_player2 = match_form.cleaned_data['team1_player2']
-            team1_score = match_form.cleaned_data['team1_score']
+        elif 'add_match-team1_score' in request.POST:
+            player_form = TfNewPlayerForm(prefix='add_player')
+            match_form = TfNewMatchForm(request.POST, prefix='add_match')
+            if match_form.is_valid():
+                team1_player1 = match_form.cleaned_data['team1_player1']
+                team1_player2 = match_form.cleaned_data['team1_player2']
+                team1_score = match_form.cleaned_data['team1_score']
 
-            team2_player1 = match_form.cleaned_data['team2_player1']
-            team2_player2 = match_form.cleaned_data['team2_player2']
-            team2_score = match_form.cleaned_data['team2_score']
+                team2_player1 = match_form.cleaned_data['team2_player1']
+                team2_player2 = match_form.cleaned_data['team2_player2']
+                team2_score = match_form.cleaned_data['team2_score']
 
-            team1 = get_team(team1_player1, team1_player2)
-            team2 = get_team(team2_player1, team2_player2)
+                team1 = get_team(team1_player1, team1_player2)
+                team2 = get_team(team2_player1, team2_player2)
 
-            match = TfMatch(team1=team1, team2=team2, score1=team1_score, score2=team2_score,
-                            played_date=timezone.now())
-            match.save()
+                match = TfMatch(team1=team1, team2=team2, score1=team1_score, score2=team2_score,
+                                played_date=timezone.now())
+                match.save()
 
-            match.update_player_elos()
-            team1.update_elo()
-            team2.update_elo()
+                match.update_player_elos()
+                team1.update_elo()
+                team2.update_elo()
 
-            team1_player1.matches_played += 1
-            team1_player2.matches_played += 1
-            team2_player1.matches_played += 1
-            team2_player2.matches_played += 1
+                team1.team_matches_played += 1
+                team2.team_matches_played += 1
 
-            team1_player1.save()
-            team1_player2.save()
-            team2_player1.save()
-            team2_player2.save()
+                team1_player1.matches_played += 1
+                team1_player2.matches_played += 1
+                team2_player1.matches_played += 1
+                team2_player2.matches_played += 1
 
-            return redirect('index')
+                team1_player1.save()
+                team1_player2.save()
+                team2_player1.save()
+                team2_player2.save()
 
+                team1.save()
+                team2.save()
+
+                return redirect('index')
+            else:
+                modal_js='<script type=\"text/javascript\">' \
+                         '$(window).load(function(){' \
+                         '$(\'#enter_match_dialog\').modal(\'show\');' \
+                         '});</script>'
     else:
-        match_form = TfNewMatchForm()
-        player_form = TfNewPlayerForm()
+        match_form = TfNewMatchForm(prefix='add_match')
+        player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/index.html", {'matches': matches,
-                                             'players': players_ordered,
-                                             'match_form': match_form,
-                                             'player_form': player_form})
+    return render(request, "tf/index.html", {'matches'      : matches,
+                                             'players'      : players_ordered,
+                                             'teams'        : teams_ordered,
+                                             'match_form'   : match_form,
+                                             'player_form'  : player_form,
+                                             'modal_js'     : modal_js})
 
 
 def player_new(request):
