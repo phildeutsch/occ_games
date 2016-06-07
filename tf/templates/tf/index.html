@@ -160,6 +160,7 @@
                     <th>Name</th>
                     <th>Score</th>
                     <th>Games</th>
+                    <th>Games won</th>
                 </tr>
                 {% for player in players %}
                 <tr>
@@ -167,6 +168,7 @@
                     <td> {{player.full_name}}</td>
                     <td> {{player.player_elo}}</td>
                     <td> {{player.matches_played}}</td>
+                    <td> {{player.matches_won}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -187,6 +189,7 @@
                     <th>Team players</th>
                     <th>Score</th>
                     <th>Games</th>
+                    <th>Games won</th>
                 </tr>
                 {% for team in teams %}
                 <tr>
@@ -194,6 +197,7 @@
                     <td> {{team.player1}}, {{team.player2}}</td>
                     <td> {{team.team_elo}}</td>
                     <td> {{team.team_matches_played}}</td>
+                    <td> {{team.team_matches_won}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -208,8 +212,14 @@
             <div class="col-lg-12">
                 <h1>TF House Rules</h1>
             </div>
-            <p> Rule 1 </p>
-            <p> Rule 2 </p>
+            <p> 5 goals win a game</p>
+            <p> 2 games win a match (3 games win a match if both teams agree before the first game)</p>
+            <p> Players are not allowed to switch positions during a game</p>
+            <p>	Teams must switch sides after each game</p>
+            <p>	No two games can be played using the same positions (i.e. between games at least one team's players must swap positions)</p>
+            <p>	The losing team can decide if they want to switch positions before the next game starts</p>
+            <p>	First drop in is decided by coin toss, subsequent drop ins are performed by the team who last conceded a goal</p>
+            <p>	If the ball is out of play for any reason, it is dropped in by the team who did not touch the ball last </p>
         </div>
     </div>
 </section>
@@ -221,9 +231,9 @@
             <div class="col-lg-12">
                 <h1>FAQ</h1>
             </div>
-            <p> Question: </p>
+            <p> Question: How do I ask a question? </p>
 
-            <p> Answer </p>
+            <p> Answer: Send an email to philipp.deutsch@occstrategy.com </p>
         </div>
     </div>
 </section>

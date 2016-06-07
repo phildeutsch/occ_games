@@ -20,6 +20,7 @@ class TfPlayer(models.Model):
     grade = models.CharField(max_length=2, default='AC')
     player_elo = models.IntegerField(default=800)
     matches_played = models.IntegerField(default=0)
+    matches_won = models.IntegerField(default=0)
 
     # def __eq__(self, other):
     #     return self.first_name == other.first_name and self.last_name == other.last_name
@@ -35,6 +36,7 @@ class TfTeam(models.Model):
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
     team_elo = models.IntegerField(default=0)
     team_matches_played = models.IntegerField(default=0)
+    team_matches_won = models.IntegerField(default=0)
     is_single_player = models.BooleanField(default=False)
 
     def update_elo(self):

@@ -55,7 +55,7 @@ class TfNewMatchForm(forms.Form):
         team2_player2 = form_data['team2_player2']
         team2_score = form_data['team2_score']
 
-        player_list = filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2])
+        player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
 
         if len(list(player_list)) != len(set(player_list)):
             self.add_error(None, ValidationError("Each player can only play once"))
