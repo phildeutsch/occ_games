@@ -34,7 +34,7 @@ def home(request):
                 player = player_form.save(commit=False)
                 player.full_name = player.first_name + ' ' + player.last_name
                 player.save()
-                return redirect('index')
+                return redirect('home')
             else:
                 modal_js='<script type=\"text/javascript\">' \
                          '$(window).load(function(){' \
@@ -89,7 +89,7 @@ def home(request):
                 team1.save()
                 team2.save()
 
-                return redirect('index')
+                return redirect('home')
             else:
                 modal_js='<script type=\"text/javascript\">' \
                          '$(window).load(function(){' \
@@ -113,7 +113,7 @@ def player_new(request):
             player = new_player_form.save(commit=False)
             player.full_name = player.first_name + ' ' + player.last_name
             player.save()
-            return redirect('index')
+            return redirect('home')
     else:
         new_player_form = TfNewPlayerForm()
     return render(request, 'tf/add_player.html', {'form': new_player_form})
