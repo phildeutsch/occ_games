@@ -18,7 +18,7 @@ class TfPlayer(models.Model):
     last_name = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
-    player_elo = models.IntegerField(default=800)
+    player_elo = models.IntegerField(default=1000)
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
 
