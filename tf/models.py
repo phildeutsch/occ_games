@@ -53,6 +53,9 @@ class TfTeam(models.Model):
             return str(self.player1) + os.linesep + str(self.player2)
 
 class TfMatch(models.Model):
+    class Meta:
+        verbose_name_plural = "tf matches"
+
     team1 = models.ForeignKey(TfTeam, related_name='team1')
     team2 = models.ForeignKey(TfTeam, related_name='team2')
     score1 = models.IntegerField(default=0)
