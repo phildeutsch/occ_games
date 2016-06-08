@@ -216,3 +216,9 @@ def player_league(request):
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
 
     return render(request, "tf/player_league.html", {'players'        : players_ordered})
+
+def faq(request):
+    return render(request, "tf/faq.html",{})
+
+def rules(request):
+    return render(request, "tf/rules.html",{})
