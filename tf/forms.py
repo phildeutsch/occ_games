@@ -30,7 +30,8 @@ class TfNewPlayerForm(forms.ModelForm):
         except KeyError:
             first_name = ''
             last_name = ''
-            
+            self.add_error(None, ValidationError("Please enter a first and last name"))
+
         full_name = first_name + ' ' + last_name
 
         if TfPlayer.objects.all().filter(full_name__exact=full_name).exists():
