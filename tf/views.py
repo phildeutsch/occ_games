@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm
+import config
 
 # TODO move to central functions file
 def get_team(player1, player2):
@@ -21,7 +22,7 @@ def get_team(player1, player2):
     return team
 
 def home(request):
-    matches = TfMatch.objects.order_by('-played_date')[:3]
+    matches = TfMatch.objects.order_by('-played_date')[:config.RECENT_MATCHES]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
     modal_js = ''
 

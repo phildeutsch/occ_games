@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 import os
+import config
+
 
 # TODO Move this to separate functions file
 def elo_change(player, elo2, score1, score2, k=32):
@@ -18,7 +20,7 @@ class TfPlayer(models.Model):
     last_name = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
-    player_elo = models.IntegerField(default=1000)
+    player_elo = models.IntegerField(default=config.DEFAULT_ELO)
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
 
