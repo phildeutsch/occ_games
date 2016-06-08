@@ -20,12 +20,9 @@ def get_team(player1, player2):
 
     return team
 
-
-# Create your views here.
-def index(request):
-    matches = TfMatch.objects.order_by('-played_date')[:5]
+def home(request):
+    matches = TfMatch.objects.order_by('-played_date')[:3]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
-    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')
     modal_js = ''
 
     if request.method == 'POST':
@@ -102,9 +99,8 @@ def index(request):
         match_form = TfNewMatchForm(prefix='add_match')
         player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/index.html", {'matches'      : matches,
+    return render(request, "tf/home.html", {'matches'      : matches,
                                              'players'      : players_ordered,
-                                             'teams'        : teams_ordered,
                                              'match_form'   : match_form,
                                              'player_form'  : player_form,
                                              'modal_js'     : modal_js})
@@ -121,3 +117,19 @@ def player_new(request):
     else:
         new_player_form = TfNewPlayerForm()
     return render(request, 'tf/add_player.html', {'form': new_player_form})
+
+def team_league(request):
+    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')
+
+    return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
+
+def player_league(request):
+    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
+
+    return render(request, "tf/player_league.html", {'players'        : players_ordered})
+
+def faq(request):
+    return render(request, "tf/faq.html",{})
+
+def rules(request):
+    return render(request, "tf/rules.html",{})
