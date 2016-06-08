@@ -1,0 +1,224 @@
+{% extends 'tf/base.html' %}
+
+{% block content%}
+<!-- Intro Section -->
+<section id="intro" class="intro-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!--
+                <h1>The OC&C TF Portal</h1>
+              -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h2> Current Top 20 </h2>
+
+                <p>
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th style="text-align:center;">Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Games</th>
+                    </tr>
+                  </thead>
+                    {% for player in players|slice:":20" %}
+                    <tr>
+                        <td style="text-align:center;"> {{forloop.counter}}</td>
+                        <td> {{player.full_name}}</td>
+                        <td> {{player.player_elo}}</td>
+                        <td> {{player.matches_played}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </p>
+            </div>
+            <div class="col-xs-6" id="recent_games">
+                <div>
+                    <h2> Recent Matches </h2>
+
+                    <p>
+                      <table class="table table-striped ">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th style="text-align:right;">Winner</th>
+                            <th style="text-align:center;">vs</th>
+                            <th style="text-align:left;">Loser</th>
+                        </tr>
+                      </thead>
+                        {% for match in matches %}
+                        <tr>
+                            <td> {{ match.played_date.date }}</td>
+                            <td style="text-align:right;"> {{ match.get_winner|linebreaks }}</td>
+                            <td style="text-align:center;"> {{ match.get_scores }}</td>
+                            <td style="text-align:left;"> {{ match.get_loser|linebreaks }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    </p>
+                </div>
+                <div style="text-align:center;">
+                    <h3><br></h3>
+
+                    <p>
+                        <button type="button" class="btn btn-info btn tf_btn" data-toggle="modal"
+                                data-target="#enter_match_dialog">Enter result
+                        </button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal"
+                                data-target="#enter_player_dialog">Add player
+                        </button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-info btn-lg tf_btn tf_btnna"> Sign in</button>
+                    </p>
+                    <p><a type="button" class="btn btn-info btn-lg tf_btn" href="mailto:ocandctf@gmail.com" target="_blank">Contact</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div id="enter_match_dialog" class="modal fade" role="dialog" id="match_modal">
+    <form method="POST" class="post-form" name="add_match_button">{% csrf_token %}
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add match results</h4>
+                </div>
+                <div class="modal-body">
+                    {{ match_form.non_field_errors }}
+                    <table>
+                        <tr>
+                            <th>Team 1</th>
+                            <th>Team 2</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team1_player1.errors }}
+                                    {{ match_form.team1_player1.label_tag }}
+                                    {{ match_form.team1_player1 }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team2_player1.errors }}
+                                    {{ match_form.team2_player1.label_tag }}
+                                    {{ match_form.team2_player1 }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team1_player2.errors }}
+                                    {{ match_form.team1_player2.label_tag }}
+                                    {{ match_form.team1_player2 }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team2_player2.errors }}
+                                    {{ match_form.team2_player2.label_tag }}
+                                    {{ match_form.team2_player2 }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team1_score.errors }}
+                                    {{ match_form.team1_score.label_tag }}
+                                    {{ match_form.team1_score }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fieldWrapper">
+                                    {{ match_form.team2_score.errors }}
+                                    {{ match_form.team2_score.label_tag }}
+                                    {{ match_form.team2_score }}
+                                </div>
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td>-->
+                                <!--<button type="submit" class="save btn btn-default">Save</button>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div id="enter_player_dialog" class="modal fade" role="dialog">
+    <form method="POST" class="post-form">{% csrf_token %}
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Enter player</h4>
+                </div>
+                <div class="modal-body">
+
+                    {{ player_form.as_p }}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div id="sign_in_dialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter player</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter player name:</p>
+
+                <form method="POST" class="post-form">{% csrf_token %}
+                    {{ player_form.as_p }}
+                    <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
