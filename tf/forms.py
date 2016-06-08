@@ -24,8 +24,13 @@ class TfNewPlayerForm(forms.ModelForm):
 
     def clean(self):
         form_data = self.cleaned_data
-        first_name = form_data['first_name']
-        last_name = form_data['last_name']
+        try:
+            first_name = form_data['first_name']
+            last_name = form_data['last_name']
+        except KeyError:
+            first_name = ''
+            last_name = ''
+            
         full_name = first_name + ' ' + last_name
 
         if TfPlayer.objects.all().filter(full_name__exact=full_name).exists():
