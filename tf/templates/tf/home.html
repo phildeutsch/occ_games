@@ -96,59 +96,56 @@
                 </div>
                 <div class="modal-body">
                     {{ match_form.non_field_errors }}
-                    <table>
+                    <table class="table table-striped ">
                         <tr>
+                            <th></th>
                             <th>Team 1</th>
                             <th>Team 2</th>
                         </tr>
                         <tr>
+                            <div class="fieldWrapper">
+                              <td>
+                                {{ match_form.team1_player1.label_tag }}
+                              </td>
+                              <td>
+                                {{ match_form.team1_player1.errors }}
+                                {{ match_form.team1_player1 }}
+                              </td>
+                              <td>
+                                {{ match_form.team2_player1.errors }}
+                                {{ match_form.team2_player1 }}
+                              </td>
+                            </div>
+                          </tr>
+                          <tr>
                             <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team1_player1.errors }}
-                                    {{ match_form.team1_player1.label_tag }}
-                                    {{ match_form.team1_player1 }}
-                                </div>
+                              {{ match_form.team1_player2.label_tag }}
                             </td>
                             <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team2_player1.errors }}
-                                    {{ match_form.team2_player1.label_tag }}
-                                    {{ match_form.team2_player1 }}
-                                </div>
+                              {{ match_form.team1_player2.errors }}
+                              {{ match_form.team1_player2 }}
                             </td>
+                            <td>
+                              {{ match_form.team2_player2.errors }}
+                              {{ match_form.team2_player2 }}
+                            </td>
+                          </div>
                         </tr>
                         <tr>
-                            <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team1_player2.errors }}
-                                    {{ match_form.team1_player2.label_tag }}
-                                    {{ match_form.team1_player2 }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team2_player2.errors }}
-                                    {{ match_form.team2_player2.label_tag }}
-                                    {{ match_form.team2_player2 }}
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team1_score.errors }}
-                                    {{ match_form.team1_score.label_tag }}
-                                    {{ match_form.team1_score }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fieldWrapper">
-                                    {{ match_form.team2_score.errors }}
-                                    {{ match_form.team2_score.label_tag }}
-                                    {{ match_form.team2_score }}
-                                </div>
-                            </td>
-                        </tr>
+                          <td>
+                            {{ match_form.team1_score.label_tag }}
+                          </td>
+                          <td>
+                            {{ match_form.team1_score.errors }}
+                            {{ match_form.team1_score }}
+                          </td>
+                          <td>
+                            {{ match_form.team2_score.errors }}
+                            {{ match_form.team2_score }}
+                          </td>
+                        </div>
+                      </tr>
+
                         <!--<tr>-->
                             <!--<td>-->
                                 <!--<button type="submit" class="save btn btn-default">Save</button>-->
