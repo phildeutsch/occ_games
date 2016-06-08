@@ -23,7 +23,7 @@ def get_team(player1, player2):
 
 def home(request):
     matches = TfMatch.objects.order_by('-played_date')[:config.RECENT_MATCHES]
-    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
+    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
     modal_js = ''
 
     if request.method == 'POST':
@@ -120,12 +120,12 @@ def player_new(request):
     return render(request, 'tf/add_player.html', {'form': new_player_form})
 
 def team_league(request):
-    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')
+    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False).order_by('-team_elo')[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
 
 def player_league(request):
-    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')
+    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/player_league.html", {'players'        : players_ordered})
 
