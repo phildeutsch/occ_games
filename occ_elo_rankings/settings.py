@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'occ_elo_rankings.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tf',
-        'USER': 'tf',
-        'PASSWORD': 'tf',
+        'NAME': 'd94l1v7u7g00n',
+        'USER': 'yxosccblbhfdcy',
+        'PASSWORD': 'ymHB7aa5xYg22jt8Fd2e3SIgi',
         'HOST': 'localhost',
         'PORT': '',
     }
