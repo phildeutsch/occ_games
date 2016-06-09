@@ -63,6 +63,7 @@ class TfMatch(models.Model):
     score1 = models.IntegerField(default=0)
     score2 = models.IntegerField(default=0)
     played_date = models.DateTimeField('date played')
+    invisible = models.BooleanField(default=False)
 
     def get_winner(self):
         if self.score1 > self.score2:

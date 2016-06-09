@@ -22,7 +22,7 @@ def get_team(player1, player2):
     return team
 
 def home(request):
-    matches = TfMatch.objects.order_by('-played_date')[:config.RECENT_MATCHES]
+    matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
     modal_js = ''
 
@@ -57,8 +57,10 @@ def home(request):
                 team1 = get_team(team1_player1, team1_player2)
                 team2 = get_team(team2_player1, team2_player2)
 
+                invisible = match_form.cleaned_data['invisible']
+
                 match = TfMatch(team1=team1, team2=team2, score1=team1_score, score2=team2_score,
-                                played_date=timezone.now())
+                                played_date=timezone.now(), invisible=invisible)
                 match.save()
 
                 match.update_player_elos()
