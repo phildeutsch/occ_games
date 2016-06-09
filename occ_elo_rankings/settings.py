@@ -77,16 +77,24 @@ WSGI_APPLICATION = 'occ_elo_rankings.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd94l1v7u7g00n',
-        'USER': 'yxosccblbhfdcy',
-        'PASSWORD': '-ymHB7aa5xYg22jt8Fd2e3SIgi',
-        'HOST': 'ec2-54-204-8-138.compute-1.amazonaws.com',
-        'PORT': '5432',
+if os.environ.get('HEROKU') is None:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'd94l1v7u7g00n',
+            'USER': 'yxosccblbhfdcy',
+            'PASSWORD': '-ymHB7aa5xYg22jt8Fd2e3SIgi',
+            'HOST': 'ec2-54-204-8-138.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
