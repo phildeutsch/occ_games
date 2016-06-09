@@ -15,19 +15,19 @@
                 <tr>
                     <th style="text-align:center;">Rank</th>
                     <th>Name</th>
-                    <th>Score</th>
-                    <th>Games</th>
-                    <th>Games won</th>
+                    <th style="text-align:right">Score</th>
+                    <th style="text-align:right">Games</th>
+                    <th style="text-align:right">Games Won</th>
                 </tr>
               </thead>
 
                 {% for team in teams %}
                 <tr>
-                    <td style="text-align:center;"> {{forloop.counter}}</td>
+                    <td style="text-align:center;font-weight: bold;"> {{forloop.counter}}</td>
                     <td> {{team.player1}}, {{team.player2}}</td>
-                    <td> {{team.team_elo}}</td>
-                    <td> {{team.team_matches_played}}</td>
-                    <td> {{team.team_matches_won}}</td>
+                    <td style="text-align:right"> {{team.team_elo}}</td>
+                    <td style="text-align:right"> {{team.team_matches_played}}</td>
+                    <td style="text-align:right"> {{team.team_matches_won}}</td>
                 </tr>
                 {% endfor %}
             </table>
