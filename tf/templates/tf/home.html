@@ -173,15 +173,33 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Enter player</h4>
-                </div>
-                <div class="modal-body">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add player</h4>
+              </div>
+              <div class="fieldWrapper">
+               <table class="center table table-striped" style="width: 100%; vertical-align: center;">
+                      <tr>
+                          <td>
+                            {{ player_form.first_name.label_tag }}
+                            {{ player_form.first_name.errors }}
+                          </td>
+                          <td>
+                            {{ player_form.first_name }}
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                            {{ player_form.last_name.label_tag }}
+                            {{ player_form.last_name.errors }}
+                          </td>
+                          <td>
+                            {{ player_form.last_name }}
+                          </td>
+                      </tr>
+                    </table>
+                  </div>
 
-                    {{ player_form.as_p }}
-
-                </div>
                 <div class="modal-footer">
                     <button type="submit" class="save btn btn-default">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
