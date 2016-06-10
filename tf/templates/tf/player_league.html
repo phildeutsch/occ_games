@@ -15,8 +15,6 @@
                     <th style="text-align:center;">Rank</th>
                     <th>Name</th>
                     <th style="text-align:right">Score</th>
-                    <th style="text-align:right">Games</th>
-                    <th style="text-align:right">Games Won</th>
                 </tr>
               </thead>
                 {% for player in players %}
@@ -24,8 +22,6 @@
                     <td style="text-align:center;font-weight: bold;"> {{forloop.counter}}</td>
                     <td> {{player.full_name}}</td>
                     <td style="text-align:right"> {{player.player_elo}}</td>
-                    <td style="text-align:right"> {{player.matches_played}}</td>
-                    <td style="text-align:right"> {{player.matches_won}}</td>
                 </tr>
                 {% endfor %}
             </table>
