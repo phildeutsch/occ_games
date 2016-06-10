@@ -22,7 +22,6 @@
                         <th style="text-align:center;">Rank</th>
                         <th>Name</th>
                         <th>Score</th>
-                        <th>Games</th>
                     </tr>
                   </thead>
                     {% for player in players %}
@@ -30,7 +29,6 @@
                         <td style="text-align:center; font-weight: bold;"> {{forloop.counter}}</td>
                         <td> {{player.full_name}}</td>
                         <td> {{player.player_elo}}</td>
-                        <td> {{player.matches_played}}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -44,7 +42,6 @@
                       <table class="table table-striped ">
                         <thead>
                         <tr>
-                            <th>Date</th>
                             <th style="text-align:right;">Winner</th>
                             <th style="text-align:center;">vs</th>
                             <th style="text-align:left;">Loser</th>
@@ -52,7 +49,6 @@
                       </thead>
                         {% for match in matches %}
                         <tr>
-                            <td> {{ match.played_date.date }}</td>
                             <td style="text-align:right;"> {{ match.get_winner|linebreaks }}</td>
                             <td style="text-align:center;"> {{ match.get_scores }}</td>
                             <td style="text-align:left;"> {{ match.get_loser|linebreaks }}</td>
