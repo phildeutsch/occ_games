@@ -77,13 +77,18 @@ WSGI_APPLICATION = 'occ_elo_rankings.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+if os.getcwd() == '/app':
+    host = 'ec2-54-204-8-138.compute-1.amazonaws.com'
+else:
+    host = 'localhost'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'd94l1v7u7g00n',
         'USER': 'yxosccblbhfdcy',
         'PASSWORD': '-ymHB7aa5xYg22jt8Fd2e3SIgi',
-        'HOST': 'ec2-54-204-8-138.compute-1.amazonaws.com',
+        'HOST': host,
         'PORT': '5432',
     }
 }
