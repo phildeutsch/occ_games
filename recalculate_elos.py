@@ -8,7 +8,7 @@ for p in players:
 
 matches = models.TfMatch.objects.order_by('played_date').all()
 for m in matches:
-    # update elos
+    m.update_elos()
 
 teams = models.TfTeam.objects.all()
 for t in teams:

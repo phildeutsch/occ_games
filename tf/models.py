@@ -89,6 +89,35 @@ class TfMatch(models.Model):
         elo_change(self.team2.player1, self.team1.team_elo, self.score2, self.score1)
         elo_change(self.team2.player2, self.team1.team_elo, self.score2, self.score1)
 
+    def update_elos(self, k=32):
+        winner = self.get_winner()
+        loser = self.get_loser()
+
+        elo_winner = winner.team_elo
+        elo_loser = loser.team_elo
+
+        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
+        delta_winner = k * (1 - e)
+
+        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
+        delta_loser = k * (0 - e)
+
+        winner.player2.player_elo ++ delta_winner
+        winner.player2.save()
+        if not winner.is_single_player:
+            winner.player1.player_elo += delta_winner
+            winner.player1.save()
+
+        loser.player2.player_elo += delta_loser
+        loser.player2.save()
+        if not loser.is_single_player:
+            loser.player1.player_elo += delta_winner
+            loser.player1.save()
+
+        winner.update_elo()
+        loser.update_elo()
+
+
     def __str__(self):
         if self.score1 > self.score2:
             return  str(self.team1) + ' ' + str(self.score1) + '-' \
