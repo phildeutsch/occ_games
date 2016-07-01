@@ -16,7 +16,6 @@ def get_team(player1, player2):
     except TfTeam.DoesNotExist:
         team = TfTeam(player1=player1, player2=player2, team_matches_played=0)
         team.is_single_player = True if player1.id == 0 else False
-        team.update_elo()
         team.save()
 
     return team
@@ -63,9 +62,7 @@ def home(request):
                                 played_date=timezone.now(), invisible=invisible)
                 match.save()
 
-                match.update_player_elos()
-                team1.update_elo()
-                team2.update_elo()
+                match.update_elos()
 
                 team1.team_matches_played += 1
                 team2.team_matches_played += 1
