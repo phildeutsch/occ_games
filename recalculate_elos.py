@@ -17,4 +17,4 @@ for t in teams:
 
 matches = models.TfMatch.objects.order_by('played_date').all()
 for m in matches:
-    m.update_elos()
+    m.update_elos(debug=True)

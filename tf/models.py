@@ -80,12 +80,12 @@ class TfMatch(models.Model):
 
     def update_elos(self, k=32, debug=False):
 
-        print(self.played_date)
-
         winner = self.get_winner()
         loser = self.get_loser()
 
         if debug:
+            print(self.played_date)
+
             print("winners:")
             print(str(winner.player2) + ' ' + str(winner.player2.player_elo))
             print(str(winner.player1) + ' ' + str(winner.player1.player_elo))

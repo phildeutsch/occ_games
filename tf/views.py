@@ -62,8 +62,6 @@ def home(request):
                                 played_date=timezone.now(), invisible=invisible)
                 match.save()
 
-                match.update_elos()
-
                 team1.team_matches_played += 1
                 team2.team_matches_played += 1
 
@@ -88,6 +86,8 @@ def home(request):
 
                 team1.save()
                 team2.save()
+
+                match.update_elos()
 
                 return redirect('home')
             else:
