@@ -36,17 +36,15 @@ class TfPlayer(models.Model):
 class TfTeam(models.Model):
     player1 = models.ForeignKey(TfPlayer, related_name='player1')
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
-    team_elo = models.IntegerField(default=0)
     team_matches_played = models.IntegerField(default=0)
     team_matches_won = models.IntegerField(default=0)
     is_single_player = models.BooleanField(default=False)
 
-    def update_elo(self):
+    def team_elo(self):
         if self.is_single_player:
-            self.team_elo = self.player2.player_elo
+            return self.player2.player_elo
         else:
-            self.team_elo = (self.player1.player_elo + self.player2.player_elo) / 2
-        self.save()
+            return (self.player1.player_elo + self.player2.player_elo) / 2
 
     def __str__(self):
         if self.is_single_player:
@@ -84,25 +82,44 @@ class TfMatch(models.Model):
             return str(self.score2) + '-' + str(self.score1)
 
     def update_player_elos(self):
-        elo_change(self.team1.player1, self.team2.team_elo, self.score1, self.score2)
-        elo_change(self.team1.player2, self.team2.team_elo, self.score1, self.score2)
-        elo_change(self.team2.player1, self.team1.team_elo, self.score2, self.score1)
-        elo_change(self.team2.player2, self.team1.team_elo, self.score2, self.score1)
+        elo_change(self.team1.player1, self.team2.team_elo(), self.score1, self.score2)
+        elo_change(self.team1.player2, self.team2.team_elo(), self.score1, self.score2)
+        elo_change(self.team2.player1, self.team1.team_elo(), self.score2, self.score1)
+        elo_change(self.team2.player2, self.team1.team_elo(), self.score2, self.score1)
 
     def update_elos(self, k=32):
+
+        print(self.played_date)
+
         winner = self.get_winner()
         loser = self.get_loser()
 
-        elo_winner = winner.team_elo
-        elo_loser = loser.team_elo
+        print("winners:")
+        print(str(winner.player2) + ' ' + str(winner.player2.player_elo))
+        print(str(winner.player1) + ' ' + str(winner.player1.player_elo))
+        print(str(winner.team_elo()))
+
+        print("losers")
+        print(str(loser.player2) + ' ' + str(loser.player2.player_elo))
+        print(str(loser.player1) + ' ' + str(loser.player1.player_elo))
+        print(str(loser.team_elo()))
+
+        elo_winner = winner.team_elo()
+        elo_loser = loser.team_elo()
 
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_winner = k * (1 - e)
 
+        print("change winner")
+        print(str(delta_winner))
+
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_loser = k * (0 - e)
 
-        winner.player2.player_elo ++ delta_winner
+        print("change loser")
+        print(str(delta_loser))
+
+        winner.player2.player_elo += delta_winner
         winner.player2.save()
         if not winner.is_single_player:
             winner.player1.player_elo += delta_winner
@@ -111,12 +128,20 @@ class TfMatch(models.Model):
         loser.player2.player_elo += delta_loser
         loser.player2.save()
         if not loser.is_single_player:
-            loser.player1.player_elo += delta_winner
+            loser.player1.player_elo += delta_loser
             loser.player1.save()
 
-        winner.update_elo()
-        loser.update_elo()
+        print("winners new:")
+        print(str(winner.player2) + ' ' + str(winner.player2.player_elo))
+        print(str(winner.player1) + ' ' + str(winner.player1.player_elo))
+        print(str(winner.team_elo()))
 
+        print("losers new")
+        print(str(loser.player2) + ' ' + str(loser.player2.player_elo))
+        print(str(loser.player1) + ' ' + str(loser.player1.player_elo))
+        print(str(loser.team_elo()))
+
+        print('---')
 
     def __str__(self):
         if self.score1 > self.score2:
