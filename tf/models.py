@@ -84,17 +84,24 @@ class TfMatch(models.Model):
         loser = self.get_loser()
 
         if debug:
-            print(self.played_date)
+            print(str(self.played_date)[:16])
 
-            print("winners:")
-            print(str(winner.player2) + ' ' + str(winner.player2.player_elo))
-            print(str(winner.player1) + ' ' + str(winner.player1.player_elo))
-            print(str(winner.team_elo()))
+            print("Before")
+            print("W: ", end='')
+            print(str(winner.player2) + ' (' + str(winner.player2.player_elo) + ')', end='')
+            if not winner.is_single_player:
+                print('/ ' + str(winner.player1) + ' (' + str(winner.player1.player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(winner.team_elo())))
 
-            print("losers")
-            print(str(loser.player2) + ' ' + str(loser.player2.player_elo))
-            print(str(loser.player1) + ' ' + str(loser.player1.player_elo))
-            print(str(loser.team_elo()))
+            print("L: ", end='')
+            print(str(loser.player2) + ' (' + str(loser.player2.player_elo) + ')', end='')
+            if not loser.is_single_player:
+                print('/ ' + str(loser.player1) + ' (' + str(loser.player1.player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(loser.team_elo())))
 
         elo_winner = winner.team_elo()
         elo_loser = loser.team_elo()
@@ -104,13 +111,6 @@ class TfMatch(models.Model):
 
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_loser = k * (0 - e)
-
-        if debug:
-            print("change winner")
-            print(str(delta_winner))
-
-            print("change loser")
-            print(str(delta_loser))
 
         winner.player2.player_elo += delta_winner
         winner.player2.save()
@@ -125,15 +125,22 @@ class TfMatch(models.Model):
             loser.player1.save()
 
         if debug:
-            print("winners new:")
-            print(str(winner.player2) + ' ' + str(winner.player2.player_elo))
-            print(str(winner.player1) + ' ' + str(winner.player1.player_elo))
-            print(str(winner.team_elo()))
+            print("After")
+            print("W: ", end='')
+            print(str(winner.player2) + ' (' + str(winner.player2.player_elo) + ')', end='')
+            if not winner.is_single_player:
+                print('/ ' + str(winner.player1) + ' (' + str(winner.player1.player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(winner.team_elo())))
 
-            print("losers new")
-            print(str(loser.player2) + ' ' + str(loser.player2.player_elo))
-            print(str(loser.player1) + ' ' + str(loser.player1.player_elo))
-            print(str(loser.team_elo()))
+            print("L: ", end='')
+            print(str(loser.player2) + ' (' + str(loser.player2.player_elo) + ')', end='')
+            if not loser.is_single_player:
+                print('/ ' + str(loser.player1) + ' (' + str(loser.player1.player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(loser.team_elo())))
 
             print('---')
 
