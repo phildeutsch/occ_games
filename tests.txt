@@ -1,4 +1,4 @@
 All pages load without errors
 Recalculating elos runs without errors and updates elos
-Adding a player works
-adding a new game works and updates elos accordingly
+Adding a player adds the player with elo 1000
+adding a new game works and updates elos accordingly (+ for a win, - for a loss)
