@@ -17,8 +17,9 @@ def get_team(player1, player2):
         team.save()
         if player1.id != 0:
             team.players.add(player1)
-        team.players.add(player2)
-        team.is_single_player = True if player1.id == 0 else False
+        if player2.id != 0:
+            team.players.add(player2)
+        team.is_single_player = True if len(team.players.all())==1 else False
         team.save()
     return team
 
