@@ -107,21 +107,15 @@ class TfMatch(models.Model):
 
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_winner = k * (1 - e)
-
-        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_loser = k * (0 - e)
 
-        winner.players.all()[0].player_elo += delta_winner
-        winner.players.all()[0].save()
-        if not winner.is_single_player:
-            winner.players.all()[1].player_elo += delta_winner
-            winner.players.all()[1].save()
+        for p in winner.players.all():
+            p.player_elo += delta_winner
+            p.save()
 
-        loser.players.all()[0].player_elo += delta_loser
-        loser.players.all()[0].save()
-        if not loser.is_single_player:
-            loser.players.all()[1].player_elo += delta_loser
-            loser.players.all()[1].save()
+        for p in loser.players.all():
+            p.player_elo += delta_loser
+            p.save()
 
         if debug:
             print("After")

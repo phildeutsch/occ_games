@@ -1,10 +1,7 @@
 # exec(open("recalculate_elos.py").read(), globals())
 
 import config
-import importlib
 from tf import models
-
-importlib.reload(models)
 
 players = models.TfPlayer.objects.all()
 for p in players:

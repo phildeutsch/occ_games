@@ -10,10 +10,13 @@ def get_team(player1, player2):
         tmp = player1
         player1 = player2
         player2 = tmp
-    try:
-        team = TfTeam.objects.filter(players=player1).filter(players=player2)
-    except TfTeam.DoesNotExist:
-        team = TfTeam(players=[player1, player2], team_matches_played=0)
+    team = TfTeam.objects.filter(players=player1).filter(players=player2)
+    if len(team)==0:
+        team = TfTeam()
+        team.save()
+        if player1.id != 0:
+            team.players.add(player1)
+        team.players.add(player2)
         team.is_single_player = True if player1.id == 0 else False
         team.save()
     return team
