@@ -31,8 +31,6 @@ class TfPlayer(models.Model):
         return self.full_name
 
 class TfTeam(models.Model):
-    player1 = models.ForeignKey(TfPlayer, related_name='player1')
-    player2 = models.ForeignKey(TfPlayer, related_name='player2')
     players = models.ManyToManyField(TfPlayer)
     team_matches_played = models.IntegerField(default=0)
     team_matches_won = models.IntegerField(default=0)
@@ -40,15 +38,15 @@ class TfTeam(models.Model):
 
     def team_elo(self):
         if self.is_single_player:
-            return self.player2.player_elo
+            return self.players.all()[0].player_elo
         else:
-            return (self.player1.player_elo + self.player2.player_elo) / 2
+            return (self.players.all()[1].player_elo + self.players.all()[0].player_elo) / 2
 
     def __str__(self):
-        if self.is_single_player:
-            return str(self.player2)
-        else:
-            return str(self.player1) + os.linesep + str(self.player2)
+        s = ''
+        for p in self.players.all():
+            s = s + str(p) + '\n'
+        return s
 
 class TfMatch(models.Model):
     class Meta:
@@ -89,17 +87,17 @@ class TfMatch(models.Model):
 
             print("Before")
             print("W: ", end='')
-            print(str(winner.player2) + ' (' + str(winner.player2.player_elo) + ')', end='')
+            print(str(winner.players.all()[0]) + ' (' + str(winner.players.all()[0].player_elo) + ')', end='')
             if not winner.is_single_player:
-                print('/ ' + str(winner.player1) + ' (' + str(winner.player1.player_elo) + '): ', end='')
+                print('/ ' + str(winner.players.all()[1]) + ' (' + str(winner.players.all()[1].player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(winner.team_elo())))
 
             print("L: ", end='')
-            print(str(loser.player2) + ' (' + str(loser.player2.player_elo) + ')', end='')
+            print(str(loser.players.all()[0]) + ' (' + str(loser.players.all()[0].player_elo) + ')', end='')
             if not loser.is_single_player:
-                print('/ ' + str(loser.player1) + ' (' + str(loser.player1.player_elo) + '): ', end='')
+                print('/ ' + str(loser.players.all()[1]) + ' (' + str(loser.players.all()[1].player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(loser.team_elo())))
@@ -113,32 +111,32 @@ class TfMatch(models.Model):
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_loser = k * (0 - e)
 
-        winner.player2.player_elo += delta_winner
-        winner.player2.save()
+        winner.players.all()[0].player_elo += delta_winner
+        winner.players.all()[0].save()
         if not winner.is_single_player:
-            winner.player1.player_elo += delta_winner
-            winner.player1.save()
+            winner.players.all()[1].player_elo += delta_winner
+            winner.players.all()[1].save()
 
-        loser.player2.player_elo += delta_loser
-        loser.player2.save()
+        loser.players.all()[0].player_elo += delta_loser
+        loser.players.all()[0].save()
         if not loser.is_single_player:
-            loser.player1.player_elo += delta_loser
-            loser.player1.save()
+            loser.players.all()[1].player_elo += delta_loser
+            loser.players.all()[1].save()
 
         if debug:
             print("After")
             print("W: ", end='')
-            print(str(winner.player2) + ' (' + str(winner.player2.player_elo) + ')', end='')
+            print(str(winner.players.all()[0]) + ' (' + str(winner.players.all()[0].player_elo) + ')', end='')
             if not winner.is_single_player:
-                print('/ ' + str(winner.player1) + ' (' + str(winner.player1.player_elo) + '): ', end='')
+                print('/ ' + str(winner.players.all()[1]) + ' (' + str(winner.players.all()[1].player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(winner.team_elo())))
 
             print("L: ", end='')
-            print(str(loser.player2) + ' (' + str(loser.player2.player_elo) + ')', end='')
+            print(str(loser.players.all()[0]) + ' (' + str(loser.players.all()[0].player_elo) + ')', end='')
             if not loser.is_single_player:
-                print('/ ' + str(loser.player1) + ' (' + str(loser.player1.player_elo) + '): ', end='')
+                print('/ ' + str(loser.players.all()[1]) + ' (' + str(loser.players.all()[0].player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(loser.team_elo())))
