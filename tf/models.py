@@ -33,6 +33,7 @@ class TfPlayer(models.Model):
 class TfTeam(models.Model):
     player1 = models.ForeignKey(TfPlayer, related_name='player1')
     player2 = models.ForeignKey(TfPlayer, related_name='player2')
+    players = models.ManyToManyField(TfPlayer)
     team_matches_played = models.IntegerField(default=0)
     team_matches_won = models.IntegerField(default=0)
     is_single_player = models.BooleanField(default=False)
