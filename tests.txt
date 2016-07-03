@@ -1,0 +1,4 @@
+All pages load without errors
+Recalculating elos runs without errors and updates elos
+Adding a player works
+adding a new game works and updates elos accordingly

@@ -10,8 +10,9 @@ def get_team(player1, player2):
         tmp = player1
         player1 = player2
         player2 = tmp
-    team = TfTeam.objects.filter(players=player1).filter(players=player2)
-    if len(team)==0:
+    try:
+        team = TfTeam.objects.filter(players=player1).filter(players=player2)[0]
+    except IndexError:
         team = TfTeam()
         team.save()
         if player1.id != 0:
