@@ -38,9 +38,16 @@ class TfTeam(models.Model):
 
     def team_elo(self):
         if self.is_single_player:
-            return self.players.order_by('id')[0].player_elo
+            return int(self.players.order_by('id')[0].player_elo)
         else:
-            return (self.players.order_by('id')[1].player_elo + self.players.order_by('id')[0].player_elo) / 2
+            return int((self.players.order_by('id')[1].player_elo + self.players.order_by('id')[0].player_elo) / 2)
+
+    def prettyprint(self):
+        if self.is_single_player:
+            s = str(self.players.order_by('id')[0])
+        else:
+            s = str(self.players.order_by('id')[0]) + ' / ' + str(self.players.order_by('id')[1])
+        return s
 
     def __str__(self):
         s = ''

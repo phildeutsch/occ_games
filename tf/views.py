@@ -122,7 +122,7 @@ def player_new(request):
     return render(request, 'tf/add_player.html', {'form': new_player_form})
 
 def team_league(request):
-    teams_ordered = TfTeam.objects.all().filter(is_single_player__exact=False)[:config.LEAGUE_LENGTH]
+    teams_ordered = sorted(TfTeam.objects.all().filter(is_single_player__exact=False), key=lambda x:-x.team_elo())[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
 
