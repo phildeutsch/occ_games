@@ -61,8 +61,15 @@ def home(request):
 
                 invisible = match_form.cleaned_data['invisible']
 
-                match = TfMatch(teamsteam1, team2=team2, score1=team1_score, score2=team2_score,
+                if team1_score > team2_score:
+                    scores = str(team1_score) + ' ' + str(team2_score)
+                else:
+                    scores = str(team2_score) + ' ' + str(team1_score)
+
+                match = TfMatch(scores=scores,
                                 played_date=timezone.now(), invisible=invisible)
+                match.save()
+                match.teams.add(team1, team2)
                 match.save()
 
                 team1.team_matches_played += 1
