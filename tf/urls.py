@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^player_league/$', views.player_league, name='player_league'),
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^rules/$', views.rules, name='rules'),
+    url(r'^games/$', views.games, name='games'),
 ]

@@ -167,3 +167,13 @@ class TfMatch(models.Model):
         else:
             return  str(self.get_winner()) + ' ' + str(score2) + '-' \
                + str(score1) + ' ' + str(self.get_loser())
+
+    def prettyprint(self):
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return  self.get_winner().prettyprint() + ' ' + str(score1) + '-' \
+               + str(score2) + ' ' + self.get_loser().prettyprint()
+        else:
+            return  self.get_winner().prettyprint() + ' ' + str(score2) + '-' \
+               + str(score1) + ' ' + self.get_loser().prettyprint()

@@ -143,3 +143,8 @@ def faq(request):
 
 def rules(request):
     return render(request, "tf/rules.html",{})
+
+def games(request):
+    matches_ordered = TfMatch.objects.order_by('-played_date').all()
+
+    return render(request, "tf/games.html", {'matches' : matches_ordered})
