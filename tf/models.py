@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 import os
+import re
 import config
 
 
@@ -59,30 +60,43 @@ class TfMatch(models.Model):
     class Meta:
         verbose_name_plural = "tf matches"
 
-    team1 = models.ForeignKey(TfTeam, related_name='team1')
-    team2 = models.ForeignKey(TfTeam, related_name='team2')
-    score1 = models.IntegerField(default=0)
-    score2 = models.IntegerField(default=0)
+    teams = models.ManyToManyField(TfTeam)
+    scores = models.CharField(max_length=5, default="0 0")
+
     played_date = models.DateTimeField('date played')
     invisible = models.BooleanField(default=False)
 
+    def scores_to_int(self):
+        match = re.search('(.)\s(.)', self.scores)
+        score1 = int(match.group(1))
+        score2 = int(match.group(2))
+        return [score1, score2]
+
     def get_winner(self):
-        if self.score1 > self.score2:
-            return self.team1
+        [score1, score2] = self.scores_to_int()
+        teams = self.teams.order_by('id').all()
+
+        if score1 > score2:
+            return teams[0]
         else:
-            return self.team2
+            return teams[1]
 
     def get_loser(self):
-        if self.score1 > self.score2:
-            return self.team2
+        [score1, score2] = self.scores_to_int()
+        teams = self.teams.order_by('id').all()
+
+        if score1 > score2:
+            return teams[1]
         else:
-            return self.team1
+            return teams[0]
 
     def get_scores(self):
-        if self.score1 > self.score2:
-            return str(self.score1) + '-' + str(self.score2)
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return str(score1) + '-' + str(score2)
         else:
-            return str(self.score2) + '-' + str(self.score1)
+            return str(score2) + '-' + str(score1)
 
     def update_elos(self, k=32, debug=False):
 
@@ -145,9 +159,11 @@ class TfMatch(models.Model):
             print('---')
 
     def __str__(self):
-        if self.score1 > self.score2:
-            return  str(self.team1) + ' ' + str(self.score1) + '-' \
-               + str(self.score2) + ' ' + str(self.team2)
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return  str(self.get_winner()) + ' ' + str(score1) + '-' \
+               + str(score2) + ' ' + str(self.get_loser())
         else:
-            return  str(self.team2) + ' ' + str(self.score2) + '-' \
-               + str(self.score1) + ' ' + str(self.team1)
+            return  str(self.get_winner()) + ' ' + str(score2) + '-' \
+               + str(score1) + ' ' + str(self.get_loser())
