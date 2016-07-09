@@ -61,7 +61,7 @@ def home(request):
 
                 invisible = match_form.cleaned_data['invisible']
 
-                if team1_score > team2_score:
+                if team1.id < team2.id:
                     scores = str(team1_score) + ' ' + str(team2_score)
                 else:
                     scores = str(team2_score) + ' ' + str(team1_score)
