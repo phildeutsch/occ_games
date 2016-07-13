@@ -109,11 +109,12 @@ def home(request):
         match_form = TfNewMatchForm(prefix='add_match')
         player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/home.html", {'matches'      : matches,
-                                             'players'      : players_ordered,
-                                             'match_form'   : match_form,
-                                             'player_form'  : player_form,
-                                             'modal_js'     : modal_js})
+    return render(request, "tf/home.html", {'user'         : request.user,
+                                            'matches'      : matches,
+                                            'players'      : players_ordered,
+                                            'match_form'   : match_form,
+                                            'player_form'  : player_form,
+                                            'modal_js'     : modal_js})
 
 
 def player_new(request):
