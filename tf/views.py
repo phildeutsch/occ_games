@@ -110,11 +110,11 @@ def home(request):
                          '$(window).load(function(){' \
                          '$(\'#enter_match_dialog\').modal(\'show\');' \
                          '});</script>'
-    else:
-        match_form = TfNewMatchForm(prefix='add_match')
-        player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/home.html", {'user'         : request.user.username,
+    match_form = TfNewMatchForm(prefix='add_match')
+    player_form = TfNewPlayerForm(prefix='add_player')
+
+    return render(request, "tf/home.html", {'user'         : request.user,
                                             'matches'      : matches,
                                             'players'      : players_ordered,
                                             'match_form'   : match_form,
