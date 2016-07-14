@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm
+from django.contrib.auth import authenticate, login
 import config
 
 # TODO move to central functions file
@@ -35,7 +36,17 @@ def home(request):
 
     if request.method == 'POST':
 
-        if 'add_player-first_name' in request.POST:
+        if 'username' in request.POST:
+            username = request.POST['username']
+            password = request.POST['password']
+
+            # Use Django's machinery to attempt to see if the username/password
+            # combination is valid - a User object is returned if it is.
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
+
+        elif 'add_player-first_name' in request.POST:
             match_form = TfNewMatchForm(prefix='add_match')
             player_form = TfNewPlayerForm(request.POST, prefix='add_player')
             if player_form.is_valid():
