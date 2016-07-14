@@ -2,7 +2,7 @@ from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
-from .forms import TfNewPlayerForm, TfNewMatchForm
+from .forms import TfNewPlayerForm, TfNewMatchForm, UserForm
 from django.contrib.auth import authenticate, login
 import config
 
@@ -36,15 +36,18 @@ def home(request):
 
     if request.method == 'POST':
 
-        if 'username' in request.POST:
-            username = request.POST['username']
-            password = request.POST['password']
-
-            # Use Django's machinery to attempt to see if the username/password
-            # combination is valid - a User object is returned if it is.
-            user = authenticate(username=username, password=password)
-            login(request, user)
-
+        if 'register-email' in request.POST:
+            user_form = UserForm(request.POST, prefix='register')
+            if user_form.is_valid():
+                user = user_form.save()
+                user.set_password(user.password)
+                user.save()
+                return redirect('home')
+            else:
+                modal_js='<script type=\"text/javascript\">' \
+                         '$(window).load(function(){' \
+                         '$(\'#register_dialog\').modal(\'show\');' \
+                         '});</script>'
 
         elif 'add_player-first_name' in request.POST:
             match_form = TfNewMatchForm(prefix='add_match')
@@ -122,14 +125,25 @@ def home(request):
                          '$(\'#enter_match_dialog\').modal(\'show\');' \
                          '});</script>'
 
+        elif 'username' in request.POST:
+            username = request.POST['username']
+            password = request.POST['password']
+
+            # Use Django's machinery to attempt to see if the username/password
+            # combination is valid - a User object is returned if it is.
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
     match_form = TfNewMatchForm(prefix='add_match')
     player_form = TfNewPlayerForm(prefix='add_player')
+    user_form = UserForm(prefix='register')
 
     return render(request, "tf/home.html", {'user'         : request.user,
                                             'matches'      : matches,
                                             'players'      : players_ordered,
                                             'match_form'   : match_form,
                                             'player_form'  : player_form,
+                                            'user_form'    : user_form,
                                             'modal_js'     : modal_js})
 
 

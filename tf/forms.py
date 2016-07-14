@@ -1,6 +1,29 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import TfPlayer
+from django.contrib.auth.models import User
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+    def clean(self):
+        form_data = self.cleaned_data
+
+        try:
+            first_name = self.cleaned_data['username']
+            last_name = self.cleaned_data['email']
+            username = self.cleaned_data['password']
+
+            if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
+                raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+        except KeyError:
+            self.add_error(None, ValidationError("Please enter all information"))
+
+        return form_data
 
 class TfNewPlayerForm(forms.ModelForm):
     class Meta:
@@ -32,7 +55,6 @@ class TfNewPlayerForm(forms.ModelForm):
             self.add_error(None, ValidationError("Please enter a first and last name"))
 
         full_name = first_name + ' ' + last_name
-
         if TfPlayer.objects.all().filter(full_name__exact=full_name).exists():
             self.add_error(None, ValidationError("This player is already in the database"))
 
