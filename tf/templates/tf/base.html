@@ -146,6 +146,7 @@
           </div>
           <form id="register_form" method="post" action="/tf/">
               {% csrf_token %}
+              {{ user_form.non_field_errors }}
               <table class="center table table-striped" style="width: 100%; vertical-align: center;">
                 <tr>
                     <td>

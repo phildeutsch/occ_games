@@ -20,6 +20,7 @@ class UserForm(forms.ModelForm):
 
             if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
                 raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+
         except KeyError:
             self.add_error(None, ValidationError("Please enter all information"))
 
