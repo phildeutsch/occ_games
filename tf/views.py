@@ -136,14 +136,12 @@ def home(request):
 
     match_form = TfNewMatchForm(prefix='add_match')
     player_form = TfNewPlayerForm(prefix='add_player')
-    user_form = UserForm(prefix='register')
 
     return render(request, "tf/home.html", {'user'         : request.user,
                                             'matches'      : matches,
                                             'players'      : players_ordered,
                                             'match_form'   : match_form,
                                             'player_form'  : player_form,
-                                            'user_form'    : user_form,
                                             'modal_js'     : modal_js})
 
 
@@ -174,6 +172,11 @@ def faq(request):
 
 def rules(request):
     return render(request, "tf/rules.html",{})
+
+def register(request):
+    user_form = UserForm(prefix='register')
+
+    return render(request, "tf/register.html",{'user_form' : user_form})
 
 def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()
