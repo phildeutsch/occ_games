@@ -14,9 +14,12 @@ class UserForm(forms.ModelForm):
         form_data = self.cleaned_data
 
         try:
-            first_name = self.cleaned_data['username']
-            last_name = self.cleaned_data['email']
-            username = self.cleaned_data['password']
+            username = self.cleaned_data['username']
+            email = self.cleaned_data['email']
+            password = self.cleaned_data['password']
+
+            if username == '':
+                self.add_error(None, ValidationError("Please enter a username"))
 
             if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
                 raise forms.ValidationError(u'Username "%s" is already in use.' % username)

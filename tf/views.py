@@ -36,20 +36,7 @@ def home(request):
 
     if request.method == 'POST':
 
-        if 'register-email' in request.POST:
-            user_form = UserForm(request.POST, prefix='register')
-            if user_form.is_valid():
-                user = user_form.save()
-                user.set_password(user.password)
-                user.save()
-                return redirect('home')
-            else:
-                modal_js='<script type=\"text/javascript\">' \
-                         '$(window).load(function(){' \
-                         '$(\'#register_dialog\').modal(\'show\');' \
-                         '});</script>'
-
-        elif 'add_player-first_name' in request.POST:
+        if 'add_player-first_name' in request.POST:
             match_form = TfNewMatchForm(prefix='add_match')
             player_form = TfNewPlayerForm(request.POST, prefix='add_player')
             if player_form.is_valid():
@@ -174,7 +161,16 @@ def rules(request):
     return render(request, "tf/rules.html",{})
 
 def register(request):
-    user_form = UserForm(prefix='register')
+    if request.method == "POST":
+        user_form = UserForm(request.POST, prefix="register")
+        print("post request")
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            return redirect('home')
+    else:
+        user_form = UserForm(prefix="register")
 
     return render(request, "tf/register.html",{'user_form' : user_form})
 
