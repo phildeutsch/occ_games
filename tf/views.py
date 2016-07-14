@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
@@ -27,6 +28,10 @@ def home(request):
     matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
     modal_js = ''
+    if request.user.is_authenticated():
+        username = request.user.username
+    else:
+        username = 'Log In'
 
     if request.method == 'POST':
 
