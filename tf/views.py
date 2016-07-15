@@ -172,7 +172,7 @@ def register(request):
     else:
         user_form = UserForm(prefix="register")
 
-    return render(request, "tf/register.html",{'user_form' : user_form})
+    return render(request, "tf/registration/register.html",{'user_form' : user_form})
 
 def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()
