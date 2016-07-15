@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import TfPlayer
 from django.contrib.auth.models import User
+import re
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -21,6 +22,9 @@ class UserForm(forms.ModelForm):
 
             if username in [u.username for u in User.objects.all()]:
                 raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+
+            if re.search(r'@occstrategy.com$', username) is None:
+                raise forms.ValidationError(u'Please use an OC&C email address')
 
         except KeyError:
             self.add_error(None, ValidationError("Please enter all information"))
