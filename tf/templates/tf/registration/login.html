@@ -2,8 +2,12 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div id="content-container" class="container p-none">
-        <div class="lgn-container col-lg-8">
+<section id="login" class="login-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Log In</h1>
+            </div>
             <form id="login-form" method="post"
                   action="{% url 'django.contrib.auth.views.login' %}">
                 {% csrf_token %}
@@ -38,4 +42,5 @@
             </form>
         </div>
     </div>
+  </section>
 {% endblock content %}

@@ -161,9 +161,9 @@ def rules(request):
     return render(request, "tf/rules.html",{})
 
 def register(request):
+    print("request " + request.method)
     if request.method == "POST":
         user_form = UserForm(request.POST, prefix="register")
-        print("post request")
         if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
@@ -172,7 +172,7 @@ def register(request):
     else:
         user_form = UserForm(prefix="register")
 
-    return render(request, "tf/registration/register.html",{'user_form' : user_form})
+    return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
 def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()
