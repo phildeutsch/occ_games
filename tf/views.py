@@ -167,6 +167,7 @@ def register(request):
         if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
+            user.email = user_form['username']
             user.save()
             return redirect('home')
     else:
