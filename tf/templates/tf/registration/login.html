@@ -18,6 +18,16 @@
                         <td><input id="id_password" name="password"
                                    type="password" class="form-control"></td>
                     </tr>
+                    <tr>
+                      <td>
+                        <a href="/tf/register" class="btn btn-primary"> Register </a>
+                      </td>
+                      <td>
+                        <input type="submit" value="Login"
+                               class="btn btn-primary pull-right" />
+                        <input type="hidden" name="next" value="/tf" />
+                      </td>
+                    </tr>
                 </table>
                 {% if form.errors %}
                     <p class=" label label-danger">
@@ -25,10 +35,6 @@
                         Please try again.
                     </p>
                 {% endif %}
-
-                <input type="submit" value="Login"
-                       class="btn btn-primary pull-right" />
-                <input type="hidden" name="next" value="/tf" />
             </form>
         </div>
     </div>
