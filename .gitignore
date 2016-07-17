@@ -1,6 +1,1 @@
-.idea/*
-*.pyc
-venv/*
-htmlcov/
-.coverage
-db_backups/
+.login.php
