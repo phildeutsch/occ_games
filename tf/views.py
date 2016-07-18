@@ -1,7 +1,9 @@
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, TfPlayer, TfTeam
-from .forms import TfNewPlayerForm, TfNewMatchForm
+from .forms import TfNewPlayerForm, TfNewMatchForm, UserForm
+from django.contrib.auth import authenticate, login
 import config
 
 # TODO move to central functions file
@@ -27,6 +29,10 @@ def home(request):
     matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
     players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
     modal_js = ''
+    if request.user.is_authenticated():
+        username = request.user.username
+    else:
+        username = 'Log In'
 
     if request.method == 'POST':
 
@@ -105,15 +111,25 @@ def home(request):
                          '$(window).load(function(){' \
                          '$(\'#enter_match_dialog\').modal(\'show\');' \
                          '});</script>'
-    else:
-        match_form = TfNewMatchForm(prefix='add_match')
-        player_form = TfNewPlayerForm(prefix='add_player')
 
-    return render(request, "tf/home.html", {'matches'      : matches,
-                                             'players'      : players_ordered,
-                                             'match_form'   : match_form,
-                                             'player_form'  : player_form,
-                                             'modal_js'     : modal_js})
+        elif 'username' in request.POST:
+            username = request.POST['username']
+            password = request.POST['password']
+
+            # Use Django's machinery to attempt to see if the username/password
+            # combination is valid - a User object is returned if it is.
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
+    match_form = TfNewMatchForm(prefix='add_match')
+    player_form = TfNewPlayerForm(prefix='add_player')
+
+    return render(request, "tf/home.html", {'user'         : request.user,
+                                            'matches'      : matches,
+                                            'players'      : players_ordered,
+                                            'match_form'   : match_form,
+                                            'player_form'  : player_form,
+                                            'modal_js'     : modal_js})
 
 
 def player_new(request):
@@ -143,6 +159,21 @@ def faq(request):
 
 def rules(request):
     return render(request, "tf/rules.html",{})
+
+def register(request):
+    print("request " + request.method)
+    if request.method == "POST":
+        user_form = UserForm(request.POST, prefix="register")
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.email = user_form['username']
+            user.save()
+            return redirect('home')
+    else:
+        user_form = UserForm(prefix="register")
+
+    return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
 def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()

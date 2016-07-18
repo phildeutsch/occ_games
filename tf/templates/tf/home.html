@@ -1,4 +1,4 @@
-{% extends 'tf/base.html' %}
+{% extends 'base.html' %}
 
 {% block content%}
 <!-- Intro Section -->
@@ -69,9 +69,6 @@
                         <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal"
                                 data-target="#enter_player_dialog">Add player
                         </button>
-                    </p>
-                    <p>
-                        <button type="button" class="btn btn-info btn-lg tf_btn tf_btnna"> Sign in</button>
                     </p>
                     <p><a type="button" class="btn btn-info btn-lg tf_btn" href="mailto:ocandctf@gmail.com" target="_blank">Contact</a></p>
                 </div>
@@ -212,31 +209,6 @@
 
         </div>
     </form>
-</div>
-
-<div id="sign_in_dialog" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Enter player</h4>
-            </div>
-            <div class="modal-body">
-                <p>Please enter player name:</p>
-
-                <form method="POST" class="post-form">{% csrf_token %}
-                    {{ player_form.as_p }}
-                    <button type="submit" class="save btn btn-default">Save</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
 </div>
 
 
