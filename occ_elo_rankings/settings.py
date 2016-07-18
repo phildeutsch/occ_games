@@ -82,8 +82,10 @@ WSGI_APPLICATION = 'occ_elo_rankings.wsgi.application'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_EMAIL_SUBJECT_PREFIX = '[Django Registration Test]'
-SEND_ACTIVATION_EMAIL = False
+SEND_ACTIVATION_EMAIL = True
 REGISTRATION_AUTO_LOGIN = True
+
+LOGIN_REDIRECT_URL = '/tf'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

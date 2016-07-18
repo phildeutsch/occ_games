@@ -5,3 +5,4 @@ htmlcov/
 .coverage
 db_backups/
 tvenv?*
+_pycache_

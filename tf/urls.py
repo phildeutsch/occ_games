@@ -26,4 +26,7 @@ urlpatterns = [
     url(r'^admin/',
         include(admin.site.urls),
         name='admin'),
+
+    url(r'^logout/$', auth_views.logout, {'next_page': '/tf'}),
+
 ]
