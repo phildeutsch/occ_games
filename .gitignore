@@ -1,3 +1,5 @@
 .login.php
 *.pyc
 db_backups/
+htmlcov/
+*.coverage
