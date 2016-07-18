@@ -3,3 +3,4 @@
 db_backups/
 htmlcov/
 *.coverage
+_pycache_

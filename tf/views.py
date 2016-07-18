@@ -5,6 +5,7 @@ from .models import TfMatch, TfPlayer, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm, UserForm
 from django.contrib.auth import authenticate, login
 import config
+import re
 
 # TODO move to central functions file
 def get_team(player1, player2):
