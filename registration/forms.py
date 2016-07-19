@@ -18,6 +18,8 @@ from .users import UserModel, UsernameField
 
 User = UserModel()
 
+import re
+
 
 class RegistrationForm(UserCreationForm):
     """
@@ -34,11 +36,21 @@ class RegistrationForm(UserCreationForm):
     """
     required_css_class = 'required'
     email = forms.EmailField(label=_("E-mail"))
+    username = forms.CharField(widget=forms.HiddenInput(), initial='username')
 
     class Meta:
         model = User
-        fields = (UsernameField(), "email")
+        fields = (UsernameField(), "email",)
 
+    def clean(self):
+        form_data = self.cleaned_data
+        try:
+            form_data['username'] = re.match(r'(.+)@.+', self.cleaned_data['email']).group(1)
+        except:
+            raise forms.ValidationError(_("Email address has has the wrong format."))
+
+        print(form_data)
+        return form_data
 
 class RegistrationFormTermsOfService(RegistrationForm):
     """

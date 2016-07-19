@@ -6,7 +6,53 @@
 {% block content %}
 <form method="post" action="">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <table class="table table-striped ">
+      <tr>
+        <td>
+          {{ form.username.label_tag }}
+        </td>
+        <td>
+          {{ form.username }}
+        </td>
+        <td>
+          {{ form.username.errors }}
+        </td>
+      </tr>
+        <tr>
+          <td>
+            {{ form.email.label_tag }}
+          </td>
+          <td>
+            {{ form.email }}
+          </td>
+          <td>
+            {{ form.email.errors }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ form.password1.label_tag }}
+          </td>
+          <td>
+            {{ form.password1 }}
+          </td>
+          <td>
+            {{ form.password1.errors }}
+          </td>
+          <tr>
+            <td>
+              {{ form.password2.label_tag }}
+            </td>
+            <td>
+              {{ form.password2 }}
+            </td>
+            <td>
+              {{ form.password2.errors }}
+            </td>
+          </tr>
+        </tr>
+      </table>
     <input type="submit" value="{% trans 'Submit' %}" />
 </form>
 {% endblock %}
