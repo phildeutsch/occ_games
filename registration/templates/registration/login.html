@@ -9,13 +9,41 @@
             <div class="col-lg-6">
 
               {% block content %}
-              <form method="post" action="">
+              <div class="login_div" align="center">
+              <form class="login_form" method="post" action="">
                   {% csrf_token %}
-                  {{ form.as_p }}
-                  <input type="submit" value="{% trans 'Log in' %}" />
+                  <br><br>
+                  {{ form.non_field_errors }}
+                  <table class="table" style="text-align:left">
+                    <tr>
+                      <td style="color: white; text-align:left; width:33%">
+                        {{ form.username.label_tag }}
+                      </td>
+                      <td>
+                        {{ form.username }}
+                      </td>
+                      <td style="color: white; text-align:left; width:33%">
+                        {{ form.username.error }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="color: white; text-align:left; width:33%">
+                        {{ form.password.label_tag }}
+                      </td>
+                      <td>
+                        {{ form.password }}
+                      </td>
+                      <td style="color: white; text-align:left; width:33%">
+                        {{ form.password.error }}
+                      </td>
+                    </tr>
+                  </table>
+                  <br>
+                  <input style="color:#000000" type="submit" value="{% trans 'Log in' %}" />
                   <input type="hidden" name="next" value="{{ next }}" />
               </form>
-              <p>{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+              <p align="center">{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+            </div>
               {% endblock %}
 
             </div>

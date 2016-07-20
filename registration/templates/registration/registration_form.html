@@ -4,57 +4,50 @@
 {% block title %}{% trans "Register for an account" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">
+<div class="login_div" align="center">
+<form class="login_form" method="post" action="">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <table class="table table-striped ">
-      <tr>
-        <td>
-          {{ form.username.label_tag }}
-        </td>
-        <td>
-          {{ form.username }}
-        </td>
-        <td>
-          {{ form.username.errors }}
-        </td>
-      </tr>
+    {{ form.username }}
+    <table class="table" style="text-align:left">
+      <br><br>
+
         <tr>
-          <td>
+          <td style="color: white; text-align:left; width:33%">
             {{ form.email.label_tag }}
           </td>
           <td>
             {{ form.email }}
           </td>
-          <td>
+          <td style="color: white; text-align:left; width:33%">
             {{ form.email.errors }}
           </td>
         </tr>
         <tr>
-          <td>
+          <td style="color: white; text-align:left; width:33%">
             {{ form.password1.label_tag }}
           </td>
           <td>
             {{ form.password1 }}
           </td>
-          <td>
+          <td style="color: white; text-align:left; width:33%">
             {{ form.password1.errors }}
           </td>
           <tr>
-            <td>
+            <td style="color: white; text-align:left; width:33%">
               {{ form.password2.label_tag }}
             </td>
             <td>
               {{ form.password2 }}
             </td>
-            <td>
+            <td style="color: white; text-align:left; width:33%">
               {{ form.password2.errors }}
             </td>
           </tr>
-        </tr>
       </table>
-    <input type="submit" value="{% trans 'Submit' %}" />
+    <input style="color:#000000" type="submit" value="{% trans 'Submit' %}" />
 </form>
+</div>
 {% endblock %}
 
 
