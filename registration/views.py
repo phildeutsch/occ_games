@@ -53,9 +53,14 @@ class RegistrationView(FormView):
         new_user.save()
 
         # check if a player already exists for that user and link if so
-        user_player = models.Player.objects.filter(first_name=new_user.first_name).filter(last_name=new_user.last_name).get()
-        user_player.user = new_user
-        user_player.save()
+        try:
+            user_player = models.Player.objects.filter(first_name=new_user.first_name).filter(last_name=new_user.last_name).get()
+            user_player.user = new_user
+            user_player.save()
+        except:
+            new_player = models.Player(first_name=new_user.first_name, last_name=new_user.last_name, full_name=new_user.first_name+' '+new_user.last_name)
+            new_player.user = new_user
+            new_player.save()
 
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it
