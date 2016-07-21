@@ -1,5 +1,4 @@
-{% load i18n %}{% trans "Account activation on" %} {{ site.name }}
-
+"OC&C games account activation"
 
 {% comment %}
 **registration/activation_email_subject.txt**
