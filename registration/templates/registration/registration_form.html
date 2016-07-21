@@ -7,7 +7,6 @@
 <div class="login_div" align="center">
 <form class="login_form" method="post" action="">
     {% csrf_token %}
-    {{ form.non_field_errors }}
     {{ form.username }}
     <table class="table" style="text-align:left">
       <br><br>
@@ -15,37 +14,34 @@
         <tr>
           <td style="color: white; text-align:left; width:33%">
             {{ form.email.label_tag }}
+            {{ form.email.errors | striptags }}
           </td>
           <td>
             {{ form.email }}
-          </td>
-          <td style="color: white; text-align:left; width:33%">
-            {{ form.email.errors }}
           </td>
         </tr>
         <tr>
           <td style="color: white; text-align:left; width:33%">
             {{ form.password1.label_tag }}
+            {{ form.password1.errors | striptags }}
           </td>
           <td>
             {{ form.password1 }}
           </td>
-          <td style="color: white; text-align:left; width:33%">
-            {{ form.password1.errors }}
-          </td>
           <tr>
             <td style="color: white; text-align:left; width:33%">
               {{ form.password2.label_tag }}
+              {{ form.password2.errors | striptags }}
             </td>
             <td>
               {{ form.password2 }}
             </td>
-            <td style="color: white; text-align:left; width:33%">
-              {{ form.password2.errors }}
-            </td>
           </tr>
       </table>
     <input style="color:#000000" type="submit" value="{% trans 'Submit' %}" />
+<p>
+    {{ form.non_field_errors | striptags }}
+</p>
 </form>
 </div>
 {% endblock %}

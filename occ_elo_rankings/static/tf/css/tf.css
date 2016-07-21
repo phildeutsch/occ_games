@@ -44,28 +44,20 @@ table.center {
  }
 
  .login_div {
-    position: absolute;
 
-    width: 700px;
-    height: 350px;
-
-    /* Center form on page horizontally & vertically */
-    top: 50%;
-    left: 25%;
-    margin-top: -150px;
-    margin-left: -150px;
+   color:white;
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   margin-top: -150px;
+   margin-left: -250px;
 }
 
 .login_form {
-    width: 700px;
-    height: 300;
+  width: 500px;
+  height: 300px;
 
-    background: #00539F;
-    border-radius: 10px;
+  background: #00539F;
+  border-radius: 10px;
 
-    font-family: Arial;
-    color: #ffffff;
-
-    margin: 00;
-    padding: 0;
 }

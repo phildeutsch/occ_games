@@ -13,7 +13,6 @@
               <form class="login_form" method="post" action="">
                   {% csrf_token %}
                   <br><br>
-                  {{ form.non_field_errors }}
                   <table class="table" style="text-align:left">
                     <tr>
                       <td style="color: white; text-align:left; width:33%">
@@ -21,9 +20,6 @@
                       </td>
                       <td>
                         {{ form.username }}
-                      </td>
-                      <td style="color: white; text-align:left; width:33%">
-                        {{ form.username.error }}
                       </td>
                     </tr>
                     <tr>
@@ -33,17 +29,21 @@
                       <td>
                         {{ form.password }}
                       </td>
-                      <td style="color: white; text-align:left; width:33%">
-                        {{ form.password.error }}
-                      </td>
                     </tr>
                   </table>
                   <br>
                   <input style="color:#000000" type="submit" value="{% trans 'Log in' %}" />
                   <input type="hidden" name="next" value="{{ next }}" />
-              </form>
-              <p align="center">{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+                  <p style="list-style: none">
+                    {{ form.non_field_errors | striptags }}
+                    {{ form.username.error | striptags }}
+                    {{ form.password.error | striptags }}
+                  </p>
+
+            </form>
+            <p align="center" style="color:#000000">{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
             </div>
+
               {% endblock %}
 
             </div>
