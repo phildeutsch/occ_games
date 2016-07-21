@@ -16,7 +16,7 @@ def elo_change(player, elo2, score1, score2, k=32):
     player.save()
 
 # Create your models here.
-class TfPlayer(models.Model):
+class Player(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
@@ -32,7 +32,7 @@ class TfPlayer(models.Model):
         return self.full_name
 
 class TfTeam(models.Model):
-    players = models.ManyToManyField(TfPlayer)
+    players = models.ManyToManyField(Player)
     team_matches_played = models.IntegerField(default=0)
     team_matches_won = models.IntegerField(default=0)
     is_single_player = models.BooleanField(default=False)

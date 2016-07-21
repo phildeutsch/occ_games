@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import TfMatch, TfPlayer, TfTeam
+from .models import TfMatch, Player, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm, UserForm
 from django.contrib.auth import authenticate, login
 import config
@@ -28,7 +28,7 @@ def get_team(player1, player2):
 
 def home(request):
     matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
-    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
+    players_ordered = Player.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
     modal_js = ''
     if request.user.is_authenticated():
         username = request.user.username
@@ -151,7 +151,7 @@ def team_league(request):
     return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
 
 def player_league(request):
-    players_ordered = TfPlayer.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
+    players_ordered = Player.objects.all().filter(id__gt=0).order_by('-player_elo')[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/player_league.html", {'players'        : players_ordered})
 

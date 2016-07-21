@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import TfPlayer
+from .models import Player
 from django.contrib.auth.models import User
 import re
 
@@ -33,7 +33,7 @@ class UserForm(forms.ModelForm):
 
 class TfNewPlayerForm(forms.ModelForm):
     class Meta:
-        model = TfPlayer
+        model = Player
         fields = ('first_name', 'last_name',)
 
     def clean_first_name(self):
@@ -61,14 +61,14 @@ class TfNewPlayerForm(forms.ModelForm):
             self.add_error(None, ValidationError("Please enter a first and last name"))
 
         full_name = first_name + ' ' + last_name
-        if TfPlayer.objects.all().filter(full_name__exact=full_name).exists():
+        if Player.objects.all().filter(full_name__exact=full_name).exists():
             self.add_error(None, ValidationError("This player is already in the database"))
 
         return form_data
 
 
 class TfNewMatchForm(forms.Form):
-    players = TfPlayer.objects.order_by('last_name')
+    players = Player.objects.order_by('last_name')
 
     team1_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
     team1_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
