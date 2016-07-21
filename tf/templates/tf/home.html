@@ -61,14 +61,20 @@
                     <h3><br></h3>
 
                     <p>
-                        <button type="button" class="btn btn-info btn tf_btn" data-toggle="modal"
-                                data-target="#enter_match_dialog">Enter result
-                        </button>
+                        {% if user.is_authenticated  %}
+                        <button type="button" class="btn btn-info btn tf_btn" data-toggle="modal" data-target="#enter_match_dialog">Enter result</button>
+                        {% else %}
+                          <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal" data-target="#please_sign_in">Enter result</button>
+                        {% endif %}
+
                     </p>
                     <p>
-                        <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal"
-                                data-target="#enter_player_dialog">Add player
-                        </button>
+                        {% if user.is_authenticated  %}
+                          <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal" data-target="#enter_player_dialog">Add player</button>
+                        {% else %}
+                          <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal" data-target="#please_sign_in">Add player</button>
+                        {% endif %}
+
                     </p>
                     <p><a type="button" class="btn btn-info btn-lg tf_btn" href="mailto:ocandctf@gmail.com" target="_blank">Contact</a></p>
                 </div>
@@ -205,6 +211,23 @@
                     <button type="submit" class="save btn btn-default">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div id="please_sign_in" class="modal fade" role="dialog">
+    <form method="POST" class="post-form">{% csrf_token %}
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <p style="text-align:center">
+                <br>
+              Please sign in at the top of the page.
+              <br><br>
+            </p>
             </div>
 
         </div>
