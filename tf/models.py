@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.contrib.auth.models import User
 from django.db import models
 import os
 import re
@@ -24,6 +24,7 @@ class Player(models.Model):
     player_elo = models.IntegerField(default=config.DEFAULT_ELO)
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
+    user = models.OneToOneField(User, null=True)
 
     def __str__(self):
         return self.full_name

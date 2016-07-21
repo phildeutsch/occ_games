@@ -12,6 +12,9 @@ from django.utils.module_loading import import_string
 from django.views.decorators.debug import sensitive_post_parameters
 
 from registration.forms import ResendActivationForm
+from django.contrib.auth.models import User
+from tf import models
+import re
 
 REGISTRATION_FORM_PATH = getattr(settings, 'REGISTRATION_FORM',
                                  'registration.forms.RegistrationForm')
@@ -43,6 +46,16 @@ class RegistrationView(FormView):
     def form_valid(self, form):
         new_user = self.register(form)
         success_url = self.get_success_url(new_user)
+
+        # Add first and last name
+        new_user.first_name = re.match(r'(.+)\.(.+)@.+', form.cleaned_data['email']).group(1).capitalize()
+        new_user.last_name = re.match(r'(.+)\.(.+)@.+', form.cleaned_data['email']).group(2).capitalize()
+        new_user.save()
+
+        # check if a player already exists for that user and link if so
+        user_player = models.Player.objects.filter(first_name=new_user.first_name).filter(last_name=new_user.last_name).get()
+        user_player.user = new_user
+        user_player.save()
 
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it

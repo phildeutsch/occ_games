@@ -94,8 +94,6 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 LOGIN_REDIRECT_URL = '/tf'
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # Procution
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # Debug
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'ocandctf@gmail.com'
@@ -106,10 +104,13 @@ EMAIL_PORT = 587
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if os.getcwd() == '/app':
+if os.getcwd() == '/app':   # Production
     host = 'ec2-54-204-8-138.compute-1.amazonaws.com'
-else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:                       # Development
     host = 'localhost'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 DATABASES = {
     'default': {

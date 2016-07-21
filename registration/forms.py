@@ -44,12 +44,22 @@ class RegistrationForm(UserCreationForm):
 
     def clean(self):
         form_data = self.cleaned_data
+
         try:
-            form_data['username'] = re.match(r'(.+)@.+', self.cleaned_data['email']).group(1)
+            occ_domain = re.match(r'.+@(.+)', self.cleaned_data['email']).group(1)
         except:
             raise forms.ValidationError(_("Email address has has the wrong format."))
 
-        print(form_data)
+        if occ_domain != 'occstrategy.com':
+            raise forms.ValidationError(_("Please use an occstrategy.com email address."))
+
+        try:
+            form_data['username'] = re.match(r'(.+)@.+', self.cleaned_data['email']).group(1)
+            first_name = re.match(r'(.+)\.(.+)@.+', self.cleaned_data['email']).group(1)
+            last_name = re.match(r'(.+)\.(.+)@.+', self.cleaned_data['email']).group(2)
+        except:
+            raise forms.ValidationError(_("Email address has has the wrong format."))
+
         return form_data
 
 class RegistrationFormTermsOfService(RegistrationForm):
