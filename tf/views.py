@@ -180,3 +180,65 @@ def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()
 
     return render(request, "tf/games.html", {'matches' : matches_ordered})
+
+def enter_tf_match(request):
+    if request.method == "POST":
+        match_form = TfNewMatchForm(request.POST, request=request)
+        if match_form.is_valid():
+            team1_player1 = match_form.cleaned_data['team1_player1']
+            team1_player2 = match_form.cleaned_data['team1_player2']
+            team1_score = match_form.cleaned_data['team1_score']
+
+            team2_player1 = match_form.cleaned_data['team2_player1']
+            team2_player2 = match_form.cleaned_data['team2_player2']
+            team2_score = match_form.cleaned_data['team2_score']
+
+            team1 = get_team(team1_player1, team1_player2)
+            team2 = get_team(team2_player1, team2_player2)
+
+            invisible = match_form.cleaned_data['invisible']
+
+            if team1.id < team2.id:
+                scores = str(team1_score) + ' ' + str(team2_score)
+            else:
+                scores = str(team2_score) + ' ' + str(team1_score)
+
+            match = TfMatch(scores=scores,
+                            played_date=timezone.now(), invisible=invisible)
+            match.save()
+            match.teams.add(team1, team2)
+            match.save()
+
+            team1.team_matches_played += 1
+            team2.team_matches_played += 1
+
+            team1_player1.matches_played += 1
+            team1_player2.matches_played += 1
+            team2_player1.matches_played += 1
+            team2_player2.matches_played += 1
+
+            if team1_score > team2_score:
+                team1_player1.matches_won += 1
+                team1_player2.matches_won += 1
+                team1.team_matches_won += 1
+            else:
+                team2_player1.matches_won += 1
+                team2_player2.matches_won += 1
+                team2.team_matches_won += 1
+
+            team1_player1.save()
+            team1_player2.save()
+            team2_player1.save()
+            team2_player2.save()
+
+            team1.save()
+            team2.save()
+
+            match.update_elos()
+
+            return redirect('home')
+
+    else:
+        match_form = match_form = TfNewMatchForm()
+
+    return render(request, "tf/enter_tf_match.html", {'match_form' : match_form})

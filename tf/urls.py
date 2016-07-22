@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^rules/$', views.rules, name='rules'),
     url(r'^register/$', views.register, name='register'),
     url(r'^games/$', views.games, name='games'),
+    url(r'^enter_tf_match/$', views.enter_tf_match, name='enter_tf_match'),
 
     url(r'^accounts/',
         include('registration.backends.default.urls')),

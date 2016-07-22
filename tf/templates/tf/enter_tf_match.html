@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<section id="enter_tf_match">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+              <form method="POST" class="post-form" name="add_match_button">{% csrf_token %}
+                              <table class="table table-striped ">
+                                  <tr>
+                                      <th></th>
+                                      <th>Team 1</th>
+                                      <th>Team 2</th>
+                                  </tr>
+                                  <tr>
+                                      <div class="fieldWrapper">
+                                        <td>
+                                          {{ match_form.team1_player1.label_tag }}
+                                        </td>
+                                        <td>
+                                          {{ match_form.team1_player1.errors }}
+                                          {{ match_form.team1_player1 }}
+                                        </td>
+                                        <td>
+                                          {{ match_form.team2_player1.errors }}
+                                          {{ match_form.team2_player1 }}
+                                        </td>
+                                      </div>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        {{ match_form.team1_player2.label_tag }}
+                                      </td>
+                                      <td>
+                                        {{ match_form.team1_player2.errors }}
+                                        {{ match_form.team1_player2 }}
+                                      </td>
+                                      <td>
+                                        {{ match_form.team2_player2.errors }}
+                                        {{ match_form.team2_player2 }}
+                                      </td>
+                                    </div>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      {{ match_form.team1_score.label_tag }}
+                                    </td>
+                                    <td>
+                                      {{ match_form.team1_score.errors }}
+                                      {{ match_form.team1_score }}
+                                    </td>
+                                    <td>
+                                      {{ match_form.team2_score.errors }}
+                                      {{ match_form.team2_score }}
+                                    </td>
+                                  </div>
+                                </tr>
+                                <tr>
+                                <td style="font-weight: bold;">
+                                  Hidden:
+                                </td>
+                                <td>
+                                  {{ match_form.invisible }}
+                                </td>
+                                <td></td>
+                              </tr>
+                                  <!--<tr>-->
+                                      <!--<td>-->
+                                          <!--<button type="submit" class="save btn btn-default">Save</button>-->
+                                      <!--</td>-->
+                                      <!--<td>-->
+                                          <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                                      <!--</td>-->
+                                  <!--</tr>-->
+                              </table>
+                          </div>
+                          <div>
+                              {% if match_form.errors %}
+                                    {% for error in match_form.non_field_errors %}
+                                        <p> {{ error }} </p>
+                                    {% endfor %}
+                              {% endif %}
+                          </div>
+                          <div>
+                              <button type="submit" class="save btn btn-default">Save</button>
+                              <button type="button" class="btn btn-default">Close</button>
+                          </div>
+              </form>
+           </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
