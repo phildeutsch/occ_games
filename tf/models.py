@@ -9,10 +9,10 @@ import config
 # TODO Move this to separate functions file
 def elo_change(player, elo2, score1, score2, k=32):
     s = 1 if score1 > score2 else 0 if score2 > score1 else 0.5
-    e = 1 / (1 + 10 ** ((elo2-player.player_elo)/400))
+    e = 1 / (1 + 10 ** ((elo2-player.tf_player_elo)/400))
     delta = k * (s - e)
 
-    player.player_elo += delta
+    player.tf_player_elo += delta
     player.save()
 
 # Create your models here.
@@ -21,7 +21,7 @@ class Player(models.Model):
     last_name = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
-    player_elo = models.IntegerField(default=config.DEFAULT_ELO)
+    tf_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
     matches_played = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
     user = models.OneToOneField(User, null=True)
@@ -40,9 +40,9 @@ class TfTeam(models.Model):
 
     def team_elo(self):
         if self.is_single_player:
-            return int(self.players.order_by('id')[0].player_elo)
+            return int(self.players.order_by('id')[0].tf_player_elo)
         else:
-            return int((self.players.order_by('id')[1].player_elo + self.players.order_by('id')[0].player_elo) / 2)
+            return int((self.players.order_by('id')[1].tf_player_elo + self.players.order_by('id')[0].tf_player_elo) / 2)
 
     def prettyprint(self):
         if self.is_single_player:
@@ -109,17 +109,17 @@ class TfMatch(models.Model):
 
             print("Before")
             print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].player_elo) + ')', end='')
+            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].tf_player_elo) + ')', end='')
             if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].player_elo) + '): ', end='')
+                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(winner.team_elo())))
 
             print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].player_elo) + ')', end='')
+            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
             if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].player_elo) + '): ', end='')
+                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(loser.team_elo())))
@@ -132,27 +132,27 @@ class TfMatch(models.Model):
         delta_loser = k * (0 - e)
 
         for p in winner.players.all():
-            p.player_elo += delta_winner
+            p.tf_player_elo += delta_winner
             p.save()
 
         for p in loser.players.all():
-            p.player_elo += delta_loser
+            p.tf_player_elo += delta_loser
             p.save()
 
         if debug:
             print("After")
             print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].player_elo) + ')', end='')
+            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].tf_player_elo) + ')', end='')
             if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].player_elo) + '): ', end='')
+                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(winner.team_elo())))
 
             print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].player_elo) + ')', end='')
+            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
             if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].player_elo) + '): ', end='')
+                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
             print(str(round(loser.team_elo())))
