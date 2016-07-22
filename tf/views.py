@@ -2,7 +2,7 @@ from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import TfMatch, Player, TfTeam
-from .forms import TfNewPlayerForm, TfNewMatchForm, UserForm
+from .forms import TfNewPlayerForm, TfNewMatchForm
 from django.contrib.auth import authenticate, login
 import config
 import re
@@ -53,7 +53,7 @@ def home(request):
 
         elif 'add_match-team1_score' in request.POST:
             player_form = TfNewPlayerForm(prefix='add_player')
-            match_form = TfNewMatchForm(request.POST, prefix='add_match')
+            match_form = TfNewMatchForm(request.POST, prefix='add_match', request=request)
             if match_form.is_valid():
                 team1_player1 = match_form.cleaned_data['team1_player1']
                 team1_player2 = match_form.cleaned_data['team1_player2']

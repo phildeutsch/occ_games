@@ -4,33 +4,6 @@ from .models import Player
 from django.contrib.auth.models import User
 import re
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-
-    def clean(self):
-        form_data = self.cleaned_data
-        try:
-            username = self.cleaned_data['username']
-            password = self.cleaned_data['password']
-
-            if username == '':
-                self.add_error(None, ValidationError("Please enter a username"))
-
-            if username in [u.username for u in User.objects.all()]:
-                raise forms.ValidationError(u'Username "%s" is already in use.' % username)
-
-            if re.search(r'@occstrategy.com$', username) is None:
-                raise forms.ValidationError(u'Please use an OC&C email address')
-
-        except KeyError:
-            self.add_error(None, ValidationError("Please enter all information"))
-
-        return form_data
-
 class TfNewPlayerForm(forms.ModelForm):
     class Meta:
         model = Player
@@ -68,6 +41,10 @@ class TfNewPlayerForm(forms.ModelForm):
 
 
 class TfNewMatchForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(TfNewMatchForm, self).__init__(*args, **kwargs)
+
     players = Player.objects.order_by('last_name')
 
     team1_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
@@ -93,6 +70,10 @@ class TfNewMatchForm(forms.Form):
         invisible = form_data['invisible']
 
         player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
+
+        player_users = [x.user for x in player_list]
+        if self.request.user not in player_users:
+            self.add_error(None, ValidationError("You can only add a game you played in"))
 
         if len(list(player_list)) != len(set(player_list)):
             self.add_error(None, ValidationError("Each player can only play once"))
