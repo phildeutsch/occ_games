@@ -29,7 +29,6 @@ def get_team(player1, player2):
 def home(request):
     matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
     players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
-    modal_js = ''
     if request.user.is_authenticated():
         username = request.user.username
     else:
@@ -40,10 +39,7 @@ def home(request):
 
     return render(request, "tf/home.html", {'user'         : request.user,
                                             'matches'      : matches,
-                                            'players'      : players_ordered,
-                                            'match_form'   : match_form,
-                                            'player_form'  : player_form,
-                                            'modal_js'     : modal_js})
+                                            'players'      : players_ordered})
 
 def player_new(request):
     if request.method == "POST":
