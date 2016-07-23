@@ -35,93 +35,6 @@ def home(request):
     else:
         username = 'Log In'
 
-    if request.method == 'POST':
-
-        if 'add_player-first_name' in request.POST:
-            match_form = TfNewMatchForm(prefix='add_match')
-            player_form = TfNewPlayerForm(request.POST, prefix='add_player')
-            if player_form.is_valid():
-                player = player_form.save(commit=False)
-                player.full_name = player.first_name + ' ' + player.last_name
-                player.save()
-                return redirect('home')
-            else:
-                modal_js='<script type=\"text/javascript\">' \
-                         '$(window).load(function(){' \
-                         '$(\'#enter_player_dialog\').modal(\'show\');' \
-                         '});</script>'
-
-        elif 'add_match-team1_score' in request.POST:
-            player_form = TfNewPlayerForm(prefix='add_player')
-            match_form = TfNewMatchForm(request.POST, prefix='add_match', request=request)
-            if match_form.is_valid():
-                team1_player1 = match_form.cleaned_data['team1_player1']
-                team1_player2 = match_form.cleaned_data['team1_player2']
-                team1_score = match_form.cleaned_data['team1_score']
-
-                team2_player1 = match_form.cleaned_data['team2_player1']
-                team2_player2 = match_form.cleaned_data['team2_player2']
-                team2_score = match_form.cleaned_data['team2_score']
-
-                team1 = get_team(team1_player1, team1_player2)
-                team2 = get_team(team2_player1, team2_player2)
-
-                invisible = match_form.cleaned_data['invisible']
-
-                if team1.id < team2.id:
-                    scores = str(team1_score) + ' ' + str(team2_score)
-                else:
-                    scores = str(team2_score) + ' ' + str(team1_score)
-
-                match = TfMatch(scores=scores,
-                                played_date=timezone.now(), invisible=invisible)
-                match.save()
-                match.teams.add(team1, team2)
-                match.save()
-
-                team1.team_matches_played += 1
-                team2.team_matches_played += 1
-
-                team1_player1.matches_played += 1
-                team1_player2.matches_played += 1
-                team2_player1.matches_played += 1
-                team2_player2.matches_played += 1
-
-                if team1_score > team2_score:
-                    team1_player1.matches_won += 1
-                    team1_player2.matches_won += 1
-                    team1.team_matches_won += 1
-                else:
-                    team2_player1.matches_won += 1
-                    team2_player2.matches_won += 1
-                    team2.team_matches_won += 1
-
-                team1_player1.save()
-                team1_player2.save()
-                team2_player1.save()
-                team2_player2.save()
-
-                team1.save()
-                team2.save()
-
-                match.update_elos()
-
-                return redirect('home')
-            else:
-                modal_js='<script type=\"text/javascript\">' \
-                         '$(window).load(function(){' \
-                         '$(\'#enter_match_dialog\').modal(\'show\');' \
-                         '});</script>'
-
-        elif 'username' in request.POST:
-            username = request.POST['username']
-            password = request.POST['password']
-
-            # Use Django's machinery to attempt to see if the username/password
-            # combination is valid - a User object is returned if it is.
-            user = authenticate(username=username, password=password)
-            login(request, user)
-
     match_form = TfNewMatchForm(prefix='add_match')
     player_form = TfNewPlayerForm(prefix='add_player')
 
@@ -131,7 +44,6 @@ def home(request):
                                             'match_form'   : match_form,
                                             'player_form'  : player_form,
                                             'modal_js'     : modal_js})
-
 
 def player_new(request):
     if request.method == "POST":
@@ -180,6 +92,19 @@ def games(request):
     matches_ordered = TfMatch.objects.order_by('-played_date').all()
 
     return render(request, "tf/games.html", {'matches' : matches_ordered})
+
+def enter_player(request):
+    if request.method == "POST":
+        player_form = TfNewPlayerForm(request.POST)
+        if player_form.is_valid():
+            player = player_form.save(commit=False)
+            player.full_name = player.first_name + ' ' + player.last_name
+            player.save()
+            return redirect('home')
+    else:
+        player_form = TfNewPlayerForm()
+
+    return render(request, "tf/enter_player.html", {'player_form' : player_form})
 
 def enter_tf_match(request):
     if request.method == "POST":
