@@ -133,18 +133,18 @@ def enter_tf_match(request):
             team1.team_matches_played += 1
             team2.team_matches_played += 1
 
-            team1_player1.matches_played += 1
-            team1_player2.matches_played += 1
-            team2_player1.matches_played += 1
-            team2_player2.matches_played += 1
+            team1_player1.tf_matches_played += 1
+            team1_player2.tf_matches_played += 1
+            team2_player1.tf_matches_played += 1
+            team2_player2.tf_matches_played += 1
 
             if team1_score > team2_score:
-                team1_player1.matches_won += 1
-                team1_player2.matches_won += 1
+                team1_player1.tf_matches_won += 1
+                team1_player2.tf_matches_won += 1
                 team1.team_matches_won += 1
             else:
-                team2_player1.matches_won += 1
-                team2_player2.matches_won += 1
+                team2_player1.tf_matches_won += 1
+                team2_player2.tf_matches_won += 1
                 team2.team_matches_won += 1
 
             team1_player1.save()

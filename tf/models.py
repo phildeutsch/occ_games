@@ -21,10 +21,12 @@ class Player(models.Model):
     last_name = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
-    tf_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
-    matches_played = models.IntegerField(default=0)
-    matches_won = models.IntegerField(default=0)
     user = models.OneToOneField(User, null=True)
+
+    # TF attributes
+    tf_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
+    tf_matches_played = models.IntegerField(default=0)
+    tf_matches_won = models.IntegerField(default=0)
 
     def __str__(self):
         return self.full_name
