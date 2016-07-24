@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 import config
 import re
+import datetime
 
 # TODO move to central functions file
 def get_team(player1, player2):
@@ -30,6 +31,13 @@ def get_team(player1, player2):
 def home(request):
     matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
     players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
+
+    cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
+    players_ordered = (Player.objects.all().
+                        filter(id__gt=0).
+                        filter(tf_last_played__gt=cutoff_date).
+                        order_by('-tf_player_elo')[:config.LEAGUE_LENGTH])
+
     if request.user.is_authenticated():
         username = request.user.username
     else:
