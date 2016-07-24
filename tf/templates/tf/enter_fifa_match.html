@@ -16,43 +16,43 @@
                                   <tr>
                                       <div class="fieldWrapper">
                                         <td>
-                                          {{ match_form.team1_player1.label_tag }}
+                                          {{ fifa_match_form.team1_player1.label_tag }}
                                         </td>
                                         <td>
-                                          {{ match_form.team1_player1.errors }}
-                                          {{ match_form.team1_player1 }}
+                                          {{ fifa_match_form.team1_player1.errors }}
+                                          {{ fifa_match_form.team1_player1 }}
                                         </td>
                                         <td>
-                                          {{ match_form.team2_player1.errors }}
-                                          {{ match_form.team2_player1 }}
+                                          {{ fifa_match_form.team2_player1.errors }}
+                                          {{ fifa_match_form.team2_player1 }}
                                         </td>
                                       </div>
                                     </tr>
                                     <tr>
                                       <td>
-                                        {{ match_form.team1_player2.label_tag }}
+                                        {{ fifa_match_form.team1_player2.label_tag }}
                                       </td>
                                       <td>
-                                        {{ match_form.team1_player2.errors }}
-                                        {{ match_form.team1_player2 }}
+                                        {{ fifa_match_form.team1_player2.errors }}
+                                        {{ fifa_match_form.team1_player2 }}
                                       </td>
                                       <td>
-                                        {{ match_form.team2_player2.errors }}
-                                        {{ match_form.team2_player2 }}
+                                        {{ fifa_match_form.team2_player2.errors }}
+                                        {{ fifa_match_form.team2_player2 }}
                                       </td>
                                     </div>
                                   </tr>
                                   <tr>
                                     <td>
-                                      {{ match_form.team1_score.label_tag }}
+                                      {{ fifa_match_form.team1_score.label_tag }}
                                     </td>
                                     <td>
-                                      {{ match_form.team1_score.errors }}
-                                      {{ match_form.team1_score }}
+                                      {{ fifa_match_form.team1_score.errors }}
+                                      {{ fifa_match_form.team1_score }}
                                     </td>
                                     <td>
-                                      {{ match_form.team2_score.errors }}
-                                      {{ match_form.team2_score }}
+                                      {{ fifa_match_form.team2_score.errors }}
+                                      {{ fifa_match_form.team2_score }}
                                     </td>
                                   </div>
                                 </tr>
@@ -67,8 +67,8 @@
                               </table>
                           </div>
                           <div>
-                              {% if match_form.errors %}
-                                    {% for error in match_form.non_field_errors %}
+                              {% if fifa_match_form.errors %}
+                                    {% for error in fifa_match_form.non_field_errors %}
                                         <p> {{ error }} </p>
                                     {% endfor %}
                               {% endif %}

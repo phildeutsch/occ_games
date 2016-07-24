@@ -1,8 +1,8 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import TfMatch, Player, Team
-from .forms import TfNewPlayerForm, TfNewMatchForm
+from .models import TfMatch, FifaMatch, Player, Team
+from .forms import TfNewPlayerForm, TfNewMatchForm, FifaNewMatchForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 import config
@@ -82,13 +82,16 @@ def register(request):
     return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
 def games(request):
-    # matches_ordered = TfMatch.objects.order_by('-played_date').all()
     player = request.user.player
-    matches = [x.tfmatch_set.all() for x in player.team_set.all()]
-    matches = [item for sublist in matches for item in sublist]
-    matches = sorted(matches, key=lambda x:x.played_date, reverse=True)
+    tf_matches = [x.tfmatch_set.all() for x in player.team_set.all()]
+    tf_matches = [item for sublist in tf_matches for item in sublist]
+    tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
 
-    return render(request, "tf/games.html", {'matches' : matches})
+    fifa_matches = [x.fifamatch_set.all() for x in player.team_set.all()]
+    fifa_matches = [item for sublist in fifa_matches for item in sublist]
+    fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
+
+    return render(request, "tf/games.html", {'tf_matches' : tf_matches, 'fifa_matches' : fifa_matches})
 
 def enter_player(request):
     if request.method == "POST":
@@ -158,6 +161,65 @@ def enter_tf_match(request):
             return redirect('home')
 
     else:
-        match_form = match_form = TfNewMatchForm()
+        match_form = TfNewMatchForm()
 
     return render(request, "tf/enter_tf_match.html", {'tf_match_form' : match_form})
+
+def enter_fifa_match(request):
+    if request.method == "POST":
+        match_form = FifaNewMatchForm(request.POST, request=request)
+        if match_form.is_valid():
+            team1_player1 = match_form.cleaned_data['team1_player1']
+            team1_player2 = match_form.cleaned_data['team1_player2']
+            team1_score = match_form.cleaned_data['team1_score']
+
+            team2_player1 = match_form.cleaned_data['team2_player1']
+            team2_player2 = match_form.cleaned_data['team2_player2']
+            team2_score = match_form.cleaned_data['team2_score']
+
+            team1 = get_team(team1_player1, team1_player2)
+            team2 = get_team(team2_player1, team2_player2)
+
+            if team1.id < team2.id:
+                scores = str(team1_score) + ' ' + str(team2_score)
+            else:
+                scores = str(team2_score) + ' ' + str(team1_score)
+
+            match = FifaMatch(scores=scores, played_date=timezone.now())
+            match.save()
+            match.teams.add(team1, team2)
+            match.save()
+
+            team1.fifa_team_matches_played += 1
+            team2.fifa_team_matches_played += 1
+
+            team1_player1.fifa_matches_played += 1
+            team1_player2.fifa_matches_played += 1
+            team2_player1.fifa_matches_played += 1
+            team2_player2.fifa_matches_played += 1
+
+            if team1_score > team2_score:
+                team1_player1.fifa_matches_won += 1
+                team1_player2.fifa_matches_won += 1
+                team1.fifa_team_matches_won += 1
+            else:
+                team2_player1.fifa_matches_won += 1
+                team2_player2.fifa_matches_won += 1
+                team2.fifa_team_matches_won += 1
+
+            team1_player1.save()
+            team1_player2.save()
+            team2_player1.save()
+            team2_player2.save()
+
+            team1.save()
+            team2.save()
+
+            match.update_elos()
+
+            return redirect('home')
+
+    else:
+        match_form = FifaNewMatchForm()
+
+    return render(request, "tf/enter_fifa_match.html", {'fifa_match_form' : match_form})
