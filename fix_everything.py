@@ -13,7 +13,7 @@ for p in players:
 # Go through all TF  matches and updated elOs
 matches = models.TfMatch.objects.order_by('played_date').all()
 for m in matches:
-    m.update_elos(debug=False)
+    m.update_elos(debug=True)
     players = [x.players.all() for x in m.teams.all()]
     players = [item for sublist in players for item in sublist]
     for p in players:

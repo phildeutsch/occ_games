@@ -60,6 +60,9 @@ class RegistrationForm(UserCreationForm):
         except:
             raise forms.ValidationError(_("Email address has has the wrong format."))
 
+        if form_data['username'] in [x.username for x in User.objects.all()]:
+            raise forms.ValidationError(_("User already signed up."))
+
         return form_data
 
 class RegistrationFormTermsOfService(RegistrationForm):
