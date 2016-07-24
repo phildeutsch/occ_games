@@ -9,7 +9,6 @@ import config
 import re
 import datetime
 
-# TODO move to central functions file
 def get_team(player1, player2):
     if player1.id > player2.id:
         tmp = player1
@@ -30,21 +29,18 @@ def get_team(player1, player2):
 
 def home(request):
     cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
-    players_ordered = (Player.objects.all().
+    tf_players_ordered = (Player.objects.all().
                         filter(id__gt=0).
                         filter(tf_last_played__gt=cutoff_date).
                         order_by('-tf_player_elo')[:config.LEAGUE_LENGTH])
+    fifa_players_ordered = (Player.objects.all().
+                        filter(id__gt=0).
+                        filter(fifa_last_played__gt=cutoff_date).
+                        order_by('-fifa_player_elo')[:config.LEAGUE_LENGTH])
 
-    if request.user.is_authenticated():
-        username = request.user.username
-    else:
-        username = 'Log In'
-
-    match_form = TfNewMatchForm(prefix='add_match')
-    player_form = TfNewPlayerForm(prefix='add_player')
-
-    return render(request, "tf/home.html", {'user'         : request.user,
-                                            'players'      : players_ordered})
+    return render(request, "tf/home.html", {'user'                 : request.user,
+                                            'fifa_players_ordered' : fifa_players_ordered,
+                                            'tf_players_ordered'   : tf_players_ordered})
 
 def player_new(request):
     if request.method == "POST":
@@ -58,15 +54,11 @@ def player_new(request):
         new_player_form = TfNewPlayerForm()
     return render(request, 'tf/add_player.html', {'form': new_player_form})
 
-def team_league(request):
-    teams_ordered = sorted(Team.objects.all().filter(is_single_player__exact=False), key=lambda x:-x.team_elo())[:config.LEAGUE_LENGTH]
-
-    return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
-
 def player_league(request):
-    players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
+    tf_players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
+    fifa_players_ordered = Player.objects.all().filter(id__gt=0).order_by('-fifa_player_elo')[:config.LEAGUE_LENGTH]
 
-    return render(request, "tf/player_league.html", {'players'        : players_ordered})
+    return render(request, "tf/player_league.html", {'tf_players_ordered':tf_players_ordered, 'fifa_players_ordered':fifa_players_ordered})
 
 def faq(request):
     return render(request, "tf/faq.html",{})
