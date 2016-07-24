@@ -41,7 +41,7 @@ class Player(models.Model):
     def __unicode__(self):
         return self.full_name
 
-class TfTeam(models.Model):
+class Team(models.Model):
     players = models.ManyToManyField(Player)
     is_single_player = models.BooleanField(default=False)
 
@@ -73,7 +73,7 @@ class TfMatch(models.Model):
     class Meta:
         verbose_name_plural = "tf matches"
 
-    teams = models.ManyToManyField(TfTeam)
+    teams = models.ManyToManyField(Team)
     scores = models.CharField(max_length=5, default="0 0")
 
     played_date = models.DateTimeField('date played')

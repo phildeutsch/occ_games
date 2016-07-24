@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import TfMatch, Player, TfTeam
+from .models import TfMatch, Player, Team
 from .forms import TfNewPlayerForm, TfNewMatchForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -16,9 +16,9 @@ def get_team(player1, player2):
         player1 = player2
         player2 = tmp
     try:
-        team = TfTeam.objects.filter(players=player1).filter(players=player2)[0]
+        team = Team.objects.filter(players=player1).filter(players=player2)[0]
     except IndexError:
-        team = TfTeam()
+        team = Team()
         team.save()
         if player1.id != 0:
             team.players.add(player1)
@@ -59,7 +59,7 @@ def player_new(request):
     return render(request, 'tf/add_player.html', {'form': new_player_form})
 
 def team_league(request):
-    teams_ordered = sorted(TfTeam.objects.all().filter(is_single_player__exact=False), key=lambda x:-x.team_elo())[:config.LEAGUE_LENGTH]
+    teams_ordered = sorted(Team.objects.all().filter(is_single_player__exact=False), key=lambda x:-x.team_elo())[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/team_league.html", {'teams'        : teams_ordered})
 
@@ -92,7 +92,7 @@ def register(request):
 def games(request):
     # matches_ordered = TfMatch.objects.order_by('-played_date').all()
     player = request.user.player
-    matches = [x.tfmatch_set.all() for x in player.tfteam_set.all()]
+    matches = [x.tfmatch_set.all() for x in player.team_set.all()]
     matches = [item for sublist in matches for item in sublist]
     matches = sorted(matches, key=lambda x:x.played_date, reverse=True)
 
@@ -136,8 +136,8 @@ def enter_tf_match(request):
             match.teams.add(team1, team2)
             match.save()
 
-            team1.team_matches_played += 1
-            team2.team_matches_played += 1
+            team1.tf_team_matches_played += 1
+            team2.tf_team_matches_played += 1
 
             team1_player1.tf_matches_played += 1
             team1_player2.tf_matches_played += 1
@@ -147,11 +147,11 @@ def enter_tf_match(request):
             if team1_score > team2_score:
                 team1_player1.tf_matches_won += 1
                 team1_player2.tf_matches_won += 1
-                team1.team_matches_won += 1
+                team1.tf_team_matches_won += 1
             else:
                 team2_player1.tf_matches_won += 1
                 team2_player2.tf_matches_won += 1
-                team2.team_matches_won += 1
+                team2.tf_team_matches_won += 1
 
             team1_player1.save()
             team1_player2.save()
