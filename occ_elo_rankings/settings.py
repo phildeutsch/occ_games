@@ -115,9 +115,9 @@ else:                       # Development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd94l1v7u7g00n',
-        'USER': 'yxosccblbhfdcy',
-        'PASSWORD': '-ymHB7aa5xYg22jt8Fd2e3SIgi',
+        'NAME': 'd13s5r5bpncpjb',
+        'USER': 'awqniepdsmevdy',
+        'PASSWORD': 'NE2w2lY4s7lOBDWo0SdKiFbO8F',
         'HOST': host,
         'PORT': '5432',
     }

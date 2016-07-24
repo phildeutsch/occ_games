@@ -3,6 +3,8 @@
 import config
 from tf import models
 
+print("fixing everything...")
+
 # Set default ELO for each player
 players = models.Player.objects.all()
 for p in players:
