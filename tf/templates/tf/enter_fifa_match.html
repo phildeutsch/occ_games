@@ -2,7 +2,7 @@
 
 {% block content%}
 
-<section id="enter_tf_match">
+<section id="enter_fifa_match">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -16,43 +16,43 @@
                                   <tr>
                                       <div class="fieldWrapper">
                                         <td>
-                                          {{ tf_match_form.team1_player1.label_tag }}
+                                          {{ match_form.team1_player1.label_tag }}
                                         </td>
                                         <td>
-                                          {{ tf_match_form.team1_player1.errors }}
-                                          {{ tf_match_form.team1_player1 }}
+                                          {{ match_form.team1_player1.errors }}
+                                          {{ match_form.team1_player1 }}
                                         </td>
                                         <td>
-                                          {{ tf_match_form.team2_player1.errors }}
-                                          {{ tf_match_form.team2_player1 }}
+                                          {{ match_form.team2_player1.errors }}
+                                          {{ match_form.team2_player1 }}
                                         </td>
                                       </div>
                                     </tr>
                                     <tr>
                                       <td>
-                                        {{ tf_match_form.team1_player2.label_tag }}
+                                        {{ match_form.team1_player2.label_tag }}
                                       </td>
                                       <td>
-                                        {{ tf_match_form.team1_player2.errors }}
-                                        {{ tf_match_form.team1_player2 }}
+                                        {{ match_form.team1_player2.errors }}
+                                        {{ match_form.team1_player2 }}
                                       </td>
                                       <td>
-                                        {{ tf_match_form.team2_player2.errors }}
-                                        {{ tf_match_form.team2_player2 }}
+                                        {{ match_form.team2_player2.errors }}
+                                        {{ match_form.team2_player2 }}
                                       </td>
                                     </div>
                                   </tr>
                                   <tr>
                                     <td>
-                                      {{ tf_match_form.team1_score.label_tag }}
+                                      {{ match_form.team1_score.label_tag }}
                                     </td>
                                     <td>
-                                      {{ tf_match_form.team1_score.errors }}
-                                      {{ tf_match_form.team1_score }}
+                                      {{ match_form.team1_score.errors }}
+                                      {{ match_form.team1_score }}
                                     </td>
                                     <td>
-                                      {{ tf_match_form.team2_score.errors }}
-                                      {{ tf_match_form.team2_score }}
+                                      {{ match_form.team2_score.errors }}
+                                      {{ match_form.team2_score }}
                                     </td>
                                   </div>
                                 </tr>
@@ -67,8 +67,8 @@
                               </table>
                           </div>
                           <div>
-                              {% if tf_match_form.errors %}
-                                    {% for error in tf_match_form.non_field_errors %}
+                              {% if match_form.errors %}
+                                    {% for error in match_form.non_field_errors %}
                                         <p> {{ error }} </p>
                                     {% endfor %}
                               {% endif %}

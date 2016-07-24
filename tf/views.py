@@ -160,4 +160,4 @@ def enter_tf_match(request):
     else:
         match_form = match_form = TfNewMatchForm()
 
-    return render(request, "tf/enter_tf_match.html", {'match_form' : match_form})
+    return render(request, "tf/enter_tf_match.html", {'tf_match_form' : match_form})

@@ -142,12 +142,12 @@ class TfMatch(models.Model):
 
         for p in winner.players.all():
             p.tf_player_elo += delta_winner
-            p.tf_last_played = played_date
+            p.tf_last_played = self.played_date
             p.save()
 
         for p in loser.players.all():
             p.tf_player_elo += delta_loser
-            p.tf_last_played = played_date
+            p.tf_last_played = self.played_date
             p.save()
 
         if debug:
@@ -167,6 +167,129 @@ class TfMatch(models.Model):
             else:
                 print(': ', end='')
             print(str(round(loser.tf_team_elo())))
+
+            print('---')
+
+    def __str__(self):
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return  str(self.get_winner()) + ' ' + str(score1) + '-' \
+               + str(score2) + ' ' + str(self.get_loser())
+        else:
+            return  str(self.get_winner()) + ' ' + str(score2) + '-' \
+               + str(score1) + ' ' + str(self.get_loser())
+
+    def prettyprint(self):
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return  self.get_winner().prettyprint() + ' ' + str(score1) + '-' \
+               + str(score2) + ' ' + self.get_loser().prettyprint()
+        else:
+            return  self.get_winner().prettyprint() + ' ' + str(score2) + '-' \
+               + str(score1) + ' ' + self.get_loser().prettyprint()
+
+class FifaMatch(models.Model):
+    class Meta:
+        verbose_name_plural = "fifa matches"
+
+    teams = models.ManyToManyField(Team)
+    scores = models.CharField(max_length=5, default="0 0")
+
+    played_date = models.DateTimeField('date played')
+
+    def scores_to_int(self):
+        match = re.search('(.)\s(.)', self.scores)
+        score1 = int(match.group(1))
+        score2 = int(match.group(2))
+        return [score1, score2]
+
+    def get_winner(self):
+        [score1, score2] = self.scores_to_int()
+        teams = self.teams.order_by('id').all()
+
+        if score1 > score2:
+            return teams[0]
+        else:
+            return teams[1]
+
+    def get_loser(self):
+        [score1, score2] = self.scores_to_int()
+        teams = self.teams.order_by('id').all()
+
+        if score1 > score2:
+            return teams[1]
+        else:
+            return teams[0]
+
+    def get_scores(self):
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return str(score1) + '-' + str(score2)
+        else:
+            return str(score2) + '-' + str(score1)
+
+    def update_elos(self, k=32, debug=False):
+
+        winner = self.get_winner()
+        loser = self.get_loser()
+
+        if debug:
+            print(str(self.played_date)[:16])
+
+            print("Before")
+            print("W: ", end='')
+            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].fifa_player_elo) + ')', end='')
+            if not winner.is_single_player:
+                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(winner.fifa_team_elo())))
+
+            print("L: ", end='')
+            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + ')', end='')
+            if not loser.is_single_player:
+                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(loser.fifa_team_elo())))
+
+        elo_winner = winner.fifa_team_elo()
+        elo_loser = loser.fifa_team_elo()
+
+        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
+        delta_winner = k * (1 - e)
+        delta_loser = k * (0 - e)
+
+        for p in winner.players.all():
+            p.fifa_player_elo += delta_winner
+            p.fifa_last_played = self.played_date
+            p.save()
+
+        for p in loser.players.all():
+            p.fifa_player_elo += delta_loser
+            p.fifa_last_played = self.played_date
+            p.save()
+
+        if debug:
+            print("After")
+            print("W: ", end='')
+            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].fifa_player_elo) + ')', end='')
+            if not winner.is_single_player:
+                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(winner.fifa_team_elo())))
+
+            print("L: ", end='')
+            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + ')', end='')
+            if not loser.is_single_player:
+                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + '): ', end='')
+            else:
+                print(': ', end='')
+            print(str(round(loser.fifa_team_elo())))
 
             print('---')
 
