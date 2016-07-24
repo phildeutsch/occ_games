@@ -4,18 +4,8 @@ from django.db import models
 import os
 import re
 import config
+import datetime
 
-
-# TODO Move this to separate functions file
-def elo_change(player, elo2, score1, score2, k=32):
-    s = 1 if score1 > score2 else 0 if score2 > score1 else 0.5
-    e = 1 / (1 + 10 ** ((elo2-player.tf_player_elo)/400))
-    delta = k * (s - e)
-
-    player.tf_player_elo += delta
-    player.save()
-
-# Create your models here.
 class Player(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -48,7 +38,6 @@ class Team(models.Model):
     # TF attributes
     tf_team_matches_played = models.IntegerField(default=0)
     tf_team_matches_won = models.IntegerField(default=0)
-
 
     def tf_team_elo(self):
         if self.is_single_player:
@@ -144,10 +133,12 @@ class TfMatch(models.Model):
 
         for p in winner.players.all():
             p.tf_player_elo += delta_winner
+            p.tf_last_played = datetime.datetime.now()
             p.save()
 
         for p in loser.players.all():
             p.tf_player_elo += delta_loser
+            p.tf_last_played = datetime.datetime.now()
             p.save()
 
         if debug:
