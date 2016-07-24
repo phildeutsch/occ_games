@@ -68,7 +68,6 @@ class TfMatch(models.Model):
     scores = models.CharField(max_length=5, default="0 0")
 
     played_date = models.DateTimeField('date played')
-    invisible = models.BooleanField(default=False)
 
     def scores_to_int(self):
         match = re.search('(.)\s(.)', self.scores)

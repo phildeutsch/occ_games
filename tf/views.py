@@ -29,9 +29,6 @@ def get_team(player1, player2):
     return team
 
 def home(request):
-    matches = TfMatch.objects.order_by('-played_date').filter(invisible=False)[:config.RECENT_MATCHES]
-    players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
-
     cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
     players_ordered = (Player.objects.all().
                         filter(id__gt=0).
@@ -47,7 +44,6 @@ def home(request):
     player_form = TfNewPlayerForm(prefix='add_player')
 
     return render(request, "tf/home.html", {'user'         : request.user,
-                                            'matches'      : matches,
                                             'players'      : players_ordered})
 
 def player_new(request):
@@ -130,15 +126,12 @@ def enter_tf_match(request):
             team1 = get_team(team1_player1, team1_player2)
             team2 = get_team(team2_player1, team2_player2)
 
-            invisible = match_form.cleaned_data['invisible']
-
             if team1.id < team2.id:
                 scores = str(team1_score) + ' ' + str(team2_score)
             else:
                 scores = str(team2_score) + ' ' + str(team1_score)
 
-            match = TfMatch(scores=scores,
-                            played_date=timezone.now(), invisible=invisible)
+            match = TfMatch(scores=scores, played_date=timezone.now())
             match.save()
             match.teams.add(team1, team2)
             match.save()

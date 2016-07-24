@@ -55,8 +55,6 @@ class TfNewMatchForm(forms.Form):
     team2_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
     team2_score = forms.IntegerField(initial=0, label='Score')
 
-    invisible = forms.BooleanField(label='Hide from recent matches', initial=False, required=False)
-
     def clean(self):
         form_data = self.cleaned_data
         team1_player1 = form_data['team1_player1']
@@ -66,8 +64,6 @@ class TfNewMatchForm(forms.Form):
         team2_player1 = form_data['team2_player1']
         team2_player2 = form_data['team2_player2']
         team2_score = form_data['team2_score']
-
-        invisible = form_data['invisible']
 
         player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
 
