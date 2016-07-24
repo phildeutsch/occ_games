@@ -4,7 +4,6 @@ from django.utils import timezone
 from .models import TfMatch, Player, TfTeam
 from .forms import TfNewPlayerForm, TfNewMatchForm
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
 import config
 import re
 
@@ -86,13 +85,9 @@ def register(request):
     return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
 def games(request):
-    # matches_ordered = TfMatch.objects.order_by('-played_date').all()
-    player = request.user.player
-    matches = [x.tfmatch_set.all() for x in player.tfteam_set.all()]
-    matches = [item for sublist in matches for item in sublist]
-    matches = sorted(matches, key=lambda x:x.played_date, reverse=True)
+    matches_ordered = TfMatch.objects.order_by('-played_date').all()
 
-    return render(request, "tf/games.html", {'matches' : matches})
+    return render(request, "tf/games.html", {'matches' : matches_ordered})
 
 def enter_player(request):
     if request.method == "POST":
