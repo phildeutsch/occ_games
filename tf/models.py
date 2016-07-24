@@ -27,6 +27,7 @@ class Player(models.Model):
     tf_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
     tf_matches_played = models.IntegerField(default=0)
     tf_matches_won = models.IntegerField(default=0)
+    tf_last_played = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.full_name

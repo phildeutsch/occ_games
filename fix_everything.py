@@ -1,10 +1,10 @@
-# exec(open("recalculate_elos.py").read(), globals())
+# exec(open("fix_everything.py").read(), globals())
 
 import config
 from tf import models
 
 # Set default ELO for each player
-players = models.TfPlayer.objects.all()
+players = models.Player.objects.all()
 for p in players:
     p.player_elo = config.DEFAULT_ELO
     p.save()
@@ -13,5 +13,7 @@ for p in players:
 matches = models.TfMatch.objects.order_by('played_date').all()
 for m in matches:
     m.update_elos(debug=False)
-
-# Make sure each user has a player linked to them
+    players = [x.players.all() for x in m.teams.all()]
+    players = [item for sublist in players for item in sublist]
+    for p in players:
+        p.tf_last_played = m.played_date
