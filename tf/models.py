@@ -4,7 +4,6 @@ from django.db import models
 import os
 import re
 import config
-import datetime
 
 class Player(models.Model):
     first_name = models.CharField(max_length=200)
@@ -12,6 +11,12 @@ class Player(models.Model):
     full_name = models.CharField(max_length=200)
     grade = models.CharField(max_length=2, default='AC')
     user = models.OneToOneField(User, null=True)
+
+    def __str__(self):
+        return self.full_name
+
+    def __unicode__(self):
+        return self.full_name
 
     # TF attributes
     tf_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
@@ -25,25 +30,9 @@ class Player(models.Model):
     fifa_matches_won = models.IntegerField(default=0)
     fifa_last_played = models.DateTimeField(null=True)
 
-    def __str__(self):
-        return self.full_name
-
-    def __unicode__(self):
-        return self.full_name
-
 class Team(models.Model):
     players = models.ManyToManyField(Player)
     is_single_player = models.BooleanField(default=False)
-
-    # TF attributes
-    tf_team_matches_played = models.IntegerField(default=0)
-    tf_team_matches_won = models.IntegerField(default=0)
-
-    def tf_team_elo(self):
-        if self.is_single_player:
-            return int(self.players.order_by('id')[0].tf_player_elo)
-        else:
-            return int((self.players.order_by('id')[1].tf_player_elo + self.players.order_by('id')[0].tf_player_elo) / 2)
 
     def prettyprint(self):
         if self.is_single_player:
@@ -57,6 +46,26 @@ class Team(models.Model):
         for p in self.players.order_by('id'):
             s = s + str(p) + '\n'
         return s
+
+    # TF attributes & methods
+    tf_team_matches_played = models.IntegerField(default=0)
+    tf_team_matches_won = models.IntegerField(default=0)
+
+    def tf_team_elo(self):
+        if self.is_single_player:
+            return int(self.players.order_by('id')[0].tf_player_elo)
+        else:
+            return int((self.players.order_by('id')[1].tf_player_elo + self.players.order_by('id')[0].tf_player_elo) / 2)
+
+    # FIFA attributes & methods
+    fifa_team_matches_played = models.IntegerField(default=0)
+    fifa_team_matches_won = models.IntegerField(default=0)
+
+    def fifa_team_elo(self):
+        if self.is_single_player:
+            return int(self.players.order_by('id')[0].fifa_player_elo)
+        else:
+            return int((self.players.order_by('id')[1].fifa_player_elo + self.players.order_by('id')[0].fifa_player_elo) / 2)
 
 class TfMatch(models.Model):
     class Meta:
@@ -133,12 +142,12 @@ class TfMatch(models.Model):
 
         for p in winner.players.all():
             p.tf_player_elo += delta_winner
-            p.tf_last_played = datetime.datetime.now()
+            p.tf_last_played = played_date
             p.save()
 
         for p in loser.players.all():
             p.tf_player_elo += delta_loser
-            p.tf_last_played = datetime.datetime.now()
+            p.tf_last_played = played_date
             p.save()
 
         if debug:
