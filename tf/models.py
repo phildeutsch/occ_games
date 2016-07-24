@@ -29,6 +29,12 @@ class Player(models.Model):
     tf_matches_won = models.IntegerField(default=0)
     tf_last_played = models.DateTimeField(null=True)
 
+    # FIFA attributes
+    fifa_player_elo = models.IntegerField(default=config.DEFAULT_ELO)
+    fifa_matches_played = models.IntegerField(default=0)
+    fifa_matches_won = models.IntegerField(default=0)
+    fifa_last_played = models.DateTimeField(null=True)
+
     def __str__(self):
         return self.full_name
 
@@ -37,11 +43,14 @@ class Player(models.Model):
 
 class TfTeam(models.Model):
     players = models.ManyToManyField(Player)
-    team_matches_played = models.IntegerField(default=0)
-    team_matches_won = models.IntegerField(default=0)
     is_single_player = models.BooleanField(default=False)
 
-    def team_elo(self):
+    # TF attributes
+    tf_team_matches_played = models.IntegerField(default=0)
+    tf_team_matches_won = models.IntegerField(default=0)
+
+
+    def tf_team_elo(self):
         if self.is_single_player:
             return int(self.players.order_by('id')[0].tf_player_elo)
         else:
@@ -116,7 +125,7 @@ class TfMatch(models.Model):
                 print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
-            print(str(round(winner.team_elo())))
+            print(str(round(winner.tf_team_elo())))
 
             print("L: ", end='')
             print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
@@ -124,10 +133,10 @@ class TfMatch(models.Model):
                 print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
-            print(str(round(loser.team_elo())))
+            print(str(round(loser.tf_team_elo())))
 
-        elo_winner = winner.team_elo()
-        elo_loser = loser.team_elo()
+        elo_winner = winner.tf_team_elo()
+        elo_loser = loser.tf_team_elo()
 
         e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
         delta_winner = k * (1 - e)
@@ -149,7 +158,7 @@ class TfMatch(models.Model):
                 print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
-            print(str(round(winner.team_elo())))
+            print(str(round(winner.tf_team_elo())))
 
             print("L: ", end='')
             print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
@@ -157,7 +166,7 @@ class TfMatch(models.Model):
                 print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + '): ', end='')
             else:
                 print(': ', end='')
-            print(str(round(loser.team_elo())))
+            print(str(round(loser.tf_team_elo())))
 
             print('---')
 
