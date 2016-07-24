@@ -34,50 +34,29 @@
                 </table>
                 </p>
             </div>
-            <div class="col-xs-6" id="recent_games">
-                <div>
-                    <h2> Recent Matches </h2>
+            <div class="col-xs-6">
+                <h2> FIFA Top 20 </h2>
 
-                    <p>
-                      <table class="table table-striped ">
-                        <thead>
-                        <tr>
-                            <th style="text-align:right;">Winner</th>
-                            <th style="text-align:center;">vs</th>
-                            <th style="text-align:left;">Loser</th>
-                        </tr>
-                      </thead>
-                        {% for match in matches %}
-                        <tr>
-                            <td style="text-align:right;"> {{ match.get_winner|linebreaks }}</td>
-                            <td style="text-align:center;"> {{ match.get_scores }}</td>
-                            <td style="text-align:left;"> {{ match.get_loser|linebreaks }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    </p>
-                </div>
-                <div style="text-align:center;">
-                    <h3><br></h3>
+                <p>
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th style="text-align:center;">Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                  </thead>
+                    {% for player in players %}
+                    <tr>
+                        <td style="text-align:center; font-weight: bold;"> {{forloop.counter}}</td>
+                        <td> {{player.full_name}}</td>
+                        <td> {{player.tf_player_elo}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </p>
+            </div>
 
-                    <p>
-                        {% if user.is_authenticated  %}
-                        <p><a type="button" class="btn btn-info btn-lg tf_btn" href="enter_tf_match/">Enter result</a></p>
-                        {% else %}
-                          <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal" data-target="#please_sign_in">Enter result</button>
-                        {% endif %}
-
-                    </p>
-                    <p>
-                        {% if user.is_authenticated  %}
-                          <p><a type="button" class="btn btn-info btn-lg tf_btn" href="enter_player/">Add player</a></p>
-                        {% else %}
-                          <button type="button" class="btn btn-info btn-lg tf_btn" data-toggle="modal" data-target="#please_sign_in">Add player</button>
-                        {% endif %}
-
-                    </p>
-                    <p><a type="button" class="btn btn-info btn-lg tf_btn" href="mailto:ocandctf@gmail.com" target="_blank">Contact</a></p>
-                </div>
             </div>
         </div>
     </div>

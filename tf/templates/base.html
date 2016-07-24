@@ -38,15 +38,29 @@
    <ul class="nav navbar-nav navbar-right">
      {% if user.is_authenticated  %}
      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">TF<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Enter Game</a></li>
+          <li><a href="#">Play</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+         <a class="dropdown-toggle" data-toggle="dropdown" href="#">FIFA<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+           <li><a href="#">Enter Game</a></li>
+           <li><a href="#">Play</a></li>
+         </ul>
+       </li>
+     <li><a href="enter_player/">Add Player</a></li>
+     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user.username }}<span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="/tf/games">My games</a></li>
           <li><a href="#sign_out_dialog" data-toggle="modal" data-target="#sign_out_dialog">Sign Out</a></li>
         </ul>
       </li>
-
      {% else %}
-     <li><a href="/tf/accounts/register/"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="/tf/accounts/register/"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
       <li><a href="/tf/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
      {% endif %}
    </ul>
