@@ -110,65 +110,47 @@ class TfMatch(models.Model):
 
     def update_elos(self, k=32, debug=False):
 
-        winner = self.get_winner()
-        loser = self.get_loser()
+        team1 = self.teams.order_by('id').all()[0]
+        team2 = self.teams.order_by('id').all()[1]
+
+        elo1 = team1.tf_team_elo()
+        elo2 = team2.tf_team_elo()
+
+        score1 = self.scores_to_int()[0]
+        score2 = self.scores_to_int()[1]
+
+        R1 = 10 ** (elo1/400)
+        R2 = 10 ** (elo2/400)
+
+        E1 = R1 / (R1 + R2)
+        E2 = R2 / (R1 + R2)
+
+        if score1 > score2:
+            S1 = 1
+            S2 = 0
+        elif score2 > score1:
+            S1 = 0
+            S2 = 1
+        else:
+            S1 = 0.5
+            S2 = 0.5
+
+        delta1 = k * (S1 - E1)
+        delta2 = k * (S2 - E2)
 
         if debug:
-            print(str(self.played_date)[:16])
+            print("Team 1: " + str(elo1) + " " + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
+            print("Team 2: " + str(elo2) + " " + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
 
-            print("Before")
-            print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].tf_player_elo) + ')', end='')
-            if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(winner.tf_team_elo())))
-
-            print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
-            if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].tf_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(loser.tf_team_elo())))
-
-        elo_winner = winner.tf_team_elo()
-        elo_loser = loser.tf_team_elo()
-
-        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
-        delta_winner = k * (1 - e)
-        delta_loser = k * (0 - e)
-
-        for p in winner.players.all():
-            p.tf_player_elo += delta_winner
+        for p in team1.players.all():
+            p.tf_player_elo += delta1
             p.tf_last_played = self.played_date
             p.save()
 
-        for p in loser.players.all():
-            p.tf_player_elo += delta_loser
+        for p in team2.players.all():
+            p.tf_player_elo += delta2
             p.tf_last_played = self.played_date
             p.save()
-
-        if debug:
-            print("After")
-            print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].tf_player_elo) + ')', end='')
-            if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].tf_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(winner.tf_team_elo())))
-
-            print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + ')', end='')
-            if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].tf_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(loser.tf_team_elo())))
-
-            print('---')
 
     def __str__(self):
         [score1, score2] = self.scores_to_int()
@@ -233,65 +215,47 @@ class FifaMatch(models.Model):
 
     def update_elos(self, k=32, debug=False):
 
-        winner = self.get_winner()
-        loser = self.get_loser()
+        team1 = self.teams.order_by('id').all()[0]
+        team2 = self.teams.order_by('id').all()[1]
+
+        elo1 = team1.fifa_team_elo()
+        elo2 = team2.fifa_team_elo()
+
+        score1 = self.scores_to_int()[0]
+        score2 = self.scores_to_int()[1]
+
+        R1 = 10 ** (elo1/400)
+        R2 = 10 ** (elo2/400)
+
+        E1 = R1 / (R1 + R2)
+        E2 = R2 / (R1 + R2)
+
+        if score1 > score2:
+            S1 = 1
+            S2 = 0
+        elif score2 > score1:
+            S1 = 0
+            S2 = 1
+        else:
+            S1 = 0.5
+            S2 = 0.5
+
+        delta1 = k * (S1 - E1)
+        delta2 = k * (S2 - E2)
 
         if debug:
-            print(str(self.played_date)[:16])
+            print("Team 1: " + str(elo1) + " " + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
+            print("Team 2: " + str(elo2) + " " + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
 
-            print("Before")
-            print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].fifa_player_elo) + ')', end='')
-            if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(winner.fifa_team_elo())))
-
-            print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + ')', end='')
-            if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(loser.fifa_team_elo())))
-
-        elo_winner = winner.fifa_team_elo()
-        elo_loser = loser.fifa_team_elo()
-
-        e = 1 / (1 + 10 ** ((elo_loser-elo_winner)/400))
-        delta_winner = k * (1 - e)
-        delta_loser = k * (0 - e)
-
-        for p in winner.players.all():
-            p.fifa_player_elo += delta_winner
+        for p in team1.players.all():
+            p.fifa_player_elo += delta1
             p.fifa_last_played = self.played_date
             p.save()
 
-        for p in loser.players.all():
-            p.fifa_player_elo += delta_loser
+        for p in team2.players.all():
+            p.fifa_player_elo += delta2
             p.fifa_last_played = self.played_date
             p.save()
-
-        if debug:
-            print("After")
-            print("W: ", end='')
-            print(str(winner.players.order_by('id')[0]) + ' (' + str(winner.players.order_by('id')[0].fifa_player_elo) + ')', end='')
-            if not winner.is_single_player:
-                print('/ ' + str(winner.players.order_by('id')[1]) + ' (' + str(winner.players.order_by('id')[1].fifa_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(winner.fifa_team_elo())))
-
-            print("L: ", end='')
-            print(str(loser.players.order_by('id')[0]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + ')', end='')
-            if not loser.is_single_player:
-                print('/ ' + str(loser.players.order_by('id')[1]) + ' (' + str(loser.players.order_by('id')[0].fifa_player_elo) + '): ', end='')
-            else:
-                print(': ', end='')
-            print(str(round(loser.fifa_team_elo())))
-
-            print('---')
 
     def __str__(self):
         [score1, score2] = self.scores_to_int()
