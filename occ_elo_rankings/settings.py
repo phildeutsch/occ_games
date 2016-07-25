@@ -105,7 +105,7 @@ EMAIL_PORT = 587
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 if os.getcwd() == '/app':   # Production
-    host = 'ec2-54-204-8-138.compute-1.amazonaws.com'
+    host = 'ec2-54-75-238-7.eu-west-1.compute.amazonaws.com'
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:                       # Development
     host = 'localhost'
