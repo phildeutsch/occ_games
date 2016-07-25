@@ -55,8 +55,8 @@ def player_new(request):
     return render(request, 'tf/add_player.html', {'form': new_player_form})
 
 def player_league(request):
-    tf_players_ordered = Player.objects.all().filter(id__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
-    fifa_players_ordered = Player.objects.all().filter(id__gt=0).order_by('-fifa_player_elo')[:config.LEAGUE_LENGTH]
+    tf_players_ordered = Player.objects.all().filter(id__gt=0).filter(tf_matches_played__gt=0).order_by('-tf_player_elo')[:config.LEAGUE_LENGTH]
+    fifa_players_ordered = Player.objects.all().filter(id__gt=0).filter(fifa_matches_played__gt=0).order_by('-fifa_player_elo')[:config.LEAGUE_LENGTH]
 
     return render(request, "tf/player_league.html", {'tf_players_ordered':tf_players_ordered, 'fifa_players_ordered':fifa_players_ordered})
 
