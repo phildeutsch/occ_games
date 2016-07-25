@@ -15,7 +15,10 @@ def get_team(player1, player2):
         player1 = player2
         player2 = tmp
     try:
-        team = Team.objects.filter(players=player1).filter(players=player2)[0]
+        if player1.id == 0:
+            team = Team.objects.filter(players=player2)[0]
+        else:
+            team = Team.objects.filter(players=player1).filter(players=player2)[0]
     except IndexError:
         team = Team()
         team.save()
