@@ -11,12 +11,7 @@ def min_team_id(team):
     min_team_id = min([t.id for t in sameteams])
     return min_team_id
 
-# Assign the first team to each match before removing duplicate teams
-print("Removing duplicate teams")
-matches = models.TfMatch.objects.all()
-teams = models.Team.objects.all()
-for m in matches:
-    print(m.id)
+def assign_min(m):
     team1 = m.teams.order_by('id').all()[0]
     team2 = m.teams.order_by('id').all()[1]
 
@@ -34,6 +29,18 @@ for m in matches:
     else:
         m.score = str(score2) + " " + str(score1)
 
+# Assign the first team to each match before removing duplicate teams
+print("Removing duplicate teams")
+tf_matches = models.TfMatch.objects.all()
+fifa_matches = models.FifaMatch.objects.all()
+teams = models.Team.objects.all()
+for m in tf_matches:
+    print("TF game: " + str(m.id))
+    assign_min(m)
+for m in fifa_matches:
+    print("TF game: " + str(m.id))
+    assign_min(m)
+
 players = models.Player.objects.filter(id__gt=0).all()
 for player1 in players:
     for player2 in players:
@@ -50,6 +57,8 @@ players = models.Player.objects.all()
 for p in players:
     p.tf_player_elo = config.DEFAULT_ELO
     p.fifa_player_elo = config.DEFAULT_ELO
+    p.tf_last_played = None
+    p.fifa_last_played = None
     p.save()
 
 # Go through all TF  matches and updated elOs

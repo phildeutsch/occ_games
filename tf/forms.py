@@ -67,9 +67,10 @@ class TfNewMatchForm(forms.Form):
 
         player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
 
-        player_users = [x.user for x in player_list]
-        if self.request.user not in player_users:
-            self.add_error(None, ValidationError("You can only add a game you played in"))
+        if not self.request.user.is_superuser:
+            player_users = [x.user for x in player_list]
+            if self.request.user not in player_users:
+                self.add_error(None, ValidationError("You can only add a game you played in"))
 
         if len(list(player_list)) != len(set(player_list)):
             self.add_error(None, ValidationError("Each player can only play once"))
@@ -113,9 +114,10 @@ class FifaNewMatchForm(forms.Form):
 
         player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
 
-        player_users = [x.user for x in player_list]
-        if self.request.user not in player_users:
-            self.add_error(None, ValidationError("You can only add a game you played in"))
+        if not self.request.user.is_superuser:
+            player_users = [x.user for x in player_list]
+            if self.request.user not in player_users:
+                self.add_error(None, ValidationError("You can only add a game you played in"))
 
         if len(list(player_list)) != len(set(player_list)):
             self.add_error(None, ValidationError("Each player can only play once"))

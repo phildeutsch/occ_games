@@ -16,7 +16,7 @@ def get_team(player1, player2):
         player2 = tmp
     try:
         if player1.id == 0:
-            team = Team.objects.filter(players=player2)[0]
+            team = Team.objects.filter(players=player2).filter(is_single_player=True)[0]
         else:
             team = Team.objects.filter(players=player1).filter(players=player2)[0]
     except IndexError:
@@ -35,10 +35,12 @@ def home(request):
     tf_players_ordered = (Player.objects.all().
                         filter(id__gt=0).
                         filter(tf_last_played__gt=cutoff_date).
+                        filter(tf_matches_played__gt=0).
                         order_by('-tf_player_elo')[:config.LEAGUE_LENGTH])
     fifa_players_ordered = (Player.objects.all().
                         filter(id__gt=0).
                         filter(fifa_last_played__gt=cutoff_date).
+                        filter(fifa_matches_played__gt=0).
                         order_by('-fifa_player_elo')[:config.LEAGUE_LENGTH])
 
     return render(request, "tf/home.html", {'user'                 : request.user,
