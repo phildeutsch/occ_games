@@ -92,7 +92,6 @@ class TfMatch(models.Model):
     def elo_changes_to_int(self):
         return string_to_ints(self.elo_changes)
 
-
     def get_winner(self):
         [score1, score2] = self.scores_to_int()
         teams = self.teams.order_by('id').all()
@@ -101,6 +100,32 @@ class TfMatch(models.Model):
             return teams[0]
         else:
             return teams[1]
+
+    def get_winner_score(self):
+        [score1, score2] = self.scores_to_int()
+
+        if score1 > score2:
+            return score1
+        else:
+            return score2
+
+    def get_winner_elo(self):
+        [score1, score2] = self.scores_to_int()
+        [elo1, elo2] = self.elos_to_int()
+
+        if score1 > score2:
+            return elo1
+        else:
+            return elo2
+
+    def get_winner_elo_change(self):
+        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
+
+        if score1 > score2:
+            return elo_change1
+        else:
+            return elo_change2
 
     def get_loser(self):
         [score1, score2] = self.scores_to_int()
@@ -111,13 +136,31 @@ class TfMatch(models.Model):
         else:
             return teams[0]
 
-    def get_scores(self):
+    def get_loser_score(self):
         [score1, score2] = self.scores_to_int()
 
         if score1 > score2:
-            return str(score1) + '-' + str(score2)
+            return score2
         else:
-            return str(score2) + '-' + str(score1)
+            return score1
+
+    def get_loser_elo(self):
+        [score1, score2] = self.scores_to_int()
+        [elo1, elo2] = self.elos_to_int()
+
+        if score1 > score2:
+            return elo2
+        else:
+            return elo1
+
+    def get_loser_elo_change(self):
+        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
+
+        if score1 > score2:
+            return elo_change2
+        else:
+            return elo_change1
 
     def update_elos(self, k=32, debug=False):
 
@@ -168,24 +211,8 @@ class TfMatch(models.Model):
             p.save()
 
     def __str__(self):
-        [score1, score2] = self.scores_to_int()
-        [elo1, elo2] = self.elos_to_int()
-        [elo_change1, elo_change2] = self.elo_changes_to_int()
-        if elo_change1 > 0:
-            elo_change1 = '+' + str(elo_change1)
-        else:
-            elo_change1 = str(elo_change1)
-        if elo_change2 > 0:
-            elo_change2 = '+' + str(elo_change2)
-        else:
-            elo_change2 = str(elo_change2)
-
-        if score1 > score2:
-            return  str(self.get_winner()) + ' (' + str(elo1) + elo_change1 + ') ' + str(score1) + '-' \
-               + str(score2) + ' ' + str(self.get_loser()) + ' (' + str(elo2) + elo_change2 + ')'
-        else:
-            return  str(self.get_winner()) + ' (' + str(elo2) + elo_change2 + ') ' + str(score2) + '-' \
-               + str(score1) + ' ' + str(self.get_loser()) + ' (' + str(elo1) + elo_change1 + ')'
+        return  str(self.get_winner()) + ' (' + str(self.get_winner_elo()) + '+' + str(self.get_winner_elo_change()) + ') ' + str(self.get_winner_score()) + '-' \
+               + str(self.get_loser_score()) + ' ' + str(self.get_loser()) + ' (' + str(self.get_loser_elo()) + str(self.get_loser_elo_change()) + ')'
 
     def prettyprint(self):
         [score1, score2] = self.scores_to_int()
@@ -229,14 +256,6 @@ class FifaMatch(models.Model):
             return teams[1]
         else:
             return teams[0]
-
-    def get_scores(self):
-        [score1, score2] = self.scores_to_int()
-
-        if score1 > score2:
-            return str(score1) + '-' + str(score2)
-        else:
-            return str(score2) + '-' + str(score1)
 
     def update_elos(self, k=32, debug=False):
 
