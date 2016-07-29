@@ -38,11 +38,12 @@ for m in tf_matches:
     print("TF game: " + str(m.id))
     assign_min(m)
 for m in fifa_matches:
-    print("TF game: " + str(m.id))
+    print("FIFA game: " + str(m.id))
     assign_min(m)
 
 players = models.Player.objects.filter(id__gt=0).all()
 for player1 in players:
+    print(player1)
     for player2 in players:
         if player1==player2:
             teams = models.Team.objects.filter(players=player1).filter(is_single_player=True).order_by('id').all()

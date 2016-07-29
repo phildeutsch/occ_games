@@ -5,6 +5,12 @@ import os
 import re
 import config
 
+def string_to_ints(s):
+    match = re.search('(.+)\s(.+)', s)
+    i1 = int(match.group(1))
+    i2 = int(match.group(2))
+    return [i1, i2]
+
 class Player(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -72,15 +78,20 @@ class TfMatch(models.Model):
         verbose_name_plural = "tf matches"
 
     teams = models.ManyToManyField(Team)
-    scores = models.CharField(max_length=5, default="0 0")
-
     played_date = models.DateTimeField('date played')
+    scores = models.CharField(max_length=5, default="0 0")
+    elos = models.CharField(max_length=9, default="0 0")
+    elo_changes = models.CharField(max_length=9, default="0 0")
 
     def scores_to_int(self):
-        match = re.search('(.)\s(.)', self.scores)
-        score1 = int(match.group(1))
-        score2 = int(match.group(2))
-        return [score1, score2]
+        return string_to_ints(self.scores)
+
+    def elos_to_int(self):
+        return string_to_ints(self.elos)
+
+    def elo_changes_to_int(self):
+        return string_to_ints(self.elo_changes)
+
 
     def get_winner(self):
         [score1, score2] = self.scores_to_int()
@@ -138,6 +149,10 @@ class TfMatch(models.Model):
         delta1 = k * (S1 - E1)
         delta2 = k * (S2 - E2)
 
+        self.elos = str(round(elo1)) + ' ' + str(round(elo2))
+        self.elo_changes = str(round(delta1)) + ' ' + str(round(delta2))
+        self.save()
+
         if debug:
             print("Team 1: " + str(elo1) + " " + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
             print("Team 2: " + str(elo2) + " " + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
@@ -154,13 +169,23 @@ class TfMatch(models.Model):
 
     def __str__(self):
         [score1, score2] = self.scores_to_int()
+        [elo1, elo2] = self.elos_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
+        if elo_change1 > 0:
+            elo_change1 = '+' + str(elo_change1)
+        else:
+            elo_change1 = str(elo_change1)
+        if elo_change2 > 0:
+            elo_change2 = '+' + str(elo_change2)
+        else:
+            elo_change2 = str(elo_change2)
 
         if score1 > score2:
-            return  str(self.get_winner()) + ' ' + str(score1) + '-' \
-               + str(score2) + ' ' + str(self.get_loser())
+            return  str(self.get_winner()) + ' (' + str(elo1) + elo_change1 + ') ' + str(score1) + '-' \
+               + str(score2) + ' ' + str(self.get_loser()) + ' (' + str(elo2) + elo_change2 + ')'
         else:
-            return  str(self.get_winner()) + ' ' + str(score2) + '-' \
-               + str(score1) + ' ' + str(self.get_loser())
+            return  str(self.get_winner()) + ' (' + str(elo2) + elo_change2 + ') ' + str(score2) + '-' \
+               + str(score1) + ' ' + str(self.get_loser()) + ' (' + str(elo1) + elo_change1 + ')'
 
     def prettyprint(self):
         [score1, score2] = self.scores_to_int()

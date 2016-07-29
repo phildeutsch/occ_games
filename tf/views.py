@@ -87,14 +87,18 @@ def register(request):
     return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
 def games(request):
-    player = request.user.player
-    tf_matches = [x.tfmatch_set.all() for x in player.team_set.all()]
-    tf_matches = [item for sublist in tf_matches for item in sublist]
-    tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
+    if request.user.is_superuser:
+        tf_matches = TfMatch.objects.order_by('-played_date').all()
+        fifa_matches = FifaMatch.objects.order_by('-played_date').all()
+    else:
+        player = request.user.player
+        tf_matches = [x.tfmatch_set.all() for x in player.team_set.all()]
+        tf_matches = [item for sublist in tf_matches for item in sublist]
+        tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
 
-    fifa_matches = [x.fifamatch_set.all() for x in player.team_set.all()]
-    fifa_matches = [item for sublist in fifa_matches for item in sublist]
-    fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
+        fifa_matches = [x.fifamatch_set.all() for x in player.team_set.all()]
+        fifa_matches = [item for sublist in fifa_matches for item in sublist]
+        fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
 
     return render(request, "tf/games.html", {'tf_matches' : tf_matches, 'fifa_matches' : fifa_matches})
 
