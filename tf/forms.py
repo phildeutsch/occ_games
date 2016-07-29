@@ -122,9 +122,6 @@ class FifaNewMatchForm(forms.Form):
         if len(list(player_list)) != len(set(player_list)):
             self.add_error(None, ValidationError("Each player can only play once"))
 
-        if team1_score == 0 and team2_score == 0:
-            self.add_error(None, ValidationError("Must play at least one game"))
-
         if team1_score < 0 or team2_score < 0:
             self.add_error(None, ValidationError("Cannot play a negative number of games!"))
 
