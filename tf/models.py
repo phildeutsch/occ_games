@@ -222,9 +222,24 @@ class TfMatch(Match):
         verbose_name_plural = "tf matches"
 
     def update_elos(self, k=32, debug=False):
-
         team1 = self.teams.order_by('id').all()[0]
         team2 = self.teams.order_by('id').all()[1]
+
+        team1player1 = team1.players.order_by('id').all()[0]
+        elo11 = team1player1.tf_player_elo
+        if not team1.is_single_player:
+            team1player2 = team1.players.order_by('id').all()[1]
+            elo12 = team1player2.tf_player_elo
+        else:
+            elo12 = 0
+
+        team2player1 = team2.players.order_by('id').all()[0]
+        elo21 = team2player1.tf_player_elo
+        if not team2.is_single_player:
+            team2player2 = team2.players.order_by('id').all()[1]
+            elo22 = team2player2.tf_player_elo
+        else:
+            elo22 = 0
 
         elo1 = team1.tf_team_elo()
         elo2 = team2.tf_team_elo()
@@ -253,11 +268,14 @@ class TfMatch(Match):
 
         self.elos = str(round(elo1)) + ' ' + str(round(elo2))
         self.elo_changes = str(round(delta1)) + ' ' + str(round(delta2))
+        self.team1_elos = str(round(elo11)) + ' ' + str(round(elo12))
+        self.team2_elos = str(round(elo21)) + ' ' + str(round(elo22))
         self.save()
 
         if debug:
-            print("Team 1: " + str(elo1) + " " + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
-            print("Team 2: " + str(elo2) + " " + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
+            print("FIFA Match: " + str(self.id))
+            print("Team 1: " + str(elo1) + "(" + str(elo11) + "/" + str(elo12) + ")" + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
+            print("Team 2: " + str(elo2) + "(" + str(elo21) + "/" + str(elo22) + ")" + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
 
         for p in team1.players.all():
             p.tf_player_elo += delta1
