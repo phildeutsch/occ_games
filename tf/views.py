@@ -5,9 +5,9 @@ from .models import TfMatch, FifaMatch, Player, Team
 from .forms import TfNewPlayerForm, TfNewMatchForm, FifaNewMatchForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+import datetime
 import config
 import re
-import datetime
 
 def get_team(player1, player2):
     if player1.id > player2.id:
@@ -31,7 +31,7 @@ def get_team(player1, player2):
     return team
 
 def home(request):
-    cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
+    cutoff_date = timezone.now() - datetime.timedelta(days=30)
     tf_players_ordered = (Player.objects.all().
                         filter(id__gt=0).
                         filter(tf_last_played__gt=cutoff_date).
