@@ -205,7 +205,10 @@ class Match(models.Model):
             return elo_change1
 
     def __str__(self):
-        return  str(self.id)
+        s = str(self.id)
+        for t in self.teams.order_by('id').all():
+            s = s + ' ' + str(t)
+        return s
 
     def prettyprint(self):
         [score1, score2] = self.scores_to_int()
