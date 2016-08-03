@@ -80,11 +80,13 @@ class Match(models.Model):
     teams = models.ManyToManyField(Team)
     played_date = models.DateTimeField('date played')
     season = models.IntegerField(default=config.SEASON)
+    matchtype = models.CharField(max_length=2, default="NA")
     scores = models.CharField(max_length=5, default="0 0")
     elos = models.CharField(max_length=9, default="0 0")
     elo_changes = models.CharField(max_length=9, default="0 0")
     team1_elos = models.CharField(max_length=9, default="0 0")
     team2_elos = models.CharField(max_length=9, default="0 0")
+
 
     def scores_to_int(self):
         return string_to_ints(self.scores)
@@ -274,10 +276,11 @@ class TfMatch(Match):
         self.elo_changes = str(round(delta1)) + ' ' + str(round(delta2))
         self.team1_elos = str(round(elo11)) + ' ' + str(round(elo12))
         self.team2_elos = str(round(elo21)) + ' ' + str(round(elo22))
+        self.matchtype = "TF"
         self.save()
 
         if debug:
-            print("FIFA Match: " + str(self.id))
+            print("TF Match: " + str(self.id))
             print("Team 1: " + str(elo1) + "(" + str(elo11) + "/" + str(elo12) + ")" + str(score1) + " " + str(R1) + " " + str(E1) + " " + str(S1) + " " + str(elo1+delta1))
             print("Team 2: " + str(elo2) + "(" + str(elo21) + "/" + str(elo22) + ")" + str(score2) + " " + str(R2) + " " + str(E2) + " " + str(S2) + " " + str(elo2+delta2))
 
@@ -344,6 +347,7 @@ class FifaMatch(Match):
         self.elo_changes = str(round(delta1)) + ' ' + str(round(delta2))
         self.team1_elos = str(round(elo11)) + ' ' + str(round(elo12))
         self.team2_elos = str(round(elo21)) + ' ' + str(round(elo22))
+        self.matchtype = "FF"
         self.save()
 
         if debug:

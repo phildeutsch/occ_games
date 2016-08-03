@@ -92,12 +92,14 @@ def games(request):
         fifa_matches = FifaMatch.objects.filter(season=config.SEASON).order_by('-played_date').all()
     else:
         player = request.user.player
-        tf_matches = [x.tfmatch_set.all() for x in player.team_set.all()]
+        tf_matches = [x.match_set.all() for x in player.team_set.all()]
         tf_matches = [item for sublist in tf_matches for item in sublist]
+        tf_matches = [x for x in tf_matches if x.matchtype=='TF']
         tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
 
-        fifa_matches = [x.fifamatch_set.all() for x in player.team_set.all()]
+        fifa_matches = [x.match_set.all() for x in player.team_set.all()]
         fifa_matches = [item for sublist in fifa_matches for item in sublist]
+        fifa_matches = [x for x in tf_matches if x.matchtype=='FF']
         fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
 
     return render(request, "tf/games.html", {'tf_matches' : tf_matches, 'fifa_matches' : fifa_matches})
