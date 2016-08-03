@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from .models import Player
 from django.contrib.auth.models import User
 import re
+import config
 
 class TfNewPlayerForm(forms.ModelForm):
     class Meta:
@@ -64,6 +65,7 @@ class TfNewMatchForm(forms.Form):
         team2_player1 = form_data['team2_player1']
         team2_player2 = form_data['team2_player2']
         team2_score = form_data['team2_score']
+
 
         player_list = list(filter(lambda x: x.id > 0, [team1_player1, team1_player2, team2_player1, team2_player2]))
 

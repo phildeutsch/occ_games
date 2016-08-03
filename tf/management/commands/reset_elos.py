@@ -15,4 +15,8 @@ class Command(BaseCommand):
             p.fifa_player_elo = config.DEFAULT_ELO
             p.tf_last_played = None
             p.fifa_last_played = None
+            p.tf_matches_played = 0
+            p.tf_matches_won = 0
+            p.fifa_matches_played = 0
+            p.fifa_matches_won = 0
             p.save()

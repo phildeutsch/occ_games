@@ -79,6 +79,7 @@ class Match(models.Model):
 
     teams = models.ManyToManyField(Team)
     played_date = models.DateTimeField('date played')
+    season = models.IntegerField(default=config.SEASON)
     scores = models.CharField(max_length=5, default="0 0")
     elos = models.CharField(max_length=9, default="0 0")
     elo_changes = models.CharField(max_length=9, default="0 0")

@@ -88,8 +88,8 @@ def register(request):
 
 def games(request):
     if request.user.is_superuser:
-        tf_matches = TfMatch.objects.order_by('-played_date').all()
-        fifa_matches = FifaMatch.objects.order_by('-played_date').all()
+        tf_matches = TfMatch.objects.filter(season=config.SEASON).order_by('-played_date').all()
+        fifa_matches = FifaMatch.objects.filter(season=config.SEASON).order_by('-played_date').all()
     else:
         player = request.user.player
         tf_matches = [x.tfmatch_set.all() for x in player.team_set.all()]
