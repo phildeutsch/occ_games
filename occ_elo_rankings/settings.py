@@ -96,9 +96,9 @@ LOGIN_REDIRECT_URL = '/tf'
 # Email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ocandctf@gmail.com'
-EMAIL_HOST_PASSWORD = 'fgjysvgdxthejtup'
-DEFAULT_FROM_EMAIL = 'ocandctf@gmail.com'
+EMAIL_HOST_USER = 'ocandcgames@gmail.com'
+EMAIL_HOST_PASSWORD = 'oebcjnzfkjazphzp'
+DEFAULT_FROM_EMAIL = 'ocandcgames@gmail.com'
 EMAIL_PORT = 587
 
 # Database
