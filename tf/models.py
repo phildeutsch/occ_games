@@ -287,11 +287,13 @@ class TfMatch(Match):
         for p in team1.players.all():
             p.tf_player_elo += delta1
             p.tf_last_played = self.played_date
+            p.tf_matches_played = p.tf_matches_played + 1
             p.save()
 
         for p in team2.players.all():
             p.tf_player_elo += delta2
             p.tf_last_played = self.played_date
+            p.tf_matches_played = p.tf_matches_played + 1
             p.save()
 
 class FifaMatch(Match):
@@ -358,9 +360,11 @@ class FifaMatch(Match):
         for p in team1.players.all():
             p.fifa_player_elo += delta1
             p.fifa_last_played = self.played_date
+            p.fifa_matches_played = p.fifa_matches_played + 1
             p.save()
 
         for p in team2.players.all():
             p.fifa_player_elo += delta2
             p.fifa_last_played = self.played_date
+            p.fifa_matches_played = p.fifa_matches_played + 1
             p.save()
