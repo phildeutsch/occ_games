@@ -61,3 +61,11 @@ table.center {
   border-radius: 10px;
 
 }
+
+.lose {
+  background: #e79c9c;
+}
+
+.win {
+  background: #98dfae;
+}
