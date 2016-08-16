@@ -186,9 +186,9 @@ class Match(models.Model):
         [score1, score2] = self.scores_to_int()
 
         if elo_change1 <= elo_change2:
-            return score2
-        else:
             return score1
+        else:
+            return score2
 
     def get_loser_elo(self):
         [elo_change1, elo_change2] = self.elo_changes_to_int()
