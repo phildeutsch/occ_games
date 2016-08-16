@@ -104,38 +104,39 @@ class Match(models.Model):
         return string_to_ints(self.elo_changes)
 
     def get_winner(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         teams = self.teams.order_by('id').all()
 
-        if score1 > score2:
+        if elo_change1 > elo_change2:
             return teams[0]
         else:
             return teams[1]
 
     def get_winner_score(self):
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         [score1, score2] = self.scores_to_int()
 
-        if score1 > score2:
+        if elo_change1 > elo_change2:
             return score1
         else:
             return score2
 
     def get_winner_elo(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         [elo1, elo2] = self.elos_to_int()
 
-        if score1 > score2:
+        if elo_change1 > elo_change2:
             return elo1
         else:
             return elo2
 
     def print_winner_elos(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         teams = self.teams.order_by('id').all()
         [elo11, elo12] = self.team1_elos_to_int()
         [elo21, elo22] = self.team2_elos_to_int()
 
-        if score1 > score2:
+        if elo_change1 > elo_change2:
             s = str(round(elo11))
             if not teams[0].is_single_player:
                 s = s + "/" + str(round(elo12))
@@ -147,12 +148,12 @@ class Match(models.Model):
         return s
 
     def print_loser_elos(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         teams = self.teams.order_by('id').all()
         [elo11, elo12] = self.team1_elos_to_int()
         [elo21, elo22] = self.team2_elos_to_int()
 
-        if score1 <= score2:
+        if elo_change1 <= elo_change2:
             s = str(round(elo11))
             if not teams[0].is_single_player:
                 s = s + "/" + str(round(elo12))
@@ -164,45 +165,44 @@ class Match(models.Model):
         return s
 
     def get_winner_elo_change(self):
-        [score1, score2] = self.scores_to_int()
         [elo_change1, elo_change2] = self.elo_changes_to_int()
 
-        if score1 > score2:
+        if elo_change1 > elo_change2:
             return elo_change1
         else:
             return elo_change2
 
     def get_loser(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         teams = self.teams.order_by('id').all()
 
-        if score1 > score2:
-            return teams[1]
-        else:
+        if elo_change1 <= elo_change2:
             return teams[0]
+        else:
+            return teams[1]
 
     def get_loser_score(self):
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         [score1, score2] = self.scores_to_int()
 
-        if score1 > score2:
+        if elo_change1 <= elo_change2:
             return score2
         else:
             return score1
 
     def get_loser_elo(self):
-        [score1, score2] = self.scores_to_int()
+        [elo_change1, elo_change2] = self.elo_changes_to_int()
         [elo1, elo2] = self.elos_to_int()
 
-        if score1 > score2:
+        if elo_change1 <= elo_change2:
             return elo2
         else:
             return elo1
 
     def get_loser_elo_change(self):
-        [score1, score2] = self.scores_to_int()
         [elo_change1, elo_change2] = self.elo_changes_to_int()
 
-        if score1 > score2:
+        if elo_change1 <= elo_change2:
             return elo_change2
         else:
             return elo_change1
