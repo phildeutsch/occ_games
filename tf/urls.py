@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^rules/$', views.rules, name='rules'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^games/$', views.games, name='games'),
     url(r'^tf_games/$', views.tf_games, name='tf_games'),
     url(r'^fifa_games/$', views.fifa_games, name='fifa_games'),
     url(r'^enter_tf_match/$', views.enter_tf_match, name='enter_tf_match'),
