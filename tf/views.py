@@ -86,6 +86,76 @@ def register(request):
 
     return render(request, "tf/registration/register.html", {'user_form' : user_form})
 
+def tf_games(request):
+    if request.user.is_superuser:
+        su = True
+        tf_matches = TfMatch.objects.filter(season=config.SEASON).order_by('-played_date').all()
+
+    else:
+        su = False
+        player = request.user.player
+
+        tf_matches = [x.match_set.all() for x in player.team_set.all()]
+        tf_matches = [item for sublist in tf_matches for item in sublist]
+        tf_matches = [x for x in tf_matches if x.matchtype=='TF']
+        tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
+        tf_wins = [player in m.get_winner().players.all() for m in tf_matches]
+
+    tf = []
+    i = 0
+    for match in tf_matches:
+        m = {}
+        m['played_date'] = match.played_date
+        m['winner'] = match.get_winner().prettyprint()
+        m['loser'] = match.get_loser().prettyprint()
+        m['winner_elos'] = match.print_winner_elos()
+        m['winner_elo_change'] = match.get_winner_elo_change()
+        m['winner_score'] = match.get_winner_score()
+        m['loser_elos'] = match.print_loser_elos()
+        m['loser_elo_change'] = match.get_loser_elo_change()
+        m['loser_score'] = match.get_loser_score()
+        if not request.user.is_superuser:
+            m['win'] = tf_wins[i]==True
+        tf.append(m)
+        i = i + 1
+
+    return render(request, "tf/tf_games.html", {'tf_matches' : tf, 'su' : su})
+
+def fifa_games(request):
+    if request.user.is_superuser:
+        su = True
+        fifa_matches = FifaMatch.objects.filter(season=config.SEASON).order_by('-played_date').all()
+
+    else:
+        su = False
+        player = request.user.player
+
+        fifa_matches = [x.match_set.all() for x in player.team_set.all()]
+        fifa_matches = [item for sublist in fifa_matches for item in sublist]
+        fifa_matches = [x for x in fifa_matches if x.matchtype=='FF']
+        fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
+        fifa_wins = [player in m.get_winner().players.all() for m in fifa_matches]
+
+    fifa = []
+    i = 0
+    for match in fifa_matches:
+        m = {}
+        m['played_date'] = match.played_date
+        m['winner'] = match.get_winner().prettyprint()
+        m['loser'] = match.get_loser().prettyprint()
+        m['winner_elos'] = match.print_winner_elos()
+        m['winner_elo_change'] = match.get_winner_elo_change()
+        m['winner_score'] = match.get_winner_score()
+        m['loser_elos'] = match.print_loser_elos()
+        m['loser_elo_change'] = match.get_loser_elo_change()
+        m['loser_score'] = match.get_loser_score()
+        if not request.user.is_superuser:
+            m['win'] = fifa_wins[i]==True
+        fifa.append(m)
+        i = i + 1
+
+    return render(request, "tf/fifa_games.html", {'fifa_matches' : fifa,  'su' : su})
+
 def games(request):
     if request.user.is_superuser:
         su = True

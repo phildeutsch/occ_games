@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<!-- Player league table -->
+
+<section id="table_team" class="table-section">
+  <div class="container-fluid" style="width:70%">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>TF Game History</h1>
+                {% if su %}
+                  <table class="table table-striped">
+                {% else %}
+                  <table class="table">
+                {% endif %}
+                  <thead>
+                    <tr>
+                        <th style="text-align:center;">#</th>
+                        <th> Date </th>
+                        <th> Winner </th>
+                        <th> Winner ELO </th>
+                        <th> Winner ELO change </th>
+                        <th> Result </th>
+                        <th> Loser </th>
+                        <th> Loser ELO </th>
+                        <th> Loser ELO change </th>
+                    </tr>
+                  </thead>
+                    {% for match in tf_matches %}
+                    {% if su %}
+                      <tr>
+                    {% else %}
+                      {% if match.win%}
+                        <tr class="win">
+                      {% else %}
+                        <tr class="lose">
+                      {% endif %}
+                    {% endif%}
+                        <td style="text-align:center;font-weight: bold;"> {{forloop.counter}}</td>
+                        <td> {{ match.played_date }} </td>
+                        <td> {{ match.winner }} </td>
+                        <td> {{ match.winner_elos }} </td>
+                        <td> +{{ match.winner_elo_change }} </td>
+                        <td> {{ match.winner_score }} - {{ match.loser_score }}</td>
+                        <td> {{ match.loser }} </td>
+                        <td> {{ match.loser_elos }} </td>
+                        <td> {{ match.loser_elo_change }} </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
