@@ -46,7 +46,7 @@ class TfNewMatchForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(TfNewMatchForm, self).__init__(*args, **kwargs)
 
-    players = Player.objects.order_by('last_name')
+    players = Player.objects.order_by('full_name')
 
     team1_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
     team1_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
@@ -94,7 +94,7 @@ class FifaNewMatchForm(forms.Form):
         self.request = kwargs.pop('request', None)
         super(FifaNewMatchForm, self).__init__(*args, **kwargs)
 
-    players = Player.objects.order_by('last_name')
+    players = Player.objects.order_by('full_name')
 
     team1_player1 = forms.ModelChoiceField(queryset=players, label='Player 1', initial=0)
     team1_player2 = forms.ModelChoiceField(queryset=players, label='Player 2', initial=0)
