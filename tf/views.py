@@ -106,6 +106,7 @@ def games(request):
         fifa_matches = [item for sublist in fifa_matches for item in sublist]
         fifa_matches = [x for x in fifa_matches if x.matchtype=='FF']
         fifa_matches = sorted(fifa_matches, key=lambda x:x.played_date, reverse=True)
+        fifa_wins = [player in m.get_winner().players.all() for m in fifa_matches]
 
     tf = []
     i = 0
@@ -139,8 +140,8 @@ def games(request):
         m['loser_elo_change'] = match.get_loser_elo_change()
         m['loser_score'] = match.get_loser_score()
         if not request.user.is_superuser:
-            m['win'] = tf_wins[i]==True
-        tf.append(m)
+            m['win'] = fifa_wins[i]==True
+        fifa.append(m)
         i = i + 1
 
     return render(request, "tf/games.html", {'tf_matches' : tf,

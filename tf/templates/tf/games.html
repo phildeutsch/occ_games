@@ -27,7 +27,6 @@
                     <th> Loser ELO change </th>
                 </tr>
               </thead>
-
                 {% for match in tf_matches %}
                 {% if su %}
                   <tr>
@@ -52,8 +51,12 @@
             </table>
             </div>
             <div class="col-lg-12">
-                <h1>Fifa Game History</h1>
-                <table class="table table-striped">
+                <h1>FIFA Game History</h1>
+                {% if su %}
+                  <table class="table table-striped">
+                {% else %}
+                  <table class="table">
+                {% endif %}
                   <thead>
                     <tr>
                         <th style="text-align:center;">#</th>
@@ -67,21 +70,28 @@
                         <th> Loser ELO change </th>
                     </tr>
                   </thead>
-
                     {% for match in fifa_matches %}
-                    <tr>
+                    {% if su %}
+                      <tr>
+                    {% else %}
+                      {% if match.win%}
+                        <tr class="win">
+                      {% else %}
+                        <tr class="lose">
+                      {% endif %}
+                    {% endif%}
                         <td style="text-align:center;font-weight: bold;"> {{forloop.counter}}</td>
                         <td> {{ match.played_date }} </td>
-                        <td> {{ match.get_winner.prettyprint }} </td>
-                        <td> {{ match.print_winner_elos }} </td>
-                        <td> +{{ match.get_winner_elo_change }} </td>
-                        <td> {{ match.get_winner_score }} - {{ match.get_loser_score }}</td>
-                        <td> {{ match.get_loser.prettyprint }} </td>
-                        <td> {{ match.print_loser_elos }} </td>
-                        <td> {{ match.get_loser_elo_change }} </td>
+                        <td> {{ match.winner }} </td>
+                        <td> {{ match.winner_elos }} </td>
+                        <td> +{{ match.winner_elo_change }} </td>
+                        <td> {{ match.winner_score }} - {{ match.loser_score }}</td>
+                        <td> {{ match.loser }} </td>
+                        <td> {{ match.loser_elos }} </td>
+                        <td> {{ match.loser_elo_change }} </td>
                     </tr>
                     {% endfor %}
-            </table>
+                </table>
           </div>
         </div>
     </div>
