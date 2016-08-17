@@ -2,7 +2,15 @@ coverage==4.1
 dj-database-url==0.3.0
 dj-static==0.0.6
 Django==1.9
+django-registration==2.1.2
+djangorestframework==3.4.4
 gunicorn==19.1.1
+numpy==1.11.1
+pandas==0.18.1
 psycopg2==2.6.1
+python-dateutil==2.5.3
+pytz==2016.6.1
+rest-pandas==0.4.0
+six==1.10.0
 static3==0.6.1
 whitenoise==2.0.6

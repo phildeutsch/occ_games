@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 import datetime
 import config
 import re
+import pandas as pd
+import numpy as np
 
 def get_team(player1, player2):
     if player1.id > player2.id:
@@ -100,6 +102,44 @@ def tf_games(request):
         tf_matches = [x for x in tf_matches if x.matchtype=='TF']
         tf_matches = sorted(tf_matches, key=lambda x:x.played_date, reverse=True)
         tf_wins = [player in m.get_winner().players.all() for m in tf_matches]
+
+        dates = [m.played_date for m in tf_matches]
+        elo11 = [m.team1_elos_to_int()[0] for m in matches]
+        elo12 = [m.team1_elos_to_int()[1] for m in matches]
+        elo21 = [m.team2_elos_to_int()[0] for m in matches]
+        elo22 = [m.team2_elos_to_int()[1] for m in matches]
+
+        t1  = [player in m.teams.order_by('id')[0].players.all() for m in matches]
+        p11 = [player == m.teams.order_by('id')[0].players.order_by('id')[0] for m in matches]
+        t2  = [player in m.teams.order_by('id')[1].players.all() for m in matches]
+        p21 = [player == m.teams.order_by('id')[1].players.order_by('id')[0] for m in matches]
+
+
+        df = pd.DataFrame({'date':dates,
+          'elo11': elo11,
+          'elo12': elo12,
+          'elo21': elo21,
+          'elo22': elo22,
+          't1': t1,
+          'p11': p11,
+          't2': t2,
+          'p21': p21,
+          })
+        df.sort_values(by='date', inplace=True)
+
+        p11 = df['t1'] & df['p11']
+        p12 = df['t1'] & -df['p11']
+        p21 = df['t2'] & df['p21']
+        p22 = df['t2'] & -df['p21']
+
+        df['elo'] = 0
+        df.loc[p11, 'elo'] = df['elo11'][p11]
+        df.loc[p12, 'elo'] = df['elo12'][p12]
+        df.loc[p21, 'elo'] = df['elo21'][p21]
+        df.loc[p22, 'elo'] = df['elo22'][p22]
+
+        df = df.groupby("date").agg({"elo" : min})
+        df.to_csv("data/eloplot.csv")
 
     tf = []
     i = 0

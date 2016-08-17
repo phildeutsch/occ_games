@@ -4,8 +4,13 @@
 
 <!-- Player league table -->
 
+{% load staticfiles %}
+
 <section id="table_team" class="table-section">
   <div class="container-fluid" style="width:70%">
+      <div>
+      <script src="{% static 'tf/js/eloplot.js' %}" charset="utf-8"></script>
+      </div>
         <div class="row">
             <div class="col-lg-12">
                 <h1>TF Game History</h1>
