@@ -49,11 +49,6 @@ df.loc[p21, 'elo'] = df['elo21'][p21]
 df.loc[p22, 'elo'] = df['elo22'][p22]
 
 df = df.groupby("date").agg({"elo" : min})
-df.to_csv("data/eloplot.csv")
-
-N = 500
-random_x = np.linspace(0, 1, N)
-random_y = np.random.randn(N)
 
 # Create a trace
 trace = go.Scatter(
@@ -62,5 +57,4 @@ trace = go.Scatter(
 )
 
 data = [trace]
-
 plot_div = po.plot(data, include_plotlyjs=False, output_type='div')
