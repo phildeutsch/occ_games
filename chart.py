@@ -35,6 +35,7 @@ df = pd.DataFrame({'date':dates,
 'p21': p21,
 })
 df.sort_values(by='date', inplace=True)
+df['date'] = df['date'].apply(lambda x: x.date())
 
 p11 = df['t1'] & df['p11']
 p12 = df['t1'] & -df['p11']
@@ -56,8 +57,8 @@ random_y = np.random.randn(N)
 
 # Create a trace
 trace = go.Scatter(
-    x = random_x,
-    y = random_y
+    x = df.index.values,
+    y = df['elo'].values
 )
 
 data = [trace]
