@@ -23,37 +23,58 @@ p11 = [player == m.teams.order_by('id')[0].players.order_by('id')[0] for m in tf
 t2  = [player in m.teams.order_by('id')[1].players.all() for m in tf_matches]
 p21 = [player == m.teams.order_by('id')[1].players.order_by('id')[0] for m in tf_matches]
 
+elo11 = elo12 = elo21 = elo22 = []
+p11 = p12 = p21 = p22 = []
+
+for m in [tf_matches[0]]:
+    print(m.id)
+    elo11.append(m.team1_elos_to_int()[0])
+    elo21.append(m.team2_elos_to_int()[0])
+    p11.append(m.teams.order_by('id').all()[0].players.order_by('id')[0].full_name)
+    p21.append(m.teams.order_by('id').all()[1].players.order_by('id')[0].full_name)
+    if m.team1_elos_to_int()[1] != 0:
+        elo12.append(m.team1_elos_to_int()[1])
+        p12.append(m.teams.order_by('id').all()[0].players.order_by('id')[1].full_name)
+    else:
+        elo12.append(0)
+        p12.append('NA')
+    if m.team2_elos_to_int()[1] != 0:
+        elo22.append(m.team2_elos_to_int()[1])
+        p22.append(m.teams.order_by('id').all()[1].players.order_by('id')[1].full_name)
+    else:
+        elo22.append(0)
+        p22.append('NA')
 
 df = pd.DataFrame({'date':dates,
 'elo11': elo11,
 'elo12': elo12,
 'elo21': elo21,
 'elo22': elo22,
-'t1': t1,
-'p11': p11,
-'t2': t2,
-'p21': p21,
+'p11'  : p11,
+'p12'  : p12,
+'p21'  : p21,
+'p22'  : p22
 })
 df.sort_values(by='date', inplace=True)
 df['date'] = df['date'].apply(lambda x: x.date())
 
-p11 = df['t1'] & df['p11']
-p12 = df['t1'] & -df['p11']
-p21 = df['t2'] & df['p21']
-p22 = df['t2'] & -df['p21']
+is_p11 = df['t1'] & df['p11']
+is_p12 = df['t1'] & -df['p11']
+is_p21 = df['t2'] & df['p21']
+is_p22 = df['t2'] & -df['p21']
 
 df['elo'] = 0
-df.loc[p11, 'elo'] = df['elo11'][p11]
-df.loc[p12, 'elo'] = df['elo12'][p12]
-df.loc[p21, 'elo'] = df['elo21'][p21]
-df.loc[p22, 'elo'] = df['elo22'][p22]
+df.loc[is_p11, 'elo'] = df['elo11'][is_p11]
+df.loc[is_p12, 'elo'] = df['elo12'][is_p12]
+df.loc[is_p21, 'elo'] = df['elo21'][is_p21]
+df.loc[is_p22, 'elo'] = df['elo22'][is_p22]
 
-df = df.groupby("date").agg({"elo" : min})
+df_elo = df.groupby("date").agg({"elo" : min})
 
 # Create a trace
 trace = go.Scatter(
-    x = df.index.values,
-    y = df['elo'].values
+    x = df_elo.index.values,
+    y = df_elo['elo'].values
 )
 
 data = [trace]
