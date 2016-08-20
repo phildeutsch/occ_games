@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^enter_tf_match/$', views.enter_tf_match, name='enter_tf_match'),
     url(r'^enter_fifa_match/$', views.enter_fifa_match, name='enter_fifa_match'),
     url(r'^enter_player/$', views.enter_player, name='enter_tf_match'),
-    url(r'^charts/$', views.charts, name='charts'),
 
     url(r'^accounts/',
         include('registration.backends.default.urls')),
