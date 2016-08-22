@@ -43,6 +43,7 @@ def plot_elo(player, gametype):
         p21 = []
         p22 = []
         win = []
+        single_game = []
 
         for m in matches:
             id.append(m.id)
@@ -63,11 +64,15 @@ def plot_elo(player, gametype):
             else:
                 elo22.append(0)
                 p22.append('NA')
+            if m.team2_elos_to_int()[1] == 0 and m.team1_elos_to_int()[1] ==0:
+                single_game.append(True)
+            else:
+                single_game.append(False)
 
-        df = pd.DataFrame({'date':dates, 'team':1, 'player':1, 'elo': elo11, 'name': p11, 'id':id, 'win':win})
-        df = df.append(pd.DataFrame({'date':dates, 'team':1, 'player':2, 'elo': elo12, 'name'  : p12, 'id':id, 'win':win}))
-        df = df.append(pd.DataFrame({'date':dates, 'team':2, 'player':1, 'elo': elo21, 'name'  : p21, 'id':id, 'win':win}))
-        df = df.append(pd.DataFrame({'date':dates, 'team':2, 'player':2, 'elo': elo22, 'name'  : p22, 'id':id, 'win':win}))
+        df = pd.DataFrame({'date':dates, 'team':1, 'player':1, 'elo': elo11, 'name': p11, 'id':id, 'win':win, 'singles':single_game})
+        df = df.append(pd.DataFrame({'date':dates, 'team':1, 'player':2, 'elo': elo12, 'name'  : p12, 'id':id, 'win':win, 'singles':single_game}))
+        df = df.append(pd.DataFrame({'date':dates, 'team':2, 'player':1, 'elo': elo21, 'name'  : p21, 'id':id, 'win':win, 'singles':single_game}))
+        df = df.append(pd.DataFrame({'date':dates, 'team':2, 'player':2, 'elo': elo22, 'name'  : p22, 'id':id, 'win':win, 'singles':single_game}))
         df.sort_values(by='date', inplace=True)
         df['date'] = df['date'].apply(lambda x: x.date())
         df = df.query("name != 'NA'")
@@ -99,10 +104,8 @@ def plot_elo(player, gametype):
                     size=18,
                     color='black'
                 ),
-                showticklabels=True,
-                tickangle=45,
                 tickfont=dict(
-                    family='Old Standard TT, serif',
+                    family='Arial, sans-serif',
                     size=14,
                     color='black'
                 )
@@ -112,7 +115,7 @@ def plot_elo(player, gametype):
         plot_div = po.plot(fig, include_plotlyjs=False, output_type='div')
 
         # Rivals plot
-        df_rivals = (df[df.player_team==False].groupby("name")
+        df_rivals = (df[(df.player_team==False) & (df.singles==True)].groupby("name")
             .agg({"name" : "count", "win":sum})
             .rename(columns={"name":"count", "win":"wins"}))
         df_rivals['win_perc'] = round(100 * df_rivals['wins'] / df_rivals['count'])
