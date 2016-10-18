@@ -27,7 +27,8 @@ con <- dbConnect(drv, dbname = "d13s5r5bpncpjb",
 
 match_info <- data.table(dbGetQuery(con, "SELECT id AS match_id, matchtype, played_date FROM tf_match"))
 match_info[, played_date:=as.Date(str_sub(played_date, 1L, 10))]
-match_info[, matchtype:=relevel(factor(matchtype), "NA")]
+match_info[matchtype=="NA", matchtype:="TF"]
+match_info[, matchtype:=relevel(factor(matchtype), "TF")]
 
 weekly_games = match_info %>%
   mutate(week = start.of.week(played_date)) %>%
@@ -38,7 +39,8 @@ weekly_games = match_info %>%
     start_date = min(played_date)
   ) %>%
   arrange(week, matchtype)
+weekly_games
 
-ggplot(data=weekly_games) + theme_bw() + 
+ggplot(data=weekly_games) + theme_bw() + ylab("Number of Weekly Games") + xlab("Week") +
   geom_bar(aes(x=week, y=games, fill=matchtype), stat="identity") +
-  scale_fill_manual(values=c("#999999", "#9ecae1", "#3182bd"))
+  scale_fill_manual(values=c("#3182bd","#9ecae1"))
